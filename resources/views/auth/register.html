@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription | Square</title>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="antialiased">
+<div class="">
+    <div class="">
+        <div class="">
+            <a href="{{route('index')}}" class="">
+            </a>
+            <a href="{{route('index')}}" class="">
+
+            </a>
+            <h2 class="">
+                Rejoignez-nous !
+            </h2>
+            <p class="">
+                Déjà inscrit(e)?
+                <a href="{{route('login.form')}}" class="">
+                    Connectez-vous
+                </a>
+            </p>
+        </div>
+        {% if errors() %}
+        <div class="">
+            <ul class="">
+                {% for error in errors() %}
+                <li>
+                    {{ error }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {%endif%}
+
+        <form action="{{ route('register.request') }}" method="POST" class="flex flex-col space-y-6" novalidate>
+            <div class="">
+                {{ csrf_field() | raw }}
+                <input name="name" type="text" value="{{ old('name') }}" placeholder="Nom complet"
+                       class="">
+                <input name="email" type="email" value="{{ old('email') }}" placeholder="Adresse e-mail"
+                       class="">
+                <input name="password" type="password" placeholder="Mot de passe"
+                       class="">
+                <input name="password_confirmation" type="password" placeholder="Confirmation du mot de passe"
+                       class="">
+            </div>
+            <button type="submit"
+                    class="">
+                Inscription
+            </button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
