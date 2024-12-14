@@ -4,47 +4,25 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion | Ekical</title>
-  <link rel="stylesheet" href="/css/style.css">
+  <title>Connexion | EkiCal</title>
+  <link rel="stylesheet" href="/css/style2.css">
 </head>
-<body class="antialiased">
+<body>
 <div class="joinus">
-  <div class="">
-    <div class="">
-      <a href="{{route('index')}}" class="">
-      </a>
-      <h2 class="">
-        Heureux de vous revoir !
-      </h2>
-      <p class="">
-        Entrez vos données de connexion
-      </p>
+    <div>
+      <h2>Entrez vos données de connexion</h2>
     </div>
     {% if errors() %}
-    <div class="">
-      <div class="">
-        <div class="">
-
-        </div>
-        <div class="">
-          <p class="alert">
-            {{ errors()[0]}}
-          </p>
-        </div>
-      </div>
+    <div>
+      <p class="alert">{{ errors()[0]}}</p>
     </div>
     {% endif %}
-    <form action="{{ route ('login.request') }}" method="POST" class="" novalidate>
-      <div class="">
+    <form action="{{ route ('login.request') }}" method="POST" novalidate>
         {{  csrf_field() | raw}}
-        <input name="email" type="email" value="{{old('email')}}" placeholder="Adresse e-mail" class="">
+        <input name="email" type="email" value="{{old('email')}}" placeholder="Adresse e-mail">
         <input name="password" type="password" placeholder="Mot de passe" class="">
-      </div>
-      <button type="submit" class="">
-        Connexion
-      </button>
+      <button type="submit">Connexion</button>
     </form>
-  </div>
 </div>
 </body>
 </html>

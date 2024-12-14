@@ -43,8 +43,32 @@ class Validator
             return password_verify($value, $user->password);
         }, '{field} est erroné !');
 
+        // Cette règle vérifie si le fichier à uploader est présent en vérifiant la clé type de la super-globale
+        // FILES et s'il n'y a pas eu d'erreur lors d'upload. Il faut qu'il y ai une valeur dans le champ field et que
+        // la valeur de la clé errors soit upload_err_ok, sinon on renvoie une erreur.
         $validator->addRule('required_file', function (string $field, mixed $value, array $params, array $fields) {
             return isset($_FILES[$field]) && $_FILES[$field]['error'] === UPLOAD_ERR_OK;
         }, '{field} est obligatoire !');
+
+        //On vérifie que le fichier est bien une image en vérifiant la clé type de la super-globale FILES (type mime)
+        //Le type mime commence toujours par 'image/'. On vérifie d'abord si l'upload s'est bien passé. Par sécurité,
+        // car elle est vérifiée par 'requirde_file'.
+        $validator->addRule('image', function (string $field, mixed $value, array $params, array $fields) {
+            if (isset($_FILES[$field]) && $_FILES[$field]['error'] === UPLOAD_ERR_OK) {
+                return str_starts_with($_FILES[$field]['type'], 'image/');
+            }
+            return false;
+        }, '{field} doit être une image !');
+
+        //On vérifie si l'image est bien carrée. On utilise la fonction 'getimagesize' qui ramène un tableau avec la
+        // largeur et la hauteur.
+        $validator->addRule('square', function (string $field, mixed $value, array $params, array $fields) {
+
+            if (isset($_FILES[$field]) && $_FILES[$field]['error'] === UPLOAD_ERR_OK) {
+                [$width,$height] = getimagesize($_FILES[$field]['tmp_name']);
+                return $width === $height;
+            }
+            return false;
+        }, '{field} doit être carrée!');
     }
 }

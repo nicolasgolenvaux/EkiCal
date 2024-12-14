@@ -1,0 +1,36 @@
+{% include 'includes/header.html' %}
+<title>Utilisateurs | EkiCal</title>
+<body>
+<h1>{{titre}}</h1>
+<table class="joinus">
+    <tr>
+        <th><h2>Nom</h2></th>
+        <th><h2>Email</h2></th>
+        <th><h2>Role</h2></th>
+        <th></th>
+        {% if auth().checkIsAdmin() %}
+        <th><a href="" role="button" class="btn btn-create">Create</a></th>
+        {% endif %}
+    </tr>
+    {% for users in users %}
+    <tr>
+        <td>{{ users.name }}</td>
+        <td>{{ users.email }}</td>
+        <td>{{ users.role }}</td>
+        {% if auth().checkIsAdmin() %}
+        <td>
+            <a href="" role="button"
+               class="btn btn-edit">Edit</a>
+        </td>
+        <td>
+            <form action="" method="post">
+                <input type="hidden" name="EmployeeId" value=""/>
+                <button type="submit" class="btn btn-delete">Delete</button>
+            </form>
+        </td>
+        {% endif %}
+    </tr>
+   {% endfor %}
+</table>
+</body>
+</html>

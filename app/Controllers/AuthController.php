@@ -3,7 +3,7 @@
  * Ce Controller gère toutes les méthodes liées à la table 'users'.
  * Elle utilise la classe Authentication qui contient les méthodes
  * pour vérifier si un visiteur est authentifié ou pas.
- * Elle utilise la classe Session pour intialiser une session et gérer les
+ * Elle utilise la classe Session pour initializer une session et gérer les
  * variables de session 'flash'.
  * La classe validator va gérer la conformité des formulaires
  */
@@ -94,7 +94,6 @@ class AuthController extends AbstractController
         if (Auth::check()) {
             Auth::logout();
         }
-
         $this->redirect('login.form');
     }
 }

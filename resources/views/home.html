@@ -1,151 +1,104 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon compte | Square</title>
-    <link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="antialiased">
-{% include "includes/header.html" %}
+{% include 'includes/header.html' %}
+<title>Mon compte | EkiCal</title>
+<body>
 <div class="joinus">
     {% if status() %}
-    <div class="rounded-md bg-indigo-50 p-4">
-        <div class="flex">
-
-            </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium text-indigo-800">
-                    {{ status() }}
-                </p>
+    <p>{{ status() }}</p>
+    {% endif %}
+<form action="{{ route('home.updateName') }}" method="POST" class="" novalidate>
+    <div>
+        <h3>Identité</h3>
+        <div>
+            {{ csrf_field()|raw }}
+            {{ method('PATCH')|raw }}
+            <div>
+                <label for="name">Nom complet</label>
+                <div class="mt-1 {% if errors('name') %}relative rounded-md shadow-sm{% endif %}">
+                    <input id="name" name="name" size="50" value="{{ old('name', user.name) }}" type="text"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('name') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                </div>
+                {% if errors('name') %}
+                <p class="alert">{{ errors('name')[0] }}</p>
+                {% endif %}
             </div>
         </div>
     </div>
-    {% endif %}
-    <form action="{{ route('home.updateName') }}" method="POST" class="space-y-8 divide-y divide-gray-200" novalidate>
+    <div>
+            <button type="submit">Modifier le nom</button>
+    </div>
+</form>
+
+<form action="{{ route('home.updateEmail') }}" method="POST" novalidate>
+    <div>
+        <h3>Adresse e-mail</h3>
         <div>
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                Identité
-            </h3>
-            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                {{ csrf_field()|raw }}
-                {{ method('PATCH')|raw }}
-                <div class="sm:col-span-4">
-                    <label for="name" class="block text-sm font-medium text-gray-700">
-                        Nom complet
-                    </label>
-                    <div class="mt-1 {% if errors('name') %}relative rounded-md shadow-sm{% endif %}">
-                        <input id="name" name="name" value="{{ old('name', user.name) }}" type="text" class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('name') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
-                        {% if errors('name') %}
-
-                        {% endif %}
-                    </div>
-                    {% if errors('name') %}
-                    <p class="mt-2 text-sm text-red-600">{{ errors('name')[0] }}</p>
-                    {% endif %}
+            {{ csrf_field()|raw }}
+            {{ method('PATCH')|raw }}
+            <div>
+                <label for="email">Adresse e-mail</label>
+                <div class="mt-1 {% if errors('email') %}relative rounded-md shadow-sm{% endif %}">
+                    <input id="email" name="email" size="50" value="{{ old('email', user.email) }}" type="email"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('email') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
                 </div>
+                {% if errors('email') %}
+                <p class="alert">{{ errors('email')[0] }}</p>
+                {% endif %}
             </div>
         </div>
-        <div class="pt-5">
-            <div class="flex justify-end">
-                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Modifier le nom
-                </button>
-            </div>
-        </div>
-    </form>
+    </div>
+    <div>
+        <button type="submit">Modifier l'adresse e-mail</button>
+    </div>
+</form>
 
-    <form action="{{ route('home.updateEmail') }}" method="POST" class="space-y-8 divide-y divide-gray-200" novalidate>
+<form action="{{ route('home.updatePassword') }}" method="POST" novalidate>
+    <div>
+        <h3>Mot de passe</h3>
         <div>
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                Adresse e-mail
-            </h3>
-            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                {{ csrf_field()|raw }}
-                {{ method('PATCH')|raw }}
-                <div class="sm:col-span-4">
-                    <label for="email" class="block text-sm font-medium text-gray-700">
-                        Adresse e-mail
-                    </label>
-                    <div class="mt-1 {% if errors('email') %}relative rounded-md shadow-sm{% endif %}">
-                        <input id="email" name="email" value="{{ old('email', user.email) }}" type="email" class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('email') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
-                        {% if errors('email') %}
-
-                        {% endif %}
-                    </div>
-                    {% if errors('email') %}
-                    <p class="mt-2 text-sm text-red-600">{{ errors('email')[0] }}</p>
-                    {% endif %}
+            {{ csrf_field()|raw }}
+            {{ method('PATCH')|raw }}
+            <div>
+                <label for="password_old">
+                    Mot de passe actuel
+                </label>
+                <div class="mt-1 {% if errors('password_old') %}relative rounded-md shadow-sm{% endif %}">
+                    <input id="password_old" name="password_old" size="50" type="password"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('password_old') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
                 </div>
+                {% if errors('password_old') %}
+                <p class="alert">{{ errors('password_old')[0] }}</p>
+                {% endif %}
             </div>
-        </div>
-        <div class="pt-5">
-            <div class="flex justify-end">
-                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Modifier l'adresse e-mail
-                </button>
-            </div>
-        </div>
-    </form>
 
-    <form action="{{ route('home.updatePassword') }}" method="POST" class="space-y-8 divide-y divide-gray-200" novalidate>
+            <div class="sm:col-span-4">
+                <label for="password" class="block text-sm font-medium text-gray-700">
+                    Mot de passe
+                </label>
+                <div class="mt-1 {% if errors('password') %}relative rounded-md shadow-sm{% endif %}">
+                    <input id="password" name="password" type="password"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('password') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                </div>
+
+            </div>
+            {% if errors('password') %}
+            <p class="alert">{{ errors('password')[0] }}</p>
+            {% endif %}
+        </div>
+
         <div>
-            <h3 class="text-lg leading-6 font-medium text-gray-900">
-                Mot de passe
-            </h3>
-            <div class="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                {{ csrf_field()|raw }}
-                {{ method('PATCH')|raw }}
-                <div class="sm:col-span-4">
-                    <label for="password_old" class="block text-sm font-medium text-gray-700">
-                        Mot de passe actuel
-                    </label>
-                    <div class="mt-1 {% if errors('password_old') %}relative rounded-md shadow-sm{% endif %}">
-                        <input id="password_old" name="password_old" type="password" class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('password_old') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
-                        {% if errors('password_old') %}
-
-                        {% endif %}
-                    </div>
-                    {% if errors('password_old') %}
-                    <p class="mt-2 text-sm text-red-600">{{ errors('password_old')[0] }}</p>
-                    {% endif %}
-                </div>
-
-                <div class="sm:col-span-4">
-                    <label for="password" class="block text-sm font-medium text-gray-700">
-                        Mot de passe
-                    </label>
-                    <div class="mt-1 {% if errors('password') %}relative rounded-md shadow-sm{% endif %}">
-                        <input id="password" name="password" type="password" class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('password') %}border-red-300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
-                        {% if errors('password') %}
-
-                        </div>
-                        {% endif %}
-                    </div>
-                    {% if errors('password') %}
-                    <p class="mt-2 text-sm text-red-600">{{ errors('password')[0] }}</p>
-                    {% endif %}
-                </div>
-
-                <div class="sm:col-span-4">
-                    <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
-                        Confirmation du mot de passe
-                    </label>
-                    <div class="mt-1">
-                        <input id="password_confirmation" name="password_confirmation" type="password" class="lg:w-2/3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
-                    </div>
-                </div>
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
+                Confirmation du mot de passe
+            </label>
+            <div class="mt-1">
+                <input id="password_confirmation" name="password_confirmation" type="password"
+                       class="lg:w-2/3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
             </div>
         </div>
-        <div class="pt-5">
-            <div class="flex justify-end">
-                <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                    Modifier le mot de passe
-                </button>
-            </div>
-        </div>
-    </form>
+    </div>
+    <div>
+            <button type="submit">Modifier le mot de passe</button>
+    </div>
+</form>
 </div>
 </body>
 </html>
