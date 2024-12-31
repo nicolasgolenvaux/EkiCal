@@ -6,16 +6,17 @@
     box-sizing: border-box;
     font-family: "Montserrat", sans-serif;
 }
-.icon{
+
+.icon {
     margin-left: 10px;
     margin-right: 10px;
     opacity: 0.8;
-    vertical-align: bottom;
 }
 
-.iconbis {
+.iconBis {
     margin-top: 2px;
 }
+
 body {
     display: flex;
     flex-direction: column;
@@ -125,6 +126,7 @@ tbody tr:hover {
         min-width: 12.1rem;
     }
 }
+
 .modal {
     display: none;
     position: fixed;

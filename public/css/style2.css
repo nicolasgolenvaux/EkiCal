@@ -1,56 +1,144 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:500');
-
-a:link, a:visited {
-    color: inherit;
-    text-decoration: none;
+div {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #dddada;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
 }
-
-body {
-    background-color: whitesmoke;
+a {
+    text-decoration: none; /* Supprime le soulignement */
+    color: #ffffff; /* Couleur par défaut des liens */
 }
-
-h4,h2 {
-    color: #14336a;
-    margin-left: 50px;
-    text-align: center;
-    font-family: "Montserrat", sans-serif;
+a:visited {
+    color: #ffffff; /* Même couleur que l'état normal */
 }
-
-.password {
-    flex-direction: column;
-}
-
-.guard_page, .joinus {
-    margin-top: 50px;
+section{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-}
-
-.logo {
-    height: 200px;
-    width: 200px;
+    max-width: 400px;
+    margin: 50px auto;
     padding: 20px;
+    border: 1px solid #fffefe;
+    border-radius: 8px;
+    background-color: #f8f6f6;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+.frame{
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center;    /* Centrer verticalement */
+}
+.index {
+    display: flex;
+    flex-direction: column;
+    max-width: 300px;
+
+}
+.connect{
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 10px 15px;
+    text-decoration: none;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    margin: 5px;
+    cursor: pointer;
+    background-color: #163E6AFF;
+}
+.logo{
+    width: 200px;
+    height: 200px;
+    margin-right: 10px;
+
+}
+h2 {
+    text-align: center;
+    font-size: 24px;
+    color: #232323;
+    margin-bottom: 20px;
 }
 
 .alert {
-    color: red;
+    color: #d9534f;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 15px;
+    text-align: center;
 }
 
-.page {
-    display: flex;
-
+.input-container {
+    position: relative;
+    margin-bottom: 15px;
 }
 
-.createButton {
-    display: flex;
-    padding: 30px;
-    margin-left: 5px;
-    background-color: rgb(255, 255, 255);
+.input-container input {
+    width: 100%;
+    padding: 10px 15px 10px 40px; /* Espace pour l'icône */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-container i {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 16px;
+    pointer-events: none;
+}
+
+/* Focus sur les champs */
+.input-container input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+/* Changement de couleur sur focus */
+.input-container input:focus + i {
+    color: #007bff;
+}
+
+/* Bouton de soumission */
+button[type="submit"] {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #163e6a;
+    color: #fff;
+    font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    color: #353434;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+/* Effet hover sur le bouton */
+button[type="submit"]:hover {
+    background-color: #0056b3;
+    transform: scale(1.02); /* Légère mise en avant */
+}
+
+/* Effet actif */
+button[type="submit"]:active {
+    transform: scale(0.98); /* Effet de clic */
+}
+
+/* Formulaire responsive */
+@media (max-width: 768px) {
+    div {
+        margin: 20px;
+        padding: 15px;
+    }
 }

@@ -33,9 +33,9 @@
                 <td>{{ user.email }}</td>
                 <td class="status {% if user.role(admin) %}admin{% endif %}">{{ user.role }}</td>
                 {% if auth().checkIsAdmin() %}
-                <td class="page">
+                <td>
                     <a href="{{ route('users.edit', {slug: user.id}) }}">
-                        <input class="iconbis" type="image" src="/img/edit.png" title="Modifier un user" height="22" width="22"
+                        <input class="iconBis" type="image" src="/img/edit.png" title="Modifier un user" height="22" width="22"
                                alt="edit"/></a>
                     <a href="#confirm-{{ user.id }}">
                         <input class="icon" type="image" src="/img/drop.webp" title="Effacer un user" height="25" width="25"

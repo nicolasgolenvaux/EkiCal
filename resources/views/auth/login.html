@@ -8,20 +8,29 @@
   <link rel="stylesheet" href="/css/style2.css">
 </head>
 <body>
-<div class="joinus">
+<div>
     <div>
-      <h2>Entrez vos données de connexion</h2>
+        <h2>Connexion</h2>
     </div>
     {% if errors() %}
     <div>
-      <p class="alert">{{ errors()[0]}}</p>
+        <p class="alert">{{ errors()[0] }}</p>
     </div>
     {% endif %}
     <form action="{{ route ('login.request') }}" method="POST" novalidate>
-        {{  csrf_field() | raw}}
-        <input name="email" type="email" value="{{old('email')}}" placeholder="Adresse e-mail">
-        <input name="password" type="password" placeholder="Mot de passe" class="">
-      <button type="submit">Connexion</button>
+        {{ csrf_field() | raw }}
+
+        <div class="input-container">
+            <input name="email" type="email" value="{{ old('email') }}" placeholder="Adresse e-mail">
+            <i class="fa fa-envelope"></i>
+        </div>
+
+
+        <div class="input-container">
+            <input name="password" type="password" placeholder="Mot de passe">
+            <i class="fa fa-lock"></i>
+        </div>
+        <button type="submit">Connexion</button>
     </form>
 </div>
 </body>
