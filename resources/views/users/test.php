@@ -1,0 +1,50 @@
+{% include 'includes/header.html' %}
+<title>Utilisateurs | EkiCal</title>
+<body>
+<main class="table">
+    <section class="table_header">
+        <h2>{{titre}}</h2>
+        <div class="page">
+            <a  href="{{ route('register.form') }}"><img src="/img/adduse.png" title="Ajoutez un user" height="38" width="38" alt="add"/></a>
+            <a  href="{{ route('sheet') }}"><img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35" alt="export_xslx"/></a>
+        </div>
+    </section>
+    <section class="table_body">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in user %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td  class="status {% if user.role(admin) %}admin{% endif %}">{{ user.role }}</td>
+                {% if auth().checkIsAdmin() %}
+                <td class="page">
+                    <a href="{{ route('users.edit', {slug: user.id}) }}">
+                        <input type="image" src="/img/edit.png" title="Modifier un user" height="22" width="22" alt="edit"/></a>
+                    <form id="deleteForm" method="POST" action="{{ route('users.delete', {slug: user.id}) }}">
+                        {{ csrf_field()|raw }}
+                        {{ method('DELETE')|raw }}
+                        <input role="button"  type="image" alt="remove" title="Effacer un user"
+                               src="/img/remove.webp" height="20" width="20"/>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+
+</body>
+</html>

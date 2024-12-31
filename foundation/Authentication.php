@@ -10,8 +10,8 @@ use App\Models\User;
 class Authentication
 {
 
-    /**Cette constante (='user_id') sera l'identifiant des variables de session qui va me permettre de savoir si un utilisateur est connecté via la bdd.
-     *
+    /**Cette constante (='user_id') sera l'identifiant des variables de session qui va me permettre de savoir si un
+     * utilisateur est connecté via la bdd.
      */
     protected const SESSION_ID = 'user_id';
 

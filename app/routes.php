@@ -11,12 +11,9 @@ use App\Controllers\PoneyController;
 
 return [
     'index' => Route::get('/', [BaseController::class, 'index']),
-    'user' => Route::get('/users', [UserController::class, 'index']),
 
     // Authentification
 
-    'register.form' => Route::get('/inscription', [AuthController::class, 'registerForm']),
-    'register.request' => Route::post('/inscription', [AuthController::class, 'register']),
     'login.form' => Route::get('/connexion', [AuthController::class, 'loginForm']),
     'login.request' => Route::post('/connexion', [AuthController::class, 'login']),
     'logout' => Route::get('/deconnexion', [AuthController::class, 'logout']),
@@ -28,6 +25,15 @@ return [
     'home.updateEmail' => Route::patch('/compte/email', [HomeController::class, 'updateEmail']),
     'home.updatePassword' => Route::patch('/compte/password', [HomeController::class, 'updatePassword']),
 
+    // Users
+    'user' => Route::get('/users', [UserController::class, 'index']),
+    'register.form' => Route::get('/inscription', [UserController::class, 'registerForm']),
+    'register.request' => Route::post('/inscription', [UserController::class, 'register']),
+    'users.edit' => Route::get('/edit/{slug}/modifier', [UserController::class, 'edit']),
+    'users.editName' => Route::patch('/user/editName/{slug}', [UserController::class, 'editName']),
+    'users.editEmail' => Route::patch('/user/editEmail/{slug}', [UserController::class, 'editEmail']),
+    'users.editPassword' => Route::patch('/user/editPassword/{slug}', [UserController::class, 'editPassword']),
+    'users.delete' => Route::delete('/delete/{slug}', [UserController::class, 'delete']),
     // Agenda
 
     'agenda' => Route::get('/agenda', [AgendaController::class, 'index']),
@@ -35,6 +41,9 @@ return [
     // Poneys
 
     'poney' => Route::get('/poney', [PoneyController::class, 'index']),
+
+    // export Excell
+    'sheet' => Route::get('/export', [userController::class, 'export']),
 ];
 
 

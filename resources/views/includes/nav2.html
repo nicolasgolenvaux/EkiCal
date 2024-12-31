@@ -1,26 +1,12 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/public/css/style3.css">
-</head>
-<body>
-<header>
-  <nav>
-        <ul class="nav_links">
-            <li><a href="{{ route('home') }}">Compte</a></li>
-            <li><a href="{{ route('agenda') }}">Agenda</a></li>
-            <li><a href="{{ route('user') }}">Users</a></li>
-            <li><a href="{{ route('poney') }}">Poneys</a></li>
-
-        </ul>
-    </nav>
-  <a href="{{ route('logout') }}">
-        <button>Exit</button>
-    </a>
-</header>
-</body>
-</html>
+<nav>
+    <ul class="nav_links">
+        <li><a href="{{ route('home') }}">Compte</a></li>
+        <li><a href="{{ route('agenda') }}">Agenda</a></li>
+        <li><a href="{{ route('user') }}">Users</a></li>
+        <li><a href="{{ route('poney') }}">Poneys</a></li>
+        <li><a href="{{ route('poney') }}">Clients</a></li>
+        <li><a href="{{ route('poney') }}">Invoices</a></li>
+    </ul>
+</nav>
+<a class="cta" href="{{ route('logout') }}"><button>Exit</button></a>
 

@@ -1,36 +1,67 @@
 {% include 'includes/header.html' %}
 <title>Utilisateurs | EkiCal</title>
 <body>
-<h1>{{titre}}</h1>
-<table class="joinus">
-    <tr>
-        <th><h2>Nom</h2></th>
-        <th><h2>Email</h2></th>
-        <th><h2>Role</h2></th>
-        <th></th>
-        {% if auth().checkIsAdmin() %}
-        <th><a href="" role="button" class="btn btn-create">Create</a></th>
-        {% endif %}
-    </tr>
-    {% for users in users %}
-    <tr>
-        <td>{{ users.name }}</td>
-        <td>{{ users.email }}</td>
-        <td>{{ users.role }}</td>
-        {% if auth().checkIsAdmin() %}
-        <td>
-            <a href="" role="button"
-               class="btn btn-edit">Edit</a>
-        </td>
-        <td>
-            <form action="" method="post">
-                <input type="hidden" name="EmployeeId" value=""/>
-                <button type="submit" class="btn btn-delete">Delete</button>
-            </form>
-        </td>
-        {% endif %}
-    </tr>
-   {% endfor %}
-</table>
+<main class="table">
+    <section class="table_header">
+        <h2>{{titre}}</h2>
+        <div class="page">
+            <a href="{{ route('register.form') }}">
+                <img src="/img/adduse.png" title="Ajoutez un user" height="38" width="38" alt="add"/>
+            </a>
+            <a href="{{ route('sheet') }}">
+                <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                     alt="export_xlsx"/>
+            </a>
+        </div>
+    </section>
+    <section class="table_body">
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in user %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td class="status {% if user.role(admin) %}admin{% endif %}">{{ user.role }}</td>
+                {% if auth().checkIsAdmin() %}
+                <td class="page">
+                    <a href="{{ route('users.edit', {slug: user.id}) }}">
+                        <input class="iconbis" type="image" src="/img/edit.png" title="Modifier un user" height="22" width="22"
+                               alt="edit"/></a>
+                    <a href="#confirm-{{ user.id }}">
+                        <input class="icon" type="image" src="/img/drop.webp" title="Effacer un user" height="25" width="25"
+                               alt="remove"/>
+                    </a>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+
+<!-- Modale -->
+{% for user in user %}
+<div id="confirm-{{ user.id }}" class="modal">
+    <p>Êtes-vous sûr de vouloir supprimer l'utilisateur <br><b>{{ user.name }} ?</b></p>
+    <form method="POST" action="{{ route('users.delete', {slug: user.id}) }}">
+        {{ csrf_field()|raw }}
+        {{ method('DELETE')|raw }}
+        <button type="submit" class="btn btn-danger">Confirmer</button>
+        <a href="#" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endfor %}
+
 </body>
 </html>

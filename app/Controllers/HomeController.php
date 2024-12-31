@@ -15,9 +15,7 @@ class HomeController extends AbstractController
         if (!Auth::check()) {
             $this->redirect('login.form');
         }
-
         $user = Auth::get();
-
         View::render('home', [
             'user' => $user,
         ]);

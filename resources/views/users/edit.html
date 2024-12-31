@@ -1,0 +1,100 @@
+{% include 'includes/header.html' %}
+<title>Edit User | EkiCal</title>
+<body>
+{% if status() %}
+<p class="text-sm font-medium text-indigo-800">
+    {{ status() }}
+</p>
+{% endif %}
+<form action="{{ route('users.editName', {slug: user.id}) }}" method="POST"  novalidate>
+    <div>
+        <h3>Identité</h3>
+        <div>
+            {{ csrf_field()|raw }}
+            {{ method('PATCH')|raw }}
+            <div>
+                <label for="name">Nom complet</label>
+                <div>
+                    <input id="id" name="id" value="{{ user.id }}" type="hidden">
+                    <input id="name" name="name" size="50" value="{{ (user.name) }}" type="text"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('name') %}border-red-300
+                           text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-
+                           500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                </div>
+                {% if errors('name') %}
+                <p class="alert">{{ errors('name')[0] }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="submit">Modifier le nom</button>
+    </div>
+</form>
+
+<form action="{{ route('users.editEmail', {slug: user.id}) }}" method="POST" novalidate>
+    <div>
+        <h3>Adresse e-mail</h3>
+        <div>
+            {{ csrf_field()|raw }}
+            {{ method('PATCH')|raw }}
+            <div>
+                <label for="email">Adresse e-mail</label>
+                <div class="mt-1 {% if errors('email') %}relative rounded-md shadow-sm{% endif %}">
+                    <input id="email" name="email" size="50" value="{{ old('email', user.email) }}" type="email"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('email') %}border-red-300
+                           text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{%
+                            else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                </div>
+                {% if errors('email') %}
+                <p class="alert">{{ errors('email')[0] }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="submit">Modifier l'adresse e-mail</button>
+    </div>
+</form>
+
+<form action="{{ route('users.editPassword', {slug: user.id}) }}" method="POST" novalidate>
+    <div>
+        <h3>Mot de passe</h3>
+        <div>
+            {{ csrf_field()|raw }}
+            {{ method('PATCH')|raw }}
+
+            <div class="sm:col-span-4">
+                <label for="password" class="block text-sm font-medium text-gray-700">
+                    Mot de passe
+                </label>
+                <div class="mt-1 {% if errors('password') %}relative rounded-md shadow-sm{% endif %}">
+                    <input id="password" name="password" type="password"
+                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('password') %}border-red-
+                           300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-
+                           500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                </div>
+
+            </div>
+            {% if errors('password') %}
+            <p class="alert">{{ errors('password')[0] }}</p>
+            {% endif %}
+        </div>
+
+        <div>
+            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
+                Confirmation du mot de passe
+            </label>
+            <div class="mt-1">
+                <input id="password_confirmation" name="password_confirmation" type="password"
+                       class="lg:w-2/3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
+                       border-gray-300 rounded-md">
+            </div>
+        </div>
+    </div>
+    <div>
+        <button type="submit">Modifier le mot de passe</button>
+    </div>
+</form>
+</body>
+</html>

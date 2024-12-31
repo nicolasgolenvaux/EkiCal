@@ -27,7 +27,7 @@ class Session
         session_start();
     }
     /**Cette méthode va nous permettre d'ajouter une variable de session
-     * @param string $key Pour indiquer à quelle clé sera accessible la valeur de ma superblobale
+     * @param string $key Pour indiquer à quelle clé sera accessible la valeur de ma super-globale
      * @param mixed $value On ne sait pas quelle valeur on va attribuer à la variable de session
      * @param bool $isFlash On indique si on veut créer une variable de session flash.
      * @return mixed On ne sait pas quelle valeur on va attribuer à la variable de session
