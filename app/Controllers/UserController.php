@@ -24,7 +24,7 @@ class UserController extends AbstractController
     public function index(): void
     {
         $titre = 'Users';
-        $user = User::select('id', 'name', 'email', 'role')->orderBy('id', 'desc')->get();
+        $user = User::select('id', 'name', 'email', 'role', 'picture')->orderBy('id', 'desc')->get();
         View::render('users.user', compact('titre', 'user'));
     }
 
@@ -66,6 +66,8 @@ class UserController extends AbstractController
             'email' => $_POST['email'],
             'role' => $_POST['role'],
             'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
+
+
         ]);
 
 //        Auth::authenticate($user->id);

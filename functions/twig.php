@@ -1,12 +1,15 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
+
 /**
  * On doit ajouter ce fichier à l'autoloader pour pouvoir avoir accès aux fonctions dans tous
  * les fichiers.
  */
+
 use EkiCal\foundation\Authentication;
 use EkiCal\foundation\Router\Router;
 use EkiCal\foundation\Session;
 use EkiCal\foundation\View;
+
 
 if (!function_exists('auth')) {
     /**Cette fonction me permet d'accéder à la classe Authentication

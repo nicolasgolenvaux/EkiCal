@@ -95,4 +95,39 @@ class HomeController extends AbstractController
         Session::addFlash(Session::STATUS, 'Votre mot de passe a été mis à jour !');
         $this->redirect('home');
     }
+
+    public function updatePicture(): void
+    {
+        if (!Auth::check()) {
+            $this->redirect('login.form');
+        }
+
+        $validator = Validator::get($_FILES);
+        $validator->mapFieldsRules([
+            'picture' => ['required_file', 'image', 'square']
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('home');
+        }
+
+        $image = $_FILES['picture'];
+
+        if ($image['error'] !== UPLOAD_ERR_OK) {
+            Session::addFlash(Session::ERRORS, ['picture' => ['Échec du téléchargement de l\'image.']]);
+            $this->redirect('home');
+        }
+
+        $imageData = file_get_contents($image['tmp_name']);
+
+        $user = Auth::get();
+        $user->picture = $imageData;
+        $user->save();
+
+        Session::addFlash(Session::STATUS, 'Votre avatar a été mis à jour !');
+        $this->redirect('home');
+    }
+
 }

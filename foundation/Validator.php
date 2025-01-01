@@ -44,7 +44,7 @@ class Validator
         }, '{field} est erroné !');
 
         // Cette règle vérifie si le fichier à uploader est présent en vérifiant la clé type de la super-globale
-        // FILES et s'il n'y a pas eu d'erreur lors d'upload. Il faut qu'il y ai une valeur dans le champ field et que
+        // FILES et s'il n'y a pas eu d'erreur lors d'upload. Il faut qu'il y ait une valeur dans le champ field et que
         // la valeur de la clé errors soit upload_err_ok, sinon on renvoie une erreur.
         $validator->addRule('required_file', function (string $field, mixed $value, array $params, array $fields) {
             return isset($_FILES[$field]) && $_FILES[$field]['error'] === UPLOAD_ERR_OK;

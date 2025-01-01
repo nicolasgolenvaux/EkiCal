@@ -7,6 +7,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
+use Twig\TwigFilter;
 use Twig\TwigFunction;
 /**
  * Cette classe va nous permettre de récupérer des vues par des fonctions via Twig.
@@ -53,6 +54,7 @@ class View
     protected static function initTwig(): Environment
     {
         $loader = new FilesystemLoader(ROOT.'/resources/views');
+
         $twig = new Environment($loader, [
             'cache' => ROOT.'/cache/twig',
             'auto_reload' => true,
