@@ -12,10 +12,29 @@ body, h3, p, form, div, input, label, button {
     display: flex;
 
 }
-
+.icon{
+    height: 25px;
+    width: auto;
+    margin-right: 10px;
+    margin-left: 10px;
+    opacity: 0.8;
+}
 .userIdentity{
-    padding: 20px;
+    align-items: center;
+
+    padding: 25px;
     font-size: 1.2em;
+
+.picon, .piconMain{
+    margin-bottom: 10px;
+    display: flex; /* Utilisation de Flexbox */
+    align-items: center; /* Alignement vertical centré */
+    gap: 5px; /* Espacement entre l'icône et le texte */
+}
+    .piconMain{
+        margin-bottom: 20px;
+        font-size: 1.5em;
+    }
 }
 body {
     font-family: Arial, sans-serif;
