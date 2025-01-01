@@ -1,0 +1,105 @@
+/* Réinitialisation des styles par défaut du navigateur */
+body, h3, p, form, div, input, label, button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.HomePicture{
+    height: 200px;
+    border-radius: 40px;
+}
+.identityCard{
+    display: flex;
+
+}
+
+.userIdentity{
+    padding: 20px;
+    font-size: 1.2em;
+}
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 20px;
+}
+
+h3 {
+    margin-bottom: 10px;
+    color: #444;
+    font-size: 1.5em;
+}
+
+div {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+form {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+button {
+    background-color: #163E6AFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #1c4e85;
+}
+
+.alert {
+    color: #d9534f;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 0.9em;
+    color: #666;
+}
+
+form h3 {
+    border-bottom: 2px solid #163E6AFF;
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+input:focus {
+    border-color: #007BFF;
+    outline: none;
+}
+
+div > div {
+    margin-bottom: 15px;
+}

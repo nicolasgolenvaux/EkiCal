@@ -1,7 +1,9 @@
 insert into users values
-(1,'Nicolas Golenvaux','nicolasgolenvaux@gmail.com','$2y$10$KHVrlfVTRODfE4q4KufLL.vIyUhb3w0hStb7M.tgQqlZuOegSmfYK','admin',2024-11-24,2024-12-26 ),
-(2,'Marie  Ferauche','marie.fe48@gmail.com','$2y$10$A9Sign22bVxFdEGXU2kGFOiyI8GoT.JYHWQl41vjRBrvt/1a63.xS','user',2024-12-28,2024-12-28 ),
-(3,'Robert','Rob@gmail.com','$2y$10$pMRC2sn519zxxnPBXPmCAOgxyZUpB8/m4mmLXZbOPjXT4MfXHOb32','user',2024-12-29 ,2024-12-29 ),
-(24,'Michel','Louis@gmail.com','$2y$10$BWQfw6/g8utbzUFyov5kP.2LVH2TWZgbFw9w/9DeP/DRptTTQ.9JC','user',2024-12-29 ,2024-12-29 ),
- (5,'Denayer Jean','jd@d.com','$2y$10$kd.kvyUezyk1tjVIjPh/LO/TIc5pcwKJpeF88WdpeT2w0upyADbjy','user',2024-12-29 ,2024-12-29),
-(6,'Jesus Christ','paradis@eden.com','$2y$10$9Ou2NMRkDqxmC6CtkN7pgeAsCRHEhY.70tamizqsJbHyWCIJr35gG','admin',2024-12-29,2024-12-29)
+                    
+(1,Nicolas Golenvaux,nicolasgolenvaux@gmail.com,admin,1989,2025-01-01 12:59:10,uploads/67753c1ed13ff.PNG,$2y$10$KHVrlfVTRODfE4q4KufLL.vIyUhb3w0hStb7M.tgQqlZuOegSmfYK),
+(2,Marie  Ferauche,marie.fe48@gmail.com,user,1984,2025-01-01 13:15:30,uploads/67753ff21ffee.jpg,$2y$10$A9Sign22bVxFdEGXU2kGFOiyI8GoT.JYHWQl41vjRBrvt/1a63.xS),
+(3,Gérard Ernalsteen,gg@gmail.com,user,1983,2025-01-01 13:14:56,uploads/67753c4022787.jpg,$2y$10$pMRC2sn519zxxnPBXPmCAOgxyZUpB8/m4mmLXZbOPjXT4MfXHOb32),
+(4,Laurence VVK,Louis@gmail.com,user,1983,2025-01-01 13:13:55,uploads/67753bd9d5258.jpg,$2y$10$BWQfw6/g8utbzUFyov5kP.2LVH2TWZgbFw9w/9DeP/DRptTTQ.9JC),
+(5,Denayer Jean,jd@d.com,user,1983,2025-01-01 12:57:19,uploads/67753baeedc3e.jpg,$2y$10$kd.kvyUezyk1tjVIjPh/LO/TIc5pcwKJpeF88WdpeT2w0upyADbjy),
+(6,Fabienne Lambini,paradis@eden.com,admin,1983,2025-01-01 13:13:41,uploads/67753b8f45bb7.jpg,$2y$10$9Ou2NMRkDqxmC6CtkN7pgeAsCRHEhY.70tamizqsJbHyWCIJr35gG),
+(7,Carole Guyot,cagu@gmail.com,a,2025-01-01 13:55:39,2025-01-01 12:56:23,uploads/67753b77c6d6b.jpg,$2y$10$OGrXLEjWe28jLRXLS4piwuO/1BxlzcUK5fKTIQtsul/ZBkKVfTaHq)

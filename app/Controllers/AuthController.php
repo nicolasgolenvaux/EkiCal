@@ -18,15 +18,26 @@ use EkiCal\foundation\View;
 
 class AuthController extends AbstractController
 {
+    /**Cette fonction redirige l'utilisateur vers la page de connexion. S'il est déjà
+     * connecté, il est redirigé vers la page de son compte.
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function loginForm(): void
     {
         if (Auth::check()) {
             $this->redirect('home');
         }
-
         View::render('auth.login');
     }
 
+    /**Cette fonction redirige l'utilisateur vers sa page 'compte' s'il est déjà
+     * identifié. Sinon, on vérifie la validité des champs, la concordance avec son mot de passe et
+     * son mail, ensuite, il est redirigé vers la page 'agenda'.
+     * @return void
+     */
     public function login(): void
     {
         if (Auth::check()) {
@@ -50,6 +61,10 @@ class AuthController extends AbstractController
         $this->redirect('login.form');
     }
 
+    /**Cette fonction vérifie si la variable d'environnement existe et supprime la variable
+     * de session SESSION_ID via la méthode 'logout".
+     * @return void
+     */
     public function logout(): void
     {
         if (Auth::check()) {
@@ -57,4 +72,6 @@ class AuthController extends AbstractController
         }
         $this->redirect('login.form');
     }
+
+
 }

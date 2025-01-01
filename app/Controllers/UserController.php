@@ -24,10 +24,10 @@ class UserController extends AbstractController
     public function index(): void
     {
         $titre = 'Users';
-        $user = User::select('id', 'name', 'email', 'role', 'picture')->orderBy('id', 'desc')->get();
+        $user = User::select('id', 'name', 'email', 'role', 'image_path')->orderBy('id', 'desc')->get();
         View::render('users.user', compact('titre', 'user'));
-    }
 
+    }
     public function delete($slug): void
     {
         if (!Auth::checkIsAdmin()) {
@@ -52,7 +52,7 @@ class UserController extends AbstractController
             'name' => ['required', ['lengthMin', 5]],
             'email' => ['required', 'email', ['unique', 'email', 'users']],
             'role' => ['required'],
-            'password' => ['required', ['lengthMin', 2], ['equals', 'password_confirmation']],
+            'password' => ['required', ['lengthMin', 8], ['equals', 'password_confirmation']],
         ]);
 
         if (!$validator->validate()) {
@@ -66,11 +66,8 @@ class UserController extends AbstractController
             'email' => $_POST['email'],
             'role' => $_POST['role'],
             'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
-
-
         ]);
 
-//        Auth::authenticate($user->id);
         $this->redirect('user');
     }
 
@@ -184,7 +181,6 @@ class UserController extends AbstractController
             $i++;
         }
 
-// Préparer le fichier pour téléchargement
         $writer = new Xlsx($spreadsheet);
 
         try {

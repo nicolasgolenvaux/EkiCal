@@ -18,7 +18,7 @@
         <table>
             <thead>
             <tr>
-                <th>#</th>
+                <th></th>
                 <th>Nom</th>
                 <th>Email</th>
                 <th>Role</th>
@@ -28,13 +28,7 @@
             <tbody>
             {% for user in user %}
             <tr>
-                <td>
-                    {% if user.picture %}
-                    <img src="{{ user.picture }}" alt="Avatar" style="width: 100px; height: auto;">
-                    {% else %}
-                    Pas d'image
-                    {% endif %}
-                </td>
+                <td><img class="avatar" src="{{ user.image_path }}" alt="Image"></td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
                 <td class="status {% if user.role(admin) %}admin{% endif %}">{{ user.role }}</td>
@@ -59,7 +53,7 @@
 <!-- Modale -->
 {% for user in user %}
 <div id="confirm-{{ user.id }}" class="modal">
-    <p>Êtes-vous sûr de vouloir supprimer l'utilisateur <br><b>{{ user.name }} ?</b></p>
+    <p class="modalText" >Êtes-vous sûr de vouloir supprimer l'utilisateur <br><b>{{ user.name }} ?</b></p>
     <form method="POST" action="{{ route('users.delete', {slug: user.id}) }}">
         {{ csrf_field()|raw }}
         {{ method('DELETE')|raw }}

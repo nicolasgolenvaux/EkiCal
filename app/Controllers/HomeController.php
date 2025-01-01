@@ -1,7 +1,8 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Models\User;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Authentication as Auth;
 use EkiCal\foundation\Session;
@@ -130,4 +131,40 @@ class HomeController extends AbstractController
         $this->redirect('home');
     }
 
+    public function upload(): void
+    {
+        $uploadFile = "uploads/"; // Dossier où les avatars seront sauvegardés
+        if (!is_dir($uploadFile)) {
+            mkdir($uploadFile, 0777, true);// s'il n'existe pas, on le crée avec les permissions.
+        }
+
+        if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['picture']['tmp_name'];
+            $fileName = basename($_FILES['picture']['name']);
+            $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+
+            // Validation des extensions
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            if (in_array(strtolower($fileExtension), $allowedExtensions)) {
+                $newFileName = uniqid() . '.' . $fileExtension;
+                $destPath = $uploadFile . $newFileName;
+
+                if (move_uploaded_file($fileTmpPath, $destPath)) {
+                    $user = Auth::get();
+                    $user->image_path = $destPath;
+                    $user->save();
+
+                    Session::addFlash(Session::STATUS, 'Votre avatar a été mis à jour !');
+                    $this->redirect('home');
+                } else {
+                    echo "Erreur lors du déplacement du fichier.";
+                }
+            } else {
+                echo "Type de fichier non supporté.";
+            }
+        } else {
+            echo "Aucun fichier téléchargé ou une erreur s'est produite.";
+        }
+
+    }
 }
