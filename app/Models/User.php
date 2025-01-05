@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    protected $fillable = ['id', 'name', 'email', 'role', 'password','image_path'];
+    protected $fillable = [
+        'id',
+        'name',
+        'email',
+        'role',
+        'password',
+        'image_path'
+    ];
 
 }

@@ -10,7 +10,6 @@ body, h3, p, form, div, input, label, button {
 }
 .identityCard{
     display: flex;
-
 }
 .icon{
     height: 25px;
@@ -121,4 +120,7 @@ input:focus {
 
 div > div {
     margin-bottom: 15px;
+}
+.col{
+    display: flex;
 }

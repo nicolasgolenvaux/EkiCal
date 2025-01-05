@@ -6,5 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Poney extends Model
 {
-    protected $table = 'poney';
+    protected $fillable = [
+        'id',
+        'name',
+        'tps_w',
+        'weight',
+        'birth',
+        'image_path',
+        'medicalVisit',
+        'pedigree'
+    ];
+
 }

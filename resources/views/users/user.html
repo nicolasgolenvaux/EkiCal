@@ -4,6 +4,7 @@
 <main class="table">
     <section class="table_header">
         <h2>{{titre}}</h2>
+        {% if auth().checkIsAdmin() %}
         <div class="page">
             <a href="{{ route('register.form') }}">
                 <img src="/img/adduse.png" title="Ajoutez un user" height="38" width="38" alt="add"/>
@@ -13,6 +14,7 @@
                      alt="export_xlsx"/>
             </a>
         </div>
+        {% endif %}
     </section>
     <section class="table_body">
         <table>

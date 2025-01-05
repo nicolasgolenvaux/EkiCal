@@ -1,8 +1,18 @@
 {% include 'includes/header.html' %}
 <title>Edit User | EkiCal</title>
 <body>
+<div>
+    <div class="identityCard">
+        <img class="HomePicture" src="{{ base_path ~ '/' ~ user.image_path }}" alt="Avatar">
+        <div class="userIdentity">
+            <p class="piconMain"><b>{{ user.name }}</b></p>
+            <p class="picon"><img class="icon" src="/img/iconmail.png" alt="mail">{{ user.email }}</p>
+            <p class="picon"><img class="icon" src="/img/role.png" alt="role"> {{user.role}}</p>
+            <p class="picon"><img  class="icon" src="/img/list.jpg" alt="id">{{user.id}}</p>
+        </div>
+</div>
 {% if status() %}
-<p class="text-sm font-medium text-indigo-800">
+<p class="alert">
     {{ status() }}
 </p>
 {% endif %}
@@ -16,10 +26,7 @@
                 <label for="name">Nom complet</label>
                 <div>
                     <input id="id" name="id" value="{{ user.id }}" type="hidden">
-                    <input id="name" name="name" size="50" value="{{ (user.name) }}" type="text"
-                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('name') %}border-red-300
-                           text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-
-                           500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                    <input id="name" name="name" size="50" value="{{ (user.name) }}" type="text">
                 </div>
                 {% if errors('name') %}
                 <p class="alert">{{ errors('name')[0] }}</p>
@@ -40,11 +47,8 @@
             {{ method('PATCH')|raw }}
             <div>
                 <label for="email">Adresse e-mail</label>
-                <div class="mt-1 {% if errors('email') %}relative rounded-md shadow-sm{% endif %}">
-                    <input id="email" name="email" size="50" value="{{ old('email', user.email) }}" type="email"
-                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('email') %}border-red-300
-                           text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-500{%
-                            else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                <div>
+                    <input id="email" name="email" size="50" value="{{ old('email', user.email) }}" type="email">
                 </div>
                 {% if errors('email') %}
                 <p class="alert">{{ errors('email')[0] }}</p>
@@ -65,14 +69,11 @@
             {{ method('PATCH')|raw }}
 
             <div class="sm:col-span-4">
-                <label for="password" class="block text-sm font-medium text-gray-700">
+                <label for="password" >
                     Mot de passe
                 </label>
-                <div class="mt-1 {% if errors('password') %}relative rounded-md shadow-sm{% endif %}">
-                    <input id="password" name="password" type="password"
-                           class="block lg:w-2/3 sm:text-sm rounded-md shadow-sm {% if errors('password') %}border-red-
-                           300 text-red-900 placeholder-red-300 focus:outline-none focus:ring-red-500 focus:border-red-
-                           500{% else %}focus:ring-indigo-500 focus:border-indigo-500 border-gray-300{% endif %}">
+                <div >
+                    <input id="password" size="50" name="password" type="password">
                 </div>
 
             </div>
@@ -82,13 +83,11 @@
         </div>
 
         <div>
-            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">
+            <label for="password_confirmation" >
                 Confirmation du mot de passe
             </label>
             <div class="mt-1">
-                <input id="password_confirmation" name="password_confirmation" type="password"
-                       class="lg:w-2/3 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm
-                       border-gray-300 rounded-md">
+                <input id="password_confirmation" size="50" name="password_confirmation" type="password">
             </div>
         </div>
     </div>

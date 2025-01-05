@@ -41,41 +41,30 @@ CREATE TABLE FACTURE(
    FOREIGN KEY(id_1) REFERENCES CLIENT(id)
 );
 
-CREATE TABLE ROLE(
-   id INT,
-   Libelle VARCHAR(50),
-   created_at DATETIME default current_time,
-   updated_at DATETIME default current_time,
-   PRIMARY KEY(id)
-);
 
-CREATE TABLE STATUS(
-   id INT,
-   libelle VARCHAR(50) NOT NULL,
-   updated_at DATETIME default current_time,
-   created_at DATETIME default current_time,
-   PRIMARY KEY(id)
-);
 
-CREATE TABLE USERS(
+
+CREATE TABLE users(
    id INTEGER PRIMARY KEY AUTOINCREMENT,
-   nom VARCHAR(50) NOT NULL,
-   prenom VARCHAR(50) NOT NULL,
+   name VARCHAR(50) NOT NULL,
    email VARCHAR(150),
+   role VARCHAR(50) default 'user',
    updated_at DATETIME default current_time,
    created_at DATETIME default current_time,
-   id_1 INT NOT NULL,
-   FOREIGN KEY(id_1) REFERENCES ROLE(id)
+   image_path VARCHAR(150),
+   password VARCHAR(150) NOT NULL
 );
 
-CREATE TABLE PONEY(
-   id INTEGER PRIMARY KEY AUTOINCREMENT,
-   nom VARCHAR(50) NOT NULL,
-   tps_w TIME,
-   updated_at DATETIME default current_time,
-   created_at DATETIME default current_time,
-   id_1 INT NOT NULL,
-   FOREIGN KEY(id_1) REFERENCES STATUS(id)
+CREATE TABLE poneys(
+                      id INTEGER PRIMARY KEY AUTOINCREMENT,
+                      nom VARCHAR(50) NOT NULL,
+                      tps_w TIME,
+                      updated_at DATETIME default current_time,
+                      created_at DATETIME default current_time,
+                      image_path VARCHAR(50),
+                      weight int,
+                      birth DATETIME,
+                      medicalVisit DATETIME
 );
 
 CREATE TABLE RDV(

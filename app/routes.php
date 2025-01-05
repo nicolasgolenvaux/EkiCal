@@ -36,16 +36,26 @@ return [
     'users.editEmail' => Route::patch('/user/editEmail/{slug}', [UserController::class, 'editEmail']),
     'users.editPassword' => Route::patch('/user/editPassword/{slug}', [UserController::class, 'editPassword']),
     'users.delete' => Route::delete('/delete/{slug}', [UserController::class, 'delete']),
-    // Agenda
-
-    'agenda' => Route::get('/agenda', [AgendaController::class, 'index']),
 
     // Poneys
 
     'poney' => Route::get('/poney', [PoneyController::class, 'index']),
+    'poney.form' => Route::get('/inscriptionPoney', [PoneyController::class, 'poneyForm']),
+    'poney.request' => Route::post('/inscriptionPoney', [PoneyController::class, 'register']),
+    'poneys.edit' => Route::get('/edit/{slug}/modifierPoney', [PoneyController::class, 'edit']),
+    'poneys.editTpsw' => Route::patch('/poney/editTpsw/{slug}', [PoneyController::class, 'editTpsw']),
+    'poneys.editWeight' => Route::patch('/poney/editWeight/{slug}', [PoneyController::class, 'editWeight']),
+    'poneys.editMedical' => Route::patch('/poney/editMedical/{slug}', [PoneyController::class, 'editMedical']),
+    'poneys.delete' => Route::delete('/deletePoney/{slug}', [PoneyController::class, 'delete']),
+    'poney.upload' => Route::post('/poney/upload', [PoneyController::class, 'upload']),
+
+    // Agenda
+
+    'agenda' => Route::get('/agenda', [AgendaController::class, 'index']),
 
     // export Excell
     'sheet' => Route::get('/export', [userController::class, 'export']),
+    'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),
 ];
 
 

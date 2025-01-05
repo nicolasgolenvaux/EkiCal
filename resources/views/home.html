@@ -7,15 +7,15 @@
 <div class="identityCard">
     <img class="HomePicture" src="{{ user.image_path }}" alt="Avatar">
 <div class="userIdentity">
-    <p><b>{{ user.name }}</b></p>
-    <p>{{ user.email }}</p>
-    <p>Role : {{user.role}}</p>
-    <p>Id : {{user.id}}</p>
+    <p class="piconMain"><b>{{ user.name }}</b></p>
+    <p class="picon"><img class="icon" src="/img/iconmail.png" alt="mail">{{ user.email }}</p>
+    <p class="picon"><img class="icon" src="/img/role.png" alt="role"> {{user.role}}</p>
+    <p class="picon"><img  class="icon" src="/img/list.jpg" alt="id">{{user.id}}</p>
 </div>
 </div>
 <div>
     {% if status() %}
-    <p>{{ status() }}</p>
+    <p class="alert">{{ status() }}</p>
     {% endif %}
     <form action="{{ route('home.updateName') }}" method="POST" novalidate>
         <div>

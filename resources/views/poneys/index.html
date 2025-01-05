@@ -1,7 +1,71 @@
 {% include 'includes/header.html' %}
 <title>Poneys | EkiCal</title>
 <body>
-<h1>{{titre}}</h1>
-<h1>Page Poneys</h1>
+<section class="table_header">
+    <h2>{{titre}}</h2>
+    {% if auth().checkIsAdmin() %}
+    <div class="page">
+        <a href="{{ route('poney.form') }}">
+            <img src="/img/adduse.png" title="Ajoutez un poney" height="38" width="38" alt="add"/>
+        </a>
+        <a href="{{ route('poneysheet') }}">
+            <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                 alt="export_xlsx"/>
+        </a>
+    </div>
+    {% endif %}
+</section>
+<section class="table_body">
+    <table>
+        <thead>
+        <tr>
+            <th></th>
+            <th>id</th>
+            <th>Nom</th>
+            <th>temps de travail</th>
+            <th>Poids</th>
+            <th>Age</th>
+            <th>Action</th>
+
+
+        </tr>
+        </thead>
+        <tbody>
+        {% for poney in poney %}
+        <tr>
+            <td><img class="avatar" src="{{poney.image_path }}" alt="Image"></td>
+            <td>{{ poney.id }}</td>
+            <td>{{ poney.name }}</td>
+            <td>{{ poney.tps_w }}</td>
+            <td>{{ poney.weight }}</td>
+            <td>{{ (poney.birth / 1000) | date('d/m/Y') }} ans</td>
+            {% if auth().checkIsAdmin() %}
+            <td>
+                <a href="{{ route('poneys.edit', {slug:poney.id}) }}">
+                    <input class="iconBis" type="image" src="/img/edit.png" title="Modifier un poney" height="22" width="22"
+                           alt="edit"/></a>
+                <a href="#confirm-{{ poney.id }}">
+                    <input class="icon" type="image" src="/img/drop.webp" title="Effacer un poney" height="25" width="25"
+                           alt="remove"/>
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+<!-- Modale -->
+{% for poney in poney %}
+<div id="confirm-{{ poney.id }}" class="modal">
+    <p class="modalText" >Êtes-vous sûr de vouloir supprimer le poney ? <br><b>{{ poney.name }} ?</b></p>
+    <form method="POST" action="{{ route('poneys.delete', {slug: poney.id}) }}">
+        {{ csrf_field()|raw }}
+        {{ method('DELETE')|raw }}
+        <button type="submit" class="btn btn-danger">Confirmer</button>
+        <a href="#" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endfor %}
 </body>
 </html>

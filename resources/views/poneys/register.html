@@ -1,0 +1,31 @@
+{% include 'includes/header.html' %}
+<title>Poneys register | EkiCal</title>
+<body>
+<div>
+  <div>
+    <div><h2>New Poney</h2></div>
+    {% if errors() %}
+    <div>
+      <ul>
+        {% for error in errors() %}
+        <li class="alert">{{ error }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {%endif%}
+    <form action="{{ route('poney.request') }}" method="POST" novalidate>
+      <div>
+        {{ csrf_field() | raw }}
+        <input name="name" size="50" type="text" value="{{ old('name') }}" placeholder="Nom du poney">
+        <input name="tps_w" size="50" type="text" value="{{ old('tps_w') }}" placeholder="Temps de travail">
+        <input name="weight" size="10" type="text" placeholder="Poids">
+        <input name="birth" size="15" type="date" placeholder="Date de naissance">
+        <input name="medicalVisit" size="15" type="date"
+               placeholder="Visite médicale">
+      </div>
+      <button type="submit">Save</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>
