@@ -1,0 +1,28 @@
+{% include 'includes/header.html' %}
+<title>New Client | EkiCal</title>
+<body>
+<div>
+    <div>
+        <div><h2>New Client</h2></div>
+        {% if errors() %}
+        <div>
+            <ul>
+                {% for error in errors() %}
+                <li class="alert">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {%endif%}
+        <form action="{{ route('clients.request') }}" method="POST" novalidate>
+            <div>
+                {{ csrf_field() | raw }}
+                <input name="name" size="50" type="text" value="{{ old('name') }}" placeholder="Nom complet">
+                <input name="email" size="50" type="email" value="{{ old('email') }}" placeholder="Adresse e-mail">
+                <input name="phone" size="50" type="text" placeholder="Téléphone">
+            </div>
+            <button type="submit">Save</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

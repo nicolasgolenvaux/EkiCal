@@ -4,6 +4,7 @@
  */
 namespace App\Controllers;
 use App\Models\Poney;
+use DateTime;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
 use EkiCal\foundation\Session;
@@ -35,8 +36,6 @@ class PoneyController extends AbstractController
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
             'name' => ['required', ['lengthMin', 2]],
-            'tps_w' => ['required'],
-            'weight' => ['required'],
         ]);
 
         if (!$validator->validate()) {
@@ -49,7 +48,6 @@ class PoneyController extends AbstractController
             'name' => $_POST['name'],
             'tps_w' => $_POST['tps_w'],
             'weight' => $_POST['weight'],
-            'image_path' => $_POST['image_path'],
             'birth' => $_POST['birth'],
             'medicalVisit' => $_POST['medicalVisit']
         ]);
@@ -77,7 +75,7 @@ class PoneyController extends AbstractController
         View::render('poneys.edit', ['poney' => $poney
         ]);
     }
-    public function upload(): void
+    public function upload($slug): void
     {
         $uploadFile = "uploads/";
         if (!is_dir($uploadFile)) {
@@ -96,12 +94,12 @@ class PoneyController extends AbstractController
                 $destPath = $uploadFile . $newFileName;
 
                 if (move_uploaded_file($fileTmpPath, $destPath)) {
-                    $poney = Poney::get();
+                    $poney = Poney::where('id', $slug)->firstOrFail();
                     $poney->image_path = $destPath;
                     $poney->save();
 
-                    Session::addFlash(Session::STATUS, 'Votre poney a été mis à jour !');
-                    $this->redirect('poneys.edit');
+                    Session::addFlash(Session::STATUS, 'La photo de votre poney a été mis à jour !');
+                    $this->redirect('poneys.edit', ['slug' => $poney->id]);
                 } else {
                     echo "Erreur lors du déplacement du fichier.";
                 }
@@ -132,7 +130,7 @@ class PoneyController extends AbstractController
         $poney->weight = $_POST['weight'];
         $poney->save();
 
-        Session::addFlash(Session::STATUS, 'Le poids' . $poney->name . ' a été mise à jour !');
+        Session::addFlash(Session::STATUS, 'Le poids de ' . $poney->name . ' a été mise à jour !');
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
@@ -178,9 +176,77 @@ class PoneyController extends AbstractController
         $poney->medicalVisit = $_POST['medicalVisit'];
         $poney->save();
 
-        Session::addFlash(Session::STATUS, 'La date de visite méeidcale de ' . $poney->name . ' a été mise à jour !');
+        Session::addFlash(Session::STATUS, 'La date de la visite médicale de ' . $poney->name . ' a été mise à jour !');
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
+    public function editBirth($slug): void
+    {
+        if (!Auth::check()) {
+            $this->redirect('login.form');
+        }
+        $poney = Poney::where('id', $slug)->firstOrFail();
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'birth' => ['required'],
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('poneys.edit', ['slug' => $poney->id]);
+        }
+        $poney->birth = $_POST['birth'];
+        $poney->save();
+
+        Session::addFlash(Session::STATUS, 'La date de naissance de ' . $poney->name . ' a été mise à jour !');
+        $this->redirect('poneys.edit', ['slug' => $poney->id]);
+    }
+    public function editPedigree($slug): void
+    {
+        if (!Auth::check()) {
+            $this->redirect('login.form');
+        }
+        $poney = Poney::where('id', $slug)->firstOrFail();
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'pedigree' => ['required'],
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('poneys.edit', ['slug' => $poney->id]);
+        }
+        $poney->pedigree = $_POST['pedigree'];
+        $poney->save();
+
+        Session::addFlash(Session::STATUS, 'Le pedigree de ' . $poney->name . ' a été mis à jour !');
+        $this->redirect('poneys.edit', ['slug' => $poney->id]);
+    }
+
+    public function editName($slug): void
+    {
+        if (!Auth::check()) {
+            $this->redirect('login.form');
+        }
+        $poney = Poney::where('id', $slug)->firstOrFail();
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'name' => ['required'],
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('poneys.edit', ['slug' => $poney->id]);
+        }
+        $poney->name = $_POST['name'];
+        $poney->save();
+
+        Session::addFlash(Session::STATUS, 'Le nom de ' . $poney->name . ' a été mis à jour !');
+        $this->redirect('poneys.edit', ['slug' => $poney->id]);
+    }
+
     public function export(): void
     {
         $poney = Poney::select('id', 'name', 'tps_w', 'weight','birth','medicalVisit')->orderBy('id', 'desc')->get();
@@ -212,4 +278,5 @@ class PoneyController extends AbstractController
         }
 
     }
+
 }

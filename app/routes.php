@@ -2,6 +2,7 @@
 
 use App\Controllers\AgendaController;
 use App\Controllers\AuthController;
+use App\Controllers\ClientController;
 use App\Controllers\HomeController;
 use App\Controllers\BaseController;
 use EkiCal\foundation\Router\Route;
@@ -47,15 +48,30 @@ return [
     'poneys.editWeight' => Route::patch('/poney/editWeight/{slug}', [PoneyController::class, 'editWeight']),
     'poneys.editMedical' => Route::patch('/poney/editMedical/{slug}', [PoneyController::class, 'editMedical']),
     'poneys.delete' => Route::delete('/deletePoney/{slug}', [PoneyController::class, 'delete']),
-    'poney.upload' => Route::post('/poney/upload', [PoneyController::class, 'upload']),
+    'poney.upload' => Route::patch('/poney/upload/{slug}', [PoneyController::class, 'upload']),
+    'poneys.editPedigree' => Route::patch('/poney/editPedigree/{slug}', [PoneyController::class, 'editPedigree']),
+    'poneys.editName' => Route::patch('/poney/editName/{slug}', [PoneyController::class, 'editName']),
+    'poneys.editBirth' => Route::patch('/poney/editBirth/{slug}', [PoneyController::class, 'editBirth']),
+
+    // Clients
+
+    'client' => Route::get('/client', [ClientController::class, 'index']),
+    'clients.form' => Route::get('/inscriptionClient', [ClientController::class, 'clientForm']),
+    'clients.request' => Route::post('/inscriptionClient', [ClientController::class, 'register']),
+    'clients.edit' => Route::get('/edit/{slug}/modifierClient', [ClientController::class, 'edit']),
+    'clients.delete' => Route::delete('/deleteClient/{slug}', [ClientController::class, 'delete']),
+    'clients.editName' => Route::patch('/client/editName/{slug}', [ClientController::class, 'editName']),
+    'clients.editEmail' => Route::patch('/client/editEmail/{slug}', [ClientController::class, 'editEmail']),
+    'clients.editPhone' => Route::patch('/client/editPhone/{slug}', [ClientController::class, 'editPhone']),
 
     // Agenda
 
     'agenda' => Route::get('/agenda', [AgendaController::class, 'index']),
 
     // export Excell
-    'sheet' => Route::get('/export', [userController::class, 'export']),
+    'sheet' => Route::get('/export', [UserController::class, 'export']),
     'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),
+    'clientsheet' => Route::get('/export', [ClientController::class, 'export']),
 ];
 
 

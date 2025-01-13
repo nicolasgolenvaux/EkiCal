@@ -1,14 +1,14 @@
 {% include 'includes/header.html' %}
-<title>Poneys | EkiCal</title>
+<title>Clientss | EkiCal</title>
 <body>
 <section class="table_header">
     <h2>{{titre}}</h2>
     {% if auth().checkIsAdmin() %}
     <div class="page">
-        <a href="{{ route('poney.form') }}">
+        <a href="{{ route('clients.form') }}">
             <img src="/img/adduse.png" title="Ajoutez un poney" height="38" width="38" alt="add"/>
         </a>
-        <a href="{{ route('poneysheet') }}">
+        <a href="{{ route('clientsheet') }}">
             <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
                  alt="export_xlsx"/>
         </a>
@@ -19,31 +19,25 @@
     <table>
         <thead>
         <tr>
-            <th></th>
             <th>Nom</th>
-            <th>Travail</th>
-            <th>Poids</th>
-            <th>Age</th>
+            <th>Email</th>
+            <th>Phone</th>
             <th>Action</th>
-
-
         </tr>
         </thead>
         <tbody>
-        {% for poney in poney %}
+        {% for client in client %}
         <tr>
-            <td><img class="avatar" src="{{poney.image_path }}" alt="Image"></td>
-            <td>{{ poney.name }}</td>
-            <td>{{ poney.tps_w }}</td>
-            <td>{{ poney.weight }}</td>
-            <td>{{ date().format('Y') - (poney.birth) | date('Y') }} ans</td>
+            <td>{{ client.name }}</td>
+            <td>{{ client.email }}</td>
+            <td>{{ client.phone }} ans</td>
             {% if auth().checkIsAdmin() %}
             <td>
-                <a href="{{ route('poneys.edit', {slug:poney.id}) }}">
-                    <input class="iconBis" type="image" src="/img/edit.png" title="Modifier un poney" height="22" width="22"
+                <a href="{{ route('clients.edit', {slug:client.id}) }}">
+                    <input class="iconBis" type="image" src="/img/edit.png" title="Modifier un client" height="22" width="22"
                            alt="edit"/></a>
-                <a href="#confirm-{{ poney.id }}">
-                    <input class="icon" type="image" src="/img/drop.webp" title="Effacer un poney" height="25" width="25"
+                <a href="#confirm-{{ client.id }}">
+                    <input class="icon" type="image" src="/img/drop.webp" title="Effacer un client" height="25" width="25"
                            alt="remove"/>
                 </a>
             </td>
@@ -54,10 +48,10 @@
     </table>
 </section>
 <!-- Modale -->
-{% for poney in poney %}
-<div id="confirm-{{ poney.id }}" class="modal">
-    <p class="modalText" >Êtes-vous sûr de vouloir supprimer le poney ? <br><b>{{ poney.name }} ?</b></p>
-    <form method="POST" action="{{ route('poneys.delete', {slug: poney.id}) }}">
+{% for client in client %}
+<div id="confirm-{{ client.id }}" class="modal">
+    <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client ? <br><b>{{ client.name }} ?</b></p>
+    <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
         {{ csrf_field()|raw }}
         {{ method('DELETE')|raw }}
         <button type="submit" class="btn btn-danger">Confirmer</button>

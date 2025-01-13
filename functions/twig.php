@@ -90,4 +90,5 @@ if (!function_exists('old')) {
     {
         return View::old($key, $default);
     }
+
 }
