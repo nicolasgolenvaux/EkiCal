@@ -67,11 +67,17 @@ return [
     // Agenda
 
     'agenda' => Route::get('/agenda', [AgendaController::class, 'index']),
+    'agendas.form' => Route::get('/inscriptionRdv', [AgendaController::class, 'agendaForm']),
+    'agendas.request' => Route::post('/inscriptionRdv', [AgendaController::class, 'register']),
+    'agendas.edit' => Route::get('/edit/{slug}/modifierAgenda', [AgendaController::class, 'edit']),
+    'agendas.delete' => Route::delete('/deleteAgenda/{slug}', [AgendaController::class, 'delete']),
+
 
     // export Excell
     'sheet' => Route::get('/export', [UserController::class, 'export']),
     'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),
     'clientsheet' => Route::get('/export', [ClientController::class, 'export']),
+    'rdvsheet' => Route::get('/export', [AgendaController::class, 'export']),
 ];
 
 

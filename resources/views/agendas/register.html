@@ -1,0 +1,86 @@
+{% include 'includes/header.html' %}
+<title>Agendas | EkiCal</title>
+<body>
+<div>
+    <div>
+        <div><h2>Nouvelle session</h2></div>
+        {% if errors() %}
+        <div>
+            <ul>
+                {% for error in errors() %}
+                <li class="alert">{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {%endif%}
+        <form action="{{ route('agendas.request') }}" method="POST" novalidate>
+            <div>
+                {{ csrf_field() | raw }}
+                <input name="jour" size="10" type="date" value="{{ old('jour') }}" >
+                <select name="start" id="start" required >
+                    <option value="" disabled selected>Début</option>
+                    <option value="09:00">09h00</option>
+                    <option value="09:30">09h30</option>
+                    <option value="10:00">10h00</option>
+                    <option value="10:30">10h30</option>
+                    <option value="11:00">11h00</option>
+                    <option value="11:30">11h30</option>
+                    <option value="12:00">12h00</option>
+                    <option value="" disabled >Pause de midi</option>
+                    <option value="13:30">13h30</option>
+                    <option value="14:00">14h00</option>
+                    <option value="14:30">14h30</option>
+                    <option value="15:00">15h00</option>
+                    <option value="15:30">15h30</option>
+                    <option value="16:00">16h00</option>
+                    <option value="16:30">16h30</option>
+                </select>
+                <select name="end" id="end" required>
+                    <option value="" disabled selected>Fin</option>
+                    <option value="09:30">09h30</option>
+                    <option value="10:00">10h00</option>
+                    <option value="10:30">10h30</option>
+                    <option value="11:00">11h00</option>
+                    <option value="11:30">11h30</option>
+                    <option value="12:00">12h00</option>
+                    <option value="12:30">12h30</option>
+                    <option value="" disabled >Pause de midi</option>
+                    <option value="13:30">13h30</option>
+                    <option value="14:00">14h00</option>
+                    <option value="14:30">14h30</option>
+                    <option value="15:00">15h00</option>
+                    <option value="15:30">15h30</option>
+                    <option value="16:00">16h00</option>
+                    <option value="16:30">16h30</option>
+                    <option value="17:00">17h00</option>
+
+                </select>
+                <select name="client_id"  id="client_id" required>
+                    <option value="" disabled selected>Choisissez un client</option>
+                    {% for client in client %}
+                    <option value={{client.id}}>{{ client.name }}</option>
+                    {% endfor %}
+                </select>
+                <select name="type"  id="type" required>
+                    <option value="" disabled selected>Choisissez une option</option>
+                    <option value="groupe">Groupe</option>
+                    <option value="particulier">Particulier</option>
+                </select>
+                <select name="nbr"  id="nbr" required>
+                    <option value="" disabled selected>Nombre de participants</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+            <button type="submit">Enregistrer</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

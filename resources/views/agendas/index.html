@@ -2,6 +2,72 @@
 <title>Agenda | EkiCal</title>
 <body>
 <h1>{{titre}}</h1>
-<h1>Page Agenda</h1>
+<main class="table">
+    <section class="table_header">
+        <h2>{{titre}} du {{ "now"|date("d-m-Y") }}</h2>
+        {% if auth().checkIsAdmin() %}
+        <div class="page">
+            <a href="{{ route('agendas.form') }}">
+                <img src="/img/adduse.png" title="Ajoutez un user" height="38" width="38" alt="add"/>
+            </a>
+            <a href="{{ route('rdvsheet') }}">
+                <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                     alt="export_xlsx"/>
+            </a>
+        </div>
+        {% endif %}
+    </section>
+    <section class="table_body">
+        <table>
+            <thead>
+            <tr>
+
+                <th>Debut</th>
+                <th>fin</th>
+                <th>Client</th>
+                <th>Type</th>
+                <th>Nombre</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for agendas in agenda %}
+            {% if agendas.jour == day %}
+            <tr>
+                <td>{{ agendas.start }}</td>
+                <td>{{ agendas.end }}</td>
+                <td>{{ agendas.client_id }}</td>
+                <td>{{ agendas.type }}</td>
+                <td>{{ agendas.nbr }}</td>
+
+                <td>
+                    <a href="{{ route('agendas.edit', {slug: agendas.id}) }}">
+                        <input class="iconBis" type="image" src="/img/edit.png" title="Modifier un rendez-vous" height="22" width="22"
+                               alt="edit"/></a>
+                    <a href="#confirm-{{ agendas.id }}">
+                        <input class="icon" type="image" src="/img/drop.webp" title="Effacer un rendez-vous" height="25" width="25"
+                               alt="remove"/>
+                    </a>
+                </td>
+
+                {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</main>
+<!-- Modale -->
+{% for agendas in agenda %}
+<div id="confirm-{{ agendas.id }}" class="modal">
+    <p class="modalText" >Êtes-vous sûr de vouloir supprimer le rendez-vous ?</b></p>
+    <form method="POST" action="{{ route('agendas.delete', {slug: agendas.id}) }}">
+        {{ csrf_field()|raw }}
+        {{ method('DELETE')|raw }}
+        <button type="submit" class="btn btn-danger">Confirmer</button>
+        <a href="#" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endfor %}
 </body>
 </html>

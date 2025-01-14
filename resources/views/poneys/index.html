@@ -24,7 +24,7 @@
             <th>Travail</th>
             <th>Poids</th>
             <th>Age</th>
-            <th>Action</th>
+            <th></th>
 
 
         </tr>
@@ -34,8 +34,8 @@
         <tr>
             <td><img class="avatar" src="{{poney.image_path }}" alt="Image"></td>
             <td>{{ poney.name }}</td>
-            <td>{{ poney.tps_w }}</td>
-            <td>{{ poney.weight }}</td>
+            <td>{{ poney.tps_w }} heures</td>
+            <td>{{ poney.weight }} Kg</td>
             <td>{{ date().format('Y') - (poney.birth) | date('Y') }} ans</td>
             {% if auth().checkIsAdmin() %}
             <td>

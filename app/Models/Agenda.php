@@ -6,5 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Agenda extends Model
 {
-    protected $table = 'agenda';
+    protected $fillable = [
+        'id',
+        'jour',
+        'start',
+        'end',
+        'client_id',
+        'type',
+        'nbr'
+    ];
 }
