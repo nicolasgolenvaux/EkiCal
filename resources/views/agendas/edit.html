@@ -12,8 +12,18 @@
 </div>
 <div class="col">
 {% for poneyNames in poneyName %}
-<p class="picon"><img class="icon" src="/img/poney.png" alt="poney">{{poneyNames.name}}</p>
-{% endfor %}
+<p class="picon">
+    <form method="POST" action="{{ route('poneyAgenda.delete') }}">
+    {{ method('DELETE')|raw }}
+    {{ csrf_field()|raw }}
+    <img class="icon" src="/img/poney.png" alt="poney">{{poneyNames.name}}
+    <button type="submit" style="background: none; border: none; padding: 0; cursor: pointer;">
+        <img src="/img/remove_grey.webp" height="15" width="15" alt="delete" title="Supprimer {{poneyNames.name}}">
+    </button>
+    <input name="poney_id"  value="{{ poneyNames.id }}" type="hidden">
+    <input name="agenda_id" value="{{ agendas.id }}" type="hidden">
+    </form>
+    {% endfor %}
 </div>
 {% if status() %}
 <p class="alert">

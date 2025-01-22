@@ -2,6 +2,7 @@
 
 namespace EkiCal\foundation;
 
+use App\Models\Agenda;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -92,4 +93,5 @@ class View
         $old = Session::getFlash(Session::OLD);
         return $old[$key] ?? $default;
     }
+
 }

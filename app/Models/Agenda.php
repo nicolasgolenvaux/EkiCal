@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\belongsTo;
 
 class Agenda extends Model
 {
@@ -20,10 +21,6 @@ class Agenda extends Model
     public function poneyChoosen(): HasMany
     {
         return $this->hasMany(PoneyChoice::class);
-    }
-    public function clientName(): HasOne
-    {
-        return $this->hasOne(Client::class,'id','client_id')->select('name');
     }
 
 }

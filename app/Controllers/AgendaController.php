@@ -67,7 +67,7 @@ class AgendaController extends AbstractController
     public function edit($slug)
     {
         $agenda = Agenda::find($slug);
-        $poneys = Poney::select('name', 'id')->get();
+        $poneys = Poney::select('name', 'id','image_path')->get();
         $poneysChoice = $agenda->poneyChoosen;
         $poneysChoice = $poneysChoice->pluck('poney_id');
         $poneyName = Poney::find($poneysChoice);
@@ -212,5 +212,14 @@ class AgendaController extends AbstractController
             echo "Erreur lors de l'exportation : " . $e->getMessage();
         }
 
+    }
+
+    public function deletePoneyAgenda():void
+    {
+        $agenda_id = $_POST['agenda_id'];
+        $poney_id = $_POST['poney_id'];
+        $poney = PoneyChoice::where('agenda_id', $agenda_id)->where('poney_id', $poney_id);
+        $poney->delete();
+        $this->redirect('agendas.edit', ['slug' => $agenda_id]);
     }
 }

@@ -143,6 +143,29 @@ class ClientController extends AbstractController
         Session::addFlash(Session::STATUS, 'Le téléphone de ' . $client->name . ' a été mis à jour !');
         $this->redirect('clients.edit', ['slug' => $client->id]);
     }
+
+    public function editTVA($slug): void
+    {
+        if (!Auth::check()) {
+            $this->redirect('login.form');
+        }
+        $client = Client::where('id', $slug)->firstOrFail();
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'tva' => ['required'],
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('clients.edit', ['slug' => $client->id]);
+        }
+        $client->tva = $_POST['tva'];
+        $client->save();
+
+        Session::addFlash(Session::STATUS, 'Le numéro d\'entreprise de ' . $client->name . ' a été mis à jour !');
+        $this->redirect('clients.edit', ['slug' => $client->id]);
+    }
     public function export(): void
     {
         $client = Client::select('id', 'name', 'email', 'phone')->orderBy('id', 'desc')->get();

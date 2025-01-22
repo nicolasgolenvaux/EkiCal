@@ -5,6 +5,7 @@
  * les fichiers.
  */
 
+use App\Models\Agenda;
 use EkiCal\foundation\Authentication;
 use EkiCal\foundation\Router\Router;
 use EkiCal\foundation\Session;
@@ -92,3 +93,5 @@ if (!function_exists('old')) {
     }
 
 }
+
+
