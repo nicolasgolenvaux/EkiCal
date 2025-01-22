@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Poney extends Model
 {
@@ -16,5 +17,8 @@ class Poney extends Model
         'medicalVisit',
         'pedigree'
     ];
-
+    public function poneyName(): HasOne
+    {
+        return $this->hasOne(PoneyChoice::class);
+    }
 }

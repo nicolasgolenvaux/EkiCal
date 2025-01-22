@@ -2,7 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\User;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Authentication as Auth;
 use EkiCal\foundation\Session;

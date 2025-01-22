@@ -8,12 +8,13 @@
         {% if auth().checkIsAdmin() %}
         <div class="page">
             <a href="{{ route('agendas.form') }}">
-                <img src="/img/adduse.png" title="Ajoutez un user" height="38" width="38" alt="add"/>
+                <img src="/img/adduse.png" title="Ajoutez un rendez-vous" height="38" width="38" alt="add"/>
             </a>
             <a href="{{ route('rdvsheet') }}">
                 <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
                      alt="export_xlsx"/>
             </a>
+
         </div>
         {% endif %}
     </section>
@@ -48,6 +49,10 @@
                         <input class="icon" type="image" src="/img/drop.webp" title="Effacer un rendez-vous" height="25" width="25"
                                alt="remove"/>
                     </a>
+                    <a href="#invoice-{{ agendas.id }}">
+                        <input class="icon" type="image" src="/img/bill.png" title="Facturer un rendez-vous" height="25" width="25"
+                               alt="invoice"/>
+                    </a>
                 </td>
 
                 {% endif %}
@@ -62,6 +67,18 @@
 <div id="confirm-{{ agendas.id }}" class="modal">
     <p class="modalText" >Êtes-vous sûr de vouloir supprimer le rendez-vous ?</b></p>
     <form method="POST" action="{{ route('agendas.delete', {slug: agendas.id}) }}">
+        {{ csrf_field()|raw }}
+        {{ method('DELETE')|raw }}
+        <button type="submit" class="btn btn-danger">Confirmer</button>
+        <a href="#" class="btn btn-secondary">Annuler</a>
+    </form>
+</div>
+{% endfor %}
+<!-- Modale -->
+{% for agendas in agenda %}
+<div id="invoice-{{ agendas.id }}" class="modal">
+    <p class="modalText" >Êtes-vous sûr de vouloir facturer le rendez-vous ? <br><b>Cette action est irréversible.</b></p>
+    <form method="POST" action="">
         {{ csrf_field()|raw }}
         {{ method('DELETE')|raw }}
         <button type="submit" class="btn btn-danger">Confirmer</button>

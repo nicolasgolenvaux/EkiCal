@@ -5,6 +5,7 @@ use App\Controllers\AuthController;
 use App\Controllers\ClientController;
 use App\Controllers\HomeController;
 use App\Controllers\BaseController;
+use App\Controllers\PoneyChoiceController;
 use EkiCal\foundation\Router\Route;
 use App\Controllers\UserController;
 use App\Controllers\PoneyController;
@@ -71,9 +72,17 @@ return [
     'agendas.request' => Route::post('/inscriptionRdv', [AgendaController::class, 'register']),
     'agendas.edit' => Route::get('/edit/{slug}/modifierAgenda', [AgendaController::class, 'edit']),
     'agendas.delete' => Route::delete('/deleteAgenda/{slug}', [AgendaController::class, 'delete']),
+    'agendas.editStart' => Route::patch('/agenda/editStart/{slug}', [AgendaController::class, 'editStart']),
+    'agendas.editEnd' => Route::patch('/agenda/editEnd/{slug}', [AgendaController::class, 'editEnd']),
+    'agendas.editNbr' => Route::patch('/agenda/editNbr/{slug}', [AgendaController::class, 'editNbr']),
+    'agendas.editType' => Route::patch('/agenda/editType/{slug}', [AgendaController::class, 'editType']),
 
+    // PoneyChoice
+
+    'registerPoneyChoice' => Route::post('/registerPoneyChoice', [PoneyChoiceController::class, 'registerPoneyChoice']),
 
     // export Excell
+
     'sheet' => Route::get('/export', [UserController::class, 'export']),
     'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),
     'clientsheet' => Route::get('/export', [ClientController::class, 'export']),

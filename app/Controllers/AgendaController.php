@@ -5,6 +5,8 @@
 namespace App\Controllers;
 use App\Models\Agenda;
 use App\Models\Client;
+use App\Models\Poney;
+use App\Models\PoneyChoice;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
 use EkiCal\foundation\Session;
@@ -15,7 +17,8 @@ use EkiCal\foundation\Authentication as Auth;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\hasMany;
 class AgendaController extends AbstractController
 {
     public function index(): void
@@ -26,11 +29,8 @@ class AgendaController extends AbstractController
         View::render('agendas.index', compact('titre', 'agenda','day'));
     }
 
-
     public function register(): void
     {
-
-
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
             'jour' => ['required'],
@@ -39,7 +39,6 @@ class AgendaController extends AbstractController
             'client_id' => ['required'],
             'type' => ['required'],
             'nbr' => ['required'],
-
         ]);
 
         if (!$validator->validate()) {
@@ -48,14 +47,13 @@ class AgendaController extends AbstractController
             $this->redirect('agendas.form');
         }
 
-        $user = Agenda::create([
+        $agenda = Agenda::create([
             'jour' => $_POST['jour'],
             'start' => $_POST['start'],
             'end' => $_POST['end'],
             'client_id' => $_POST['client_id'],
             'type' => $_POST['type'],
             'nbr' => $_POST['nbr'],
-
         ]);
 
         $this->redirect('agenda');
@@ -68,15 +66,109 @@ class AgendaController extends AbstractController
     }
     public function edit($slug)
     {
-        try {
-            $rdv = Agenda::where('id', $slug)->firstOrFail();
-        } catch (ModelNotFoundException) {
-            HttpException::render();
-        }
+        $agenda = Agenda::find($slug);
+        $poneys = Poney::select('name', 'id')->get();
+        $poneysChoice = $agenda->poneyChoosen;
+        $poneysChoice = $poneysChoice->pluck('poney_id');
+        $poneyName = Poney::find($poneysChoice);
+        $clientName = $agenda->clientName;
 
         View::render('agendas.edit', [
-            'agendas' => $rdv,
+            'agendas' => $agenda,
+            'poneys' => $poneys,
+            'poneysChoice' => $poneysChoice,
+            'poneyName' => $poneyName,
+            'clientName' => $clientName,
+
         ]);
+
+    }
+
+    public function editStart($slug): void
+    {
+        $agenda = Agenda::where('id', $slug)->firstOrFail();
+
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'start' => ['required']
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+        }
+
+        $agenda->start = $_POST['start'];
+        $agenda->save();
+
+        Session::addFlash(Session::STATUS, 'Le début a été mis à jour !');
+        $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+    }
+    public function editEnd($slug): void
+    {
+        $agenda = Agenda::where('id', $slug)->firstOrFail();
+
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'end' => ['required']
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+        }
+
+        $agenda->end= $_POST['end'];
+        $agenda->save();
+
+        Session::addFlash(Session::STATUS, 'La fin a été mise à jour !');
+        $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+    }
+
+    public function editNbr($slug): void
+    {
+        $agenda = Agenda::where('id', $slug)->firstOrFail();
+
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'nbr' => ['required']
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+        }
+
+        $agenda->nbr= $_POST['nbr'];
+        $agenda->save();
+
+        Session::addFlash(Session::STATUS, 'Le nombre de participant a été mis à jour !');
+        $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+    }
+
+    public function editType($slug): void
+    {
+        $agenda = Agenda::where('id', $slug)->firstOrFail();
+
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'type' => ['required']
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+        }
+
+        $agenda->type= $_POST['type'];
+        $agenda->save();
+
+        Session::addFlash(Session::STATUS, 'Le type du participant a été mis à jour !');
+        $this->redirect('agendas.edit', ['slug' => $agenda->id]);
     }
     public function delete($slug): void
     {
