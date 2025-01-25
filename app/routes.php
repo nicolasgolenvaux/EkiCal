@@ -65,6 +65,7 @@ return [
     'clients.editEmail' => Route::patch('/client/editEmail/{slug}', [ClientController::class, 'editEmail']),
     'clients.editPhone' => Route::patch('/client/editPhone/{slug}', [ClientController::class, 'editPhone']),
     'clients.editTVA' => Route::patch('client/editTVA/{slug}', [ClientController::class, 'editTVA']),
+    'clients.search' => Route::get('clients/search/{keyword}',[ClientController::class, 'clientSearch']),
 
     // Agenda
 
@@ -74,10 +75,10 @@ return [
     'agendas.edit' => Route::get('/edit/{slug}/modifierAgenda', [AgendaController::class, 'edit']),
     'agendas.delete' => Route::delete('/deleteAgenda/{slug}', [AgendaController::class, 'delete']),
     'agendas.editStart' => Route::patch('/agenda/editStart/{slug}', [AgendaController::class, 'editStart']),
-    'agendas.editEnd' => Route::patch('/agenda/editEnd/{slug}', [AgendaController::class, 'editEnd']),
     'agendas.editNbr' => Route::patch('/agenda/editNbr/{slug}', [AgendaController::class, 'editNbr']),
     'agendas.editType' => Route::patch('/agenda/editType/{slug}', [AgendaController::class, 'editType']),
     'poneyAgenda.delete' => Route::delete('/deletePoneyAgenda', [AgendaController::class, 'deletePoneyAgenda']),
+//    'agendas.sessions' => Route::get('/inscriptionRdv', [AgendaController::class, 'sessions']),
 
     // PoneyChoice
 

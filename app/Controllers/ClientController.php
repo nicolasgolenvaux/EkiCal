@@ -21,7 +21,7 @@ class ClientController extends AbstractController
     public function index(): void
     {
         $titre = "Clients";
-        $client = Client::all();
+        $client = Client::select('id','name','email','phone','tva')->orderBy('name','ASC')->get();
         View::render('client.index', compact('titre', 'client'));
     }
     public function clientForm(): void
@@ -29,6 +29,21 @@ class ClientController extends AbstractController
     {
         View::render('client.register');
     }
+    public function clientSearch($keywords): void
+
+    {
+        $name = Client::select('name')->get();
+        $keywords=$_GET['keywords'];
+        $valider=$_GET['valider'];
+        if(isset($valider) && !empty(trim($keywords))){
+            $res = $name->where('name', 'like', '%' . $keywords . '%')->get();
+            echo $res;
+        }
+        else{
+            echo 'aucun client trouvé.';
+        }
+    }
+
     public function register(): void
     {
 

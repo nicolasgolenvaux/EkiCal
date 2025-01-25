@@ -3,6 +3,11 @@
 <body>
 <section class="table_header">
     <h2>{{titre}}</h2>
+    <form name="fo" method="get" action="">
+        <input type="text" name="keywords" placeholder="Rechercher un client">
+        <button type="submit" name="valider" value="Rechercher">Rechercher</button>
+    </form>
+    <p> {{ res }}
     {% if auth().checkIsAdmin() %}
     <div class="page">
         <a href="{{ route('clients.form') }}">
@@ -21,6 +26,7 @@
         <tr>
             <th>Nom</th>
             <th>Email</th>
+            <th>N° Entreprise</th>
             <th>Phone</th>
             <th></th>
         </tr>
@@ -30,6 +36,7 @@
         <tr>
             <td>{{ client.name }}</td>
             <td>{{ client.email }}</td>
+            <td>{{ client.tva }}</td>
             <td>{{ client.phone }}</td>
             {% if auth().checkIsAdmin() %}
             <td>

@@ -22,5 +22,9 @@ class Agenda extends Model
     {
         return $this->hasMany(PoneyChoice::class);
     }
+    public function client(): belongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
 
 }

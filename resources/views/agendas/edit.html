@@ -1,15 +1,20 @@
 {% include 'includes/header.html' %}
 <title>Edit Session | EkiCal</title>
 <body>
+
 <h3>Rendez-vous n° {{ agendas.id}}</h3>
+
+<!-- Informations clients-->
 <div class="identityCard">
     <div class="userIdentity">
-        <p class="picon"><img class="icon" src="/img/flag.png" alt="debut-fin">{{ agendas.start }} - {{ agendas.end}}</p>
+        <p class="picon"><img class="icon" src="/img/flag.png" alt="debut-fin">{{ agendas.start }} - {{ agendas.start|date_modify('+1 hour')|date('H:i') }}</p>
         <p class="picon"><img class="icon" src="/img/participant.png" alt="nbr"> {{agendas.nbr}}</p>
         <p class="picon"><img class="icon" src="/img/type.png" alt="id">{{agendas.type}}</p>
-        <p class="picon"><img class="icon" src="/uploads/avatar.png" alt="id">{{clientName.name}}</p>
+        <p class="picon"><img class="icon" src="/uploads/avatar.png" alt="id">{{client}}</p>
     </div>
 </div>
+
+<!-- Poneys sélectionnés-->
 <div class="col">
 {% for poneyNames in poneyName %}
 <p class="picon">
@@ -23,13 +28,18 @@
     <input name="poney_id"  value="{{ poneyNames.id }}" type="hidden">
     <input name="agenda_id" value="{{ agendas.id }}" type="hidden">
     </form>
-    {% endfor %}
+{% endfor %}
 </div>
-{% if status() %}
-<p class="alert">
-    {{ status() }}
-</p>
-{% endif %}
+
+<!-- Messages d'alerte-->
+<div>
+    <!-- 1 -->
+        {% if status() %}<p class="alert">{{ status() }}</p>{% endif %}
+    <!-- 2 -->
+        {% if poneysChoice|length > agendas.nbr %}<p class="alert">Il y a plus de chevaux que de participants</p>{% endif%}
+</div>
+
+<!-- Formulaires d'édition-->
 <div class="col">
     <form action="{{ route('agendas.editStart', {slug: agendas.id}) }}" method="POST" novalidate>
         <div>
@@ -37,70 +47,20 @@
                 {{ csrf_field()|raw }}
                 {{ method('PATCH')|raw }}
                 <div>
-
                     <div>
                         <input id="id" name="id" value="{{ agendas.id }}" type="hidden">
                         <select name="start" id="start" required>
                             <option value="" disabled selected>Début</option>
                             <option value="09:00">09h00</option>
-                            <option value="09:30">09h30</option>
                             <option value="10:00">10h00</option>
-                            <option value="10:30">10h30</option>
                             <option value="11:00">11h00</option>
-                            <option value="11:30">11h30</option>
-                            <option value="12:00">12h00</option>
-                            <option value="" disabled>Pause</option>
-                            <option value="13:30">13h30</option>
+                            <option value="" disabled >Pause</option>
+                            <option value="13:00">13h00</option>
                             <option value="14:00">14h00</option>
-                            <option value="14:30">14h30</option>
                             <option value="15:00">15h00</option>
-                            <option value="15:30">15h30</option>
                             <option value="16:00">16h00</option>
-                            <option value="16:30">16h30</option>
                         </select>
                     </div>
-                    {% if errors('name') %}
-                    <p class="alert">{{ errors('name')[0] }}</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-        <div>
-            <button type="submit">Modifier</button>
-        </div>
-    </form>
-    <form action="{{ route('agendas.editEnd', {slug: agendas.id}) }}" method="POST" novalidate>
-        <div>
-            <div>
-                {{ csrf_field()|raw }}
-                {{ method('PATCH')|raw }}
-                <div>
-
-                    <div>
-                        <input name="id" value="{{ poney.id }}" type="hidden">
-                        <select name="end" id="end" required>
-                            <option value="" disabled selected>Fin</option>
-                            <option value="09:30">09h30</option>
-                            <option value="10:00">10h00</option>
-                            <option value="10:30">10h30</option>
-                            <option value="11:00">11h00</option>
-                            <option value="11:30">11h30</option>
-                            <option value="12:00">12h00</option>
-                            <option value="12:30">12h30</option>
-                            <option value="" disabled>Pause</option>
-                            <option value="13:30">13h30</option>
-                            <option value="14:00">14h00</option>
-                            <option value="14:30">14h30</option>
-                            <option value="15:00">15h00</option>
-                            <option value="15:30">15h30</option>
-                            <option value="16:00">16h00</option>
-                            <option value="16:30">16h30</option>
-                            <option value="17:00">17h00</option>
-                        </select>
-                    </div>
-                    {% if errors('name') %}
-                    <p class="alert">{{ errors('name')[0] }}</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -127,9 +87,6 @@
                         <option value="8">8</option>
                     </select>
                     </div>
-                    {% if errors('name') %}
-                    <p class="alert">{{ errors('name')[0] }}</p>
-                    {% endif %}
                 </div>
             </div>
         </div>
@@ -150,9 +107,6 @@
                             <option value="groupe">Groupe</option>
                             <option value="particulier">Particulier</option>
                         </select>
-                        {% if errors('name') %}
-                        <p class="alert">{{ errors('name')[0] }}</p>
-                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -170,13 +124,13 @@
                         <input name="agenda_id" value="{{ agendas.id }}" type="hidden">
                         <select name="poney_id" id="poney_id" required>
                             <option value="" disabled selected>Poney</option>
-                            {% for poney in poneys %}
-                            {% if poney.id in poneysChoice %}
-                            <option value="" disabled>{{ poney.name }}</option>
-                            {% else %}
-                            <option value="{{ poney.id }}">{{ poney.name }}</option>
-                            {% endif %}
-                            {% endfor %}
+                                {% for poney in poneys %}
+                                    {% if poney.id in poneysChoice %}
+                                        <option value="" disabled>{{ poney.name }}</option>
+                                    {% else %}
+                                        <option value="{{ poney.id }}">{{ poney.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
                         </select>
                     </div>
                 </div>
@@ -186,7 +140,7 @@
             <button type="submit">Choisir</button>
         </div>
     </form>
-
 </div>
+
 </body>
 </html>
