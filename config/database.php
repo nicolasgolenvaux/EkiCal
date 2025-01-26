@@ -1,4 +1,8 @@
 <?php declare(strict_types = 1);
+/**
+ * Ce tableau liste les informations nécessaires à l'établissement
+ *  de la connection à la base de données SQLite.
+ */
 
 return [
     'driver'   => env('DB_DRIVER', 'sqlite'),

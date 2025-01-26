@@ -12,4 +12,7 @@ return [
     'client_id'             => 'le nom du client',
     'type'                  => 'Le type de client',
     'nbr'                   => 'Le nombre de clients',
+    'tps_w'                 => 'Le temps de travail',
+    'weight'                => 'Le poids',
+    'birth'                 => 'La date de naissance'
 ];

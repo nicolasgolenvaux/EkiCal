@@ -1,5 +1,11 @@
 <?php declare(strict_types=1);
-
+/**
+ * Cette classe gère toutes les fonctions d'identification de l'user.
+ * La classe Auth vérifie s'il est connecté.
+ * La classe session initialize les composants pour la classe Validator qui
+ * fait les vérifications de conformité.
+ * La classe View affiche les éléments.
+ */
 namespace App\Controllers;
 
 use EkiCal\foundation\AbstractController;
@@ -10,6 +16,14 @@ use EkiCal\foundation\View;
 
 class HomeController extends AbstractController
 {
+    /**Cette fonction vérifie la connection et ramène les informations
+     * d'authentification de l'utilisateur.
+     * Elle affiche la page 'home'.
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function index(): void
     {
         if (!Auth::check()) {
@@ -21,6 +35,10 @@ class HomeController extends AbstractController
         ]);
     }
 
+    /**Cette fonction met à jour le nom de l'utilisateur.
+     *
+     * @return void
+     */
     public function updateName(): void
     {
         if (!Auth::check()) {
@@ -46,6 +64,9 @@ class HomeController extends AbstractController
         $this->redirect('home');
     }
 
+    /**Cette fonction met à jour l'email' de l'utilisateur.
+     * @return void
+     */
     public function updateEmail(): void
     {
         if (!Auth::check()) {
@@ -71,6 +92,9 @@ class HomeController extends AbstractController
         $this->redirect('home');
     }
 
+    /**Cette fonction met à jour le mot de passe de l'utilisateur.
+     * @return void
+     */
     public function updatePassword(): void
     {
         if (!Auth::check()) {
@@ -96,6 +120,9 @@ class HomeController extends AbstractController
         $this->redirect('home');
     }
 
+    /**Cette fonction met à jour l'avatar' de l'utilisateur.
+     * @return void
+     */
     public function updatePicture(): void
     {
         if (!Auth::check()) {
@@ -130,7 +157,11 @@ class HomeController extends AbstractController
         $this->redirect('home');
     }
 
-    public function upload(): void
+    /**Cette fonction vérifie et donne les droits d'accès pour enregistrer le fichier
+     * dans l'application et injecter le chemin dans la base de donnée.
+     * @return void
+     */
+    public function upload(): void  //→ Créer une règle Validator
     {
         $uploadFile = "uploads/"; // Dossier où les avatars seront sauvegardés
         if (!is_dir($uploadFile)) {

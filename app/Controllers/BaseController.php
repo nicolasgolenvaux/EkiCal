@@ -4,7 +4,6 @@
  * Elle ne fait qu'afficher la page index.html
  */
 namespace App\Controllers;
-use App\Models\User;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\View;
 

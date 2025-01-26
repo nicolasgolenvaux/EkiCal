@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 
 /**
- * On doit ajouter ce fichier à l'autoloader pour pouvoir avoir accès aux fonctions dans tous
+ * On doit ajouter ce fichier à autoloader pour pouvoir avoir accès aux fonctions dans tous
  * les fichiers.
  */
 

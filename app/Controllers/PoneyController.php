@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
-/**
- * Ce Controller affiche la page
- */
+
 namespace App\Controllers;
+use App\Models\Agenda;
 use App\Models\Poney;
+use App\Models\PoneyChoice;
 use DateTime;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
@@ -18,24 +18,47 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class PoneyController extends AbstractController
 {
+    /**Cette fonction affiche la page index et les informations des poneys.
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function index(): void
     {
         $titre = "Poneys";
         $poney = Poney::all();
-        View::render('poneys.index',compact('titre','poney'));
-    }
-    public function poneyForm(): void
+        $counts = PoneyChoice::selectRaw('COUNT(poneyChoice.poney_id) as total, poney_id')
+            ->join('agendas', 'poneyChoice.agenda_id', '=', 'agendas.id')
+            ->whereDate('agendas.jour',date('Y-m-d'))
+            ->groupBy('poney_id')
+            ->get();
 
+        View::render('poneys.index', compact('titre', 'poney','counts'));
+    }
+
+    /**Cette fonction affiche la page d'enregistrement d'un poney
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
+    public function poneyForm(): void
     {
         View::render('poneys.register');
     }
 
+    /**Cette fonction enregistre les données du poney dans la table poneys.
+     * @return void
+     */
     public function register(): void
     {
-
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
             'name' => ['required', ['lengthMin', 2]],
+            'tps_w' => ['integer', ['min', 0], ['max', 7]],
+            'weight' => ['integer', ['min', 50], ['max', 500]],
+            'birth' => ['date', ['dateAfter', '2000-01-01']],
         ]);
 
         if (!$validator->validate()) {
@@ -54,16 +77,30 @@ class PoneyController extends AbstractController
 
         $this->redirect('poney');
     }
+
+    /**Cette fonction efface le poney de la base donnée.
+     * @param $slug : Détermine l'id du poney.
+     * @return void
+     */
     public function delete($slug): void
     {
         if (!Auth::checkIsAdmin()) {
             $this->redirect('login.form');
         }
+
         $poney = Poney::where('id', $slug)->firstOrFail();
         $poney->delete();
         $this->redirect('poney');
     }
 
+
+    /**Cette fonction recherche et affiche les informations du poney.
+     * @param $slug : Détermine l'id du poney.
+     * @return void
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\RuntimeError
+     * @throws \Twig\Error\SyntaxError
+     */
     public function edit($slug)
     {
         try {
@@ -72,15 +109,23 @@ class PoneyController extends AbstractController
             HttpException::render();
         }
 
-        View::render('poneys.edit', ['poney' => $poney
-        ]);
+        View::render('poneys.edit', ['poney' => $poney]);
     }
+
+    /**Cette fonction télécharge la photo du poney.
+     * @param $slug
+     * @return void
+     */
     public function upload($slug): void
     {
         $uploadFile = "uploads/";
         if (!is_dir($uploadFile)) {
             mkdir($uploadFile, 0777, true);
         }
+        $validator = Validator::get($_POST + $_FILES);
+        $validator->mapFieldsRules([
+            'file' => ['required_file', 'image', 'square'],
+        ]);
 
         if (isset($_FILES['picture']) && $_FILES['picture']['error'] === UPLOAD_ERR_OK) {
             $fileTmpPath = $_FILES['picture']['tmp_name'];
@@ -111,6 +156,11 @@ class PoneyController extends AbstractController
         }
 
     }
+
+    /**
+     * @param $slug
+     * @return void
+     */
     public function editWeight($slug): void
     {
         if (!Auth::check()) {
@@ -134,6 +184,10 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
+    /**
+     * @param $slug
+     * @return void
+     */
     public function editTpsw($slug): void
     {
         if (!Auth::check()) {
@@ -157,6 +211,10 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
+    /**
+     * @param $slug
+     * @return void
+     */
     public function editMedical($slug): void
     {
         if (!Auth::check()) {
@@ -179,6 +237,11 @@ class PoneyController extends AbstractController
         Session::addFlash(Session::STATUS, 'La date de la visite médicale de ' . $poney->name . ' a été mise à jour !');
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
+
+    /**
+     * @param $slug
+     * @return void
+     */
     public function editBirth($slug): void
     {
         if (!Auth::check()) {
@@ -201,6 +264,11 @@ class PoneyController extends AbstractController
         Session::addFlash(Session::STATUS, 'La date de naissance de ' . $poney->name . ' a été mise à jour !');
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
+
+    /**
+     * @param $slug
+     * @return void
+     */
     public function editPedigree($slug): void
     {
         if (!Auth::check()) {
@@ -224,6 +292,10 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
+    /**
+     * @param $slug
+     * @return void
+     */
     public function editName($slug): void
     {
         if (!Auth::check()) {
@@ -247,9 +319,12 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
+    /**
+     * @return void
+     */
     public function export(): void
     {
-        $poney = Poney::select('id', 'name', 'tps_w', 'weight','birth','medicalVisit')->orderBy('id', 'desc')->get();
+        $poney = Poney::select('id', 'name', 'tps_w', 'weight', 'birth', 'medicalVisit')->orderBy('id', 'desc')->get();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="user_table_export.xlsx"');
         header('Cache-Control: max-age=0');

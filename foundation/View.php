@@ -2,6 +2,9 @@
 
 namespace EkiCal\foundation;
 
+//On crée des fonctions propres aux vues que l'on va pouvoir utiliser
+// dans nos fonctions templates Twig.
+
 use App\Models\Agenda;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -17,7 +20,8 @@ use Twig\TwigFunction;
  */
 class View
 {
-    /**
+    /**Cette méthode transforme les slashs du sous-dossier en point.
+     * On vérifie si la vue existe. Ensuite, on démarre Twig et on affiche le contenu.
      * @param string $view
      * @param array $data
      * @return void
@@ -39,7 +43,8 @@ class View
             $data
         );
     }
-    /**
+    /**Cette fonction vérifie si la vue existe dans le fichier ressources.views ainsi
+     * que l'extension.
      * @param string $view
      * @return bool
      */
@@ -49,7 +54,8 @@ class View
             sprintf('%s/resources/views/%s.%s', ROOT, $view, Config::get('twig.template_extension'))
         );
     }
-    /**
+    /**Cette fonction instancie Twig et initialise l'environnement Twig et spécifie le chemin
+     * pour les views html.
      * @return Environment
      */
     protected static function initTwig(): Environment
@@ -57,16 +63,15 @@ class View
         $loader = new FilesystemLoader(ROOT.'/resources/views');
 
         $twig = new Environment($loader, [
-            'cache' => ROOT.'/cache/twig',
-            'auto_reload' => true,
+            'cache' => ROOT.'/cache/twig', // pour mettre en cache les vues déjà chargée.
+            'auto_reload' => true, // Elle doit être recompilée s'il y a des modifications à la vue
         ]);
         foreach (Config::get('twig.functions') as $helper) {
             $twig->addFunction(new TwigFunction($helper, $helper));
         }
         return $twig;
     }
-//On crée des fonctions propres aux vues que l'on va pouvoir utiliser
-// dans nos fonctions templates Twig.
+
     /**Cette fonction crée un champ caché en html avec la variable
      * de session _token.
      * @return string

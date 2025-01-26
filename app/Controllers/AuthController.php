@@ -2,16 +2,16 @@
 /**
  * Ce Controller gère toutes les méthodes liées à la table 'users'.
  * Elle utilise la classe Authentication qui contient les méthodes
- * pour vérifier si un visiteur est authentifié ou pas.
+ * qui vérifient si un visiteur est authentifié ou pas.
  * Elle utilise la classe Session pour initializer une session et gérer les
  * variables de session 'flash'.
- * La classe validator va gérer la conformité des formulaires
+ * La classe validator va gérer la conformité des formulaires.
  */
 namespace App\Controllers;
 
 use App\Models\User;
 use EkiCal\foundation\AbstractController;
-use EkiCal\foundation\Authentication as Auth;//pour avoir moins à écrire :)
+use EkiCal\foundation\Authentication as Auth; //pour avoir moins à écrire :)
 use EkiCal\foundation\Session;
 use EkiCal\foundation\Validator;
 use EkiCal\foundation\View;
@@ -46,8 +46,8 @@ class AuthController extends AbstractController
 
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
+            'email'     => ['required', 'email'],
+            'password'  => ['required'],
         ]);
 
         if ($validator->validate() && Auth::verify($_POST['email'], $_POST['password'])) {

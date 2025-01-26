@@ -30,20 +30,7 @@ class AgendaController extends AbstractController
         View::render('agendas.index', compact('titre', 'agenda','day','client','poneys'));
 
     }
-//    public function sessions() : void
-//    {
-//        $agenda = Agenda::all();
-//        $validator = Validator::get($_POST);
-//        $validator->mapFieldsRules([
-//            'day'       => ['required'],
-//        ]);
-//
-//        if (!$validator->validate()) {
-//            Session::addFlash(Session::ERRORS, array_column($validator->errors(), 0));
-//            Session::addFlash(Session::OLD, $_POST);
-//            $this->redirect('agendas.form');
-//        }
-//    }
+
     public function register(): void
     {
         $agendas = Agenda::all();
@@ -87,11 +74,16 @@ class AgendaController extends AbstractController
     public function edit($slug)
     {
         $agenda       = Agenda::find($slug);
-        $poneys       = Poney::select('name', 'id','image_path')->get();
+        $poneys       = Poney::select('name', 'id','tps_w','image_path')->get();
         $poneysChoice = $agenda->poneyChoosen;
         $poneysChoice = $poneysChoice->pluck('poney_id');
         $poneyName    = Poney::find($poneysChoice);
         $client       = $agenda->client->name;
+        $counts = PoneyChoice::selectRaw('COUNT(poneyChoice.poney_id) as total, poney_id')
+            ->join('agendas', 'poneyChoice.agenda_id', '=', 'agendas.id')
+            ->whereDate('agendas.jour',date('Y-m-d'))
+            ->groupBy('poney_id')
+            ->get();
 
         View::render('agendas.edit', [
             'agendas'      => $agenda,
@@ -99,6 +91,7 @@ class AgendaController extends AbstractController
             'poneysChoice' => $poneysChoice,
             'poneyName'    => $poneyName,
             'client'       => $client,
+            'counts'       => $counts
 
         ]);
     }
@@ -204,7 +197,7 @@ class AgendaController extends AbstractController
         }
         catch (Exception $e)
         {
-            echo "Erreur lors de l'exportation : " . $e->getMessage();
+            echo "Erreur lors de l'exportation : " . $e->getMessage();
         }
 
     }

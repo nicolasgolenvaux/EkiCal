@@ -12,6 +12,7 @@ use App\Controllers\PoneyController;
 
 
 return [
+
     'index' => Route::get('/', [BaseController::class, 'index']),
 
     // Authentification
@@ -30,6 +31,7 @@ return [
     'home.upload' => Route::post('/compte/upload', [HomeController::class, 'upload']),
 
     // Users
+
     'user' => Route::get('/users', [UserController::class, 'index']),
     'register.form' => Route::get('/inscription', [UserController::class, 'registerForm']),
     'register.request' => Route::post('/inscription', [UserController::class, 'register']),
@@ -78,7 +80,6 @@ return [
     'agendas.editNbr' => Route::patch('/agenda/editNbr/{slug}', [AgendaController::class, 'editNbr']),
     'agendas.editType' => Route::patch('/agenda/editType/{slug}', [AgendaController::class, 'editType']),
     'poneyAgenda.delete' => Route::delete('/deletePoneyAgenda', [AgendaController::class, 'deletePoneyAgenda']),
-//    'agendas.sessions' => Route::get('/inscriptionRdv', [AgendaController::class, 'sessions']),
 
     // PoneyChoice
 
@@ -90,6 +91,7 @@ return [
     'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),
     'clientsheet' => Route::get('/export', [ClientController::class, 'export']),
     'rdvsheet' => Route::get('/export', [AgendaController::class, 'export']),
+
 ];
 
 

@@ -1,7 +1,7 @@
 {% include 'includes/header.html' %}
 <title>Sessions | EkiCal</title>
 <body>
-
+<div>
         <div>
             <h2>Nouvelle session</h2>
         </div>
@@ -57,18 +57,19 @@
             <button type="submit">Enregistrer</button>
         </form>
 
-        <!-- Affichage des sessions-->
+
         <div>
-            <h2>Sessions du {{ "now"|date("d-m-Y")}}</h2>
+            <h4>Sessions du {{ "now"|date("d-m-Y")}}</h4>
         </div>
+        <!-- Affichage des sessions-->
         <div>
             <table>
                 <thead>
                 <tr>
                     <th>Debut</th>
                     <th>Fin</th>
-                    <th>Participants</th>
                     <th></th>
+
                 </tr>
                 </thead>
                 <tbody>
@@ -77,15 +78,13 @@
                         <tr>
                             <td>{{ agendas.start }}</td>
                             <td>{{ agendas.start|date_modify('+1 hour')|date('H:i') }}</td>
-                            <td>{{ agendas.nbr }}</td>
+                            <td>{{ agendas.nbr }} pers.</td>
                         </tr>
                     {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
         </div>
-
-
 </div>
 
 </body>

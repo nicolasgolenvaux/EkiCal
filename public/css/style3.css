@@ -64,3 +64,36 @@ button{
 button:hover {
     background-color: rgba(0,136,169,0.8);
 }
+
+.kpi{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.kpiDisplay{
+    margin-right: 50px;
+}
+.progress-bar {
+    width: 100px;
+    height: 10px;
+    background-color: #e0e0e0; /* Couleur de fond */
+    position: relative;
+    margin-bottom: 10px;
+    overflow: hidden; /* Empêche le débordement */
+}
+
+.progress-bar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: var(--fill); /* Utilise la variable pour définir la largeur */
+    background-color: #14336a; /* Couleur de remplissage */
+    transition: width 0.5s ease; /* Transition fluide */
+}
+
+
+
+
