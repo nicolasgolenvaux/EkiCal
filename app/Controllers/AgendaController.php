@@ -73,11 +73,15 @@ class AgendaController extends AbstractController
 
     public function edit($slug)
     {
-        $agenda       = Agenda::find($slug);
-        $poneys       = Poney::select('name', 'id','tps_w','image_path')->get();
-        $poneysChoice = $agenda->poneyChoosen;
-        $poneysChoice = $poneysChoice->pluck('poney_id');
-        $poneyName    = Poney::find($poneysChoice);
+        //$agenda       = Agenda::find($slug);
+        $agenda = Agenda::with(['poneyChoosen', 'client'])->find($slug);
+        //$poneys       = Poney::select('name', 'id','tps_w','image_path')->get();
+        $poneys = Poney::select('name', 'id', 'tps_w', 'image_path')->get();
+        //$poneysChoice = $agenda->poneyChoosen;
+        $poneysChoice = $agenda->poneyChoosen->pluck('poney_id');
+        //$poneysChoice = $poneysChoice->pluck('poney_id');
+        //$poneyName    = Poney::find($poneysChoice);
+        $poneyName = Poney::whereIn('id', $poneysChoice)->get();
         $client       = $agenda->client->name;
         $counts = PoneyChoice::selectRaw('COUNT(poneyChoice.poney_id) as total, poney_id')
             ->join('agendas', 'poneyChoice.agenda_id', '=', 'agendas.id')
@@ -95,6 +99,8 @@ class AgendaController extends AbstractController
 
         ]);
     }
+
+
     public function editStart($slug): void
     {
         $agenda     = Agenda::where('id', $slug)->firstOrFail();

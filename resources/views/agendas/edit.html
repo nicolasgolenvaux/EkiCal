@@ -5,21 +5,25 @@
 
 <h3>Rendez-vous n° {{ agendas.id}}</h3>
 <div class="kpi">
-
         <!-- KPI Poneys-->
-    <div class="kpiDisplay" >
-            {%for poney in poneys %}
-                {% for count in counts %}
-                    {%if poney.id == count.poney_id%}
-                        <form>
-                            <div class="progress-bar" style="--fill: {{(count.total/poney.tps_w)*100}}%;"></div>
-                            {{poney.name}} : {{ count.total }}h/{{ poney.tps_w }}h
-                        </form>
-                    {%endif%}
-                {% endfor %}
+        <div class="kpi2">
+            {% for poney in poneys %}
+            {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
+                {% if matching_count %}
+                    <div class="kpi">
+                        <img class="avatar" src="/{{ poney.image_path }}" alt="Image">
+                        <div>
+                            <div class="progress-bar" style="--fill: {{ (matching_count.total / poney.tps_w) * 100 }}%"></div>
+                            <div class="{{ (matching_count.total / poney.tps_w) * 100 == 100 ? 'alert' : '' }}">
+                                {{ poney.name }} : {{ matching_count.total }}h/{{ poney.tps_w }}h
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             {% endfor %}
         </div>
-    <div>
+
+        <div>
         <!-- Informations clients-->
         <div class="identityCard">
             <div class="userIdentity">
@@ -132,31 +136,29 @@
                     <button type="submit">Modifier</button>
                 </div>
             </form>
-            <form action="{{ route('registerPoneyChoice')}}" method="POST" novalidate>
+            <form action="{{ route('registerPoneyChoice') }}" method="POST" novalidate>
+                {{ csrf_field()|raw }}
+                <input type="hidden" name="agenda_id" value="{{ agendas.id }}">
                 <div>
-                    <div>
-                        {{ csrf_field()|raw }}
-                        <div>
-                            <div>
-                                <input name="agenda_id" value="{{ agendas.id }}" type="hidden">
-                                <select name="poney_id" id="poney_id" required>
-                                    <option value="" disabled selected>Poney</option>
-                                        {% for poney in poneys %}
-                                            {% if poney.id in poneysChoice %}
-                                                <option value="" disabled>{{ poney.name }}</option>
-                                            {% else %}
-                                                <option value="{{ poney.id }}">{{ poney.name }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    <select name="poney_id" id="poney_id" required>
+                        <option value="" disabled selected>Poney</option>
+                        {% for poney in poneys %}
+                        {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
+                        <option value="{{ poney.id }}"
+                            {% if poney.id in poneysChoice or (matching_count and (matching_count.total/poney.tps_w) * 100 >= 100) %}
+                                disabled
+                            {% endif %}>
+                        {{ poney.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
                 </div>
                 <div>
                     <button type="submit">Choisir</button>
                 </div>
             </form>
+
         </div>
 
     </div>

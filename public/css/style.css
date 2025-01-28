@@ -19,6 +19,8 @@
 .avatar{
     height: 50px;
     width: auto;
+    border-radius: 50%;
+    margin-right: 20px
 }
 body {
     display: flex;
@@ -39,7 +41,7 @@ td img {
     width: 16px;
     height: 16px;
     margin-right: .5rem;
-    border-radius: 50%;
+
     vertical-align: middle;
 }
 
