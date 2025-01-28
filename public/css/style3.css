@@ -69,11 +69,11 @@ button:hover {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin: 10px;
+    justify-content: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
-.kpiDisplay{
-    margin-right: 50px;
-}
+
 .progress-bar {
     width: 100px;
     height: 10px;
