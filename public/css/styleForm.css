@@ -7,6 +7,7 @@ body, h3, p, form, div, input, label, button, .kpi2 {
 .HomePicture{
     height: 200px;
     border-radius: 40px;
+    margin-right:40px;
 }
 .identityCard{
     display: flex;
@@ -20,8 +21,6 @@ body, h3, p, form, div, input, label, button, .kpi2 {
 }
 .userIdentity{
     align-items: center;
-
-    padding: 25px;
     font-size: 1.2em;
 
 .picon, .piconMain{
@@ -64,11 +63,11 @@ form,.kpi2 {
 
 
 .kpi2{
-    display: flex;
-    flex-direction: column;
+    display: block;
     justify-content: center;
     align-items: center;
-    margin-right: 50px;
+    margin: 0 50px 0 0;
+    font-size: 12px;
 }
 label {
     display: block;
