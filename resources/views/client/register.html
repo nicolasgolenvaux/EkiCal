@@ -1,9 +1,12 @@
 {% include 'includes/header.html' %}
 <title>New Client | EkiCal</title>
 <body>
+
 <div>
-    <div>
-        <div><h2>New Client</h2></div>
+    <h2>New Client</h2>
+</div>
+        <!-- Message alerte-->
+<div>
         {% if errors() %}
         <div>
             <ul>
@@ -13,16 +16,27 @@
             </ul>
         </div>
         {%endif%}
-        <form action="{{ route('clients.request') }}" method="POST" novalidate>
+</div>
+
+        <!-- Formulaires Actions-->
+<form action="{{ route('clients.request') }}" method="POST" novalidate>
             <div>
                 {{ csrf_field() | raw }}
-                <input name="name" size="50" type="text" value="{{ old('name') }}" placeholder="Nom complet">
-                <input name="email" size="50" type="email" value="{{ old('email') }}" placeholder="Adresse e-mail">
-                <input name="phone" size="50" type="text" placeholder="Téléphone">
+                <label>Nom complet
+                    <input name="name" size="50" type="text" value="{{ old('name') }}">
+                </label>
+                <label>Adresse e-mail
+                    <input name="email" size="50" type="email" value="{{ old('email') }}">
+                </label>
+                <label>N° TVA
+                    <input name="tva" size="50" type="text">
+                </label>
+                <label>Téléphone
+                    <input name="phone" size="50" type="text">
+                </label>
             </div>
-            <button type="submit">Save</button>
+            <button type="submit">Enregistrer</button>
         </form>
-    </div>
-</div>
+
 </body>
 </html>

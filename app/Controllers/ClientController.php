@@ -51,7 +51,7 @@ class ClientController extends AbstractController
         $validator->mapFieldsRules([
             'name' => ['required', ['lengthMin', 5]],
             'email' => ['required', 'email', ['unique', 'email', 'clients']],
-            'phone' => ['required'],
+            'phone' => ['required']
         ]);
 
         if (!$validator->validate()) {

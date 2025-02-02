@@ -1,9 +1,14 @@
 {% include 'includes/header.html' %}
 <title>Poneys register | EkiCal</title>
 <body>
-<div>
+
   <div>
-    <div><h2>New Poney</h2></div>
+    <div>
+      <h2>Nouveau Poney</h2>
+    </div>
+
+    <!-- Message alerte-->
+<div>
     {% if errors() %}
     <div>
       <ul>
@@ -13,16 +18,30 @@
       </ul>
     </div>
     {%endif%}
+</div>
+
+    <!-- Formulaires Actions-->
+<div>
     <form action="{{ route('poney.request') }}" method="POST" novalidate>
       <div>
         {{ csrf_field() | raw }}
-        <input name="name" size="50" type="text" value="{{ old('name') }}" placeholder="Nom du poney">
-        <input name="tps_w" size="50" type="text" value="{{ old('tps_w') }}" placeholder="Temps de travail">
-        <input name="weight" size="10" type="text" placeholder="Poids">
-        <input name="birth" size="15" type="date" placeholder="Date de naissance">
-        <input name="medicalVisit" size="15" type="date" placeholder="Visite médicale">
+        <label>Nom du poney
+          <input name="name"  type="text" value="{{ old('name') }}">
+        </label>
+        <label>Temps de travail
+          <input name="tps_w"  type="text" value="{{ old('tps_w') }}" >
+        </label>
+        <label>Poids
+          <input name="weight"  type="text" >
+        </label>
+        <label> Date de naissance
+          <input name="birth"  type="date">
+        </label>
+        <label>Visite médicale
+          <input name="medicalVisit"  type="date">
+        </label>
       </div>
-      <button type="submit">Save</button>
+      <button type="submit">Enregistrer</button>
     </form>
   </div>
 </div>

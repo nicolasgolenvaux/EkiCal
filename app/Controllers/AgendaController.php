@@ -215,4 +215,6 @@ class AgendaController extends AbstractController
         $poney->delete();
         $this->redirect('agendas.edit', ['slug' => $agenda_id]);
     }
+
+
 }

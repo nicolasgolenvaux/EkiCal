@@ -8,11 +8,15 @@
  */
 namespace App\Controllers;
 
+use App\Models\User;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Authentication as Auth;
 use EkiCal\foundation\Session;
 use EkiCal\foundation\Validator;
 use EkiCal\foundation\View;
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
 class HomeController extends AbstractController
 {
@@ -117,8 +121,67 @@ class HomeController extends AbstractController
         $user->save();
 
         Session::addFlash(Session::STATUS, 'Votre mot de passe a été mis à jour !');
+        $this->sendEmail();
         $this->redirect('home');
     }
+
+    public function sendEmail() :void
+    {
+        $debug = true;
+        try {
+
+            $mail = new PHPMailer($debug);
+            if ($debug) {
+                $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            }
+
+            // Authentification via SMTP
+            $mail->isSMTP();true;
+            // Connexion
+            $mail->Host = "smtp.gmail.com";
+            $mail->Port = 587;
+            $mail->Username = "nicolasgolenvaux@gmail.com";
+            $mail->Password = "xXwGyzCOIlMQwh8hWLvx";
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->setFrom('nicolasgolenvaux@gmail.com', 'nom');
+            $mail->addAddress('nicolasgolenvaux@gmail.com', 'nom');
+            //$mail->addAttachment("/home/user/Desktop/image.png", "image.png");
+            $mail->CharSet = 'UTF-8';
+            $mail->Encoding = 'base64';
+            $mail->isHTML(true);
+            $mail->Subject = 'Objet de votre email';
+            $mail->Body = 'Le texte de votre email en HTML. Il est également possible des mettre des éléments en <b>gras</b>, par exemple.';
+            $mail->AltBody = 'Le texte comme simple élément textuel';
+            $mail->send();
+        }catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: ".$e->getMessage();
+        }
+        //$email= User::select('email')->where('id',$id)->first();
+        //$name = User::select('name')->where('id',$id)->first();
+
+//        $mail = new PHPMailer();
+//
+//        $mail->isSMTP();
+//        $mail->SMTPAuth = true;
+//        $mail->Host = "smtp.gmail.com";
+//        $mail->Port = 587;
+//        $mail->Username = "nicolasgolenvaux@gmail.com";
+//        $mail->Password = "xXwGyzCOIlMQwh8hWLvx";
+//        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+//
+//        $mail->setFrom('nicolasgolenvaux@gmail.com', 'Admin EkiCal');
+//        $mail->addAddress('nicolasgolenvaux@gmail.com');
+//        $mail->CharSet = 'UTF-8';
+//        $mail->Encoding = 'base64';
+//        $mail->isHTML(true);
+//        $mail->Subject = 'Changement de votre mot de passe';
+//        $mail->Body = 'Votre mot de passe EkiCal a été modifié avec succès. Veuillez vous connecter avec votre nouveau mot de passe.'. $password ;
+//        $mail->AltBody = 'Le texte comme simple élément textuel';
+//        //$mail->addAttachment("/home/user/Desktop/image.png", "image.png");
+//        $mail->send();
+
+    }
+
 
     /**Cette fonction met à jour l'avatar' de l'utilisateur.
      * @return void

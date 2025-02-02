@@ -1,25 +1,35 @@
 {% include 'includes/header.html' %}
 <title>Clientss | EkiCal</title>
 <body>
-<section class="table_header">
-    <h2>{{titre}}</h2>
+
+<h2>{{titre}}</h2>
+
+<!-- Formulaire de recherche-->
+<div>
     <form name="fo" method="get" action="">
         <input type="text" name="keywords" placeholder="Rechercher un client">
         <button type="submit" name="valider" value="Rechercher">Rechercher</button>
+        <p> {{ res }}
     </form>
-    <p> {{ res }}
+</div>
+
+<!-- Header-->
+<section class="table_header">
+
     {% if auth().checkIsAdmin() %}
     <div class="page">
         <a href="{{ route('clients.form') }}">
             <img src="/img/adduse.png" title="Ajoutez un poney" height="38" width="38" alt="add"/>
         </a>
         <a href="{{ route('clientsheet') }}">
-            <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+            <img  src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
                  alt="export_xlsx"/>
         </a>
     </div>
     {% endif %}
 </section>
+
+<!-- Tableau -->
 <section class="table_body">
     <table>
         <thead>
@@ -54,17 +64,22 @@
         </tbody>
     </table>
 </section>
+
+
 <!-- Modale -->
-{% for client in client %}
-<div id="confirm-{{ client.id }}" class="modal">
-    <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client ? <br><b>{{ client.name }} ?</b></p>
-    <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
-        {{ csrf_field()|raw }}
-        {{ method('DELETE')|raw }}
-        <button type="submit" class="btn btn-danger">Confirmer</button>
-        <a href="#" class="btn btn-secondary">Annuler</a>
-    </form>
+<div>
+    {% for client in client %}
+        <div id="confirm-{{ client.id }}" class="modal">
+            <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client ? <br><b>{{ client.name }} ?</b></p>
+            <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
+                {{ csrf_field()|raw }}
+                {{ method('DELETE')|raw }}
+                <button type="submit" class="btn btn-danger">Confirmer</button>
+                <a href="#" class="btn btn-secondary">Annuler</a>
+            </form>
+        </div>
+    {% endfor %}
 </div>
-{% endfor %}
+
 </body>
 </html>

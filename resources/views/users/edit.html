@@ -1,7 +1,8 @@
 {% include 'includes/header.html' %}
 <title>Edit User | EkiCal</title>
 <body>
-<div>
+
+    <!-- Informations users-->
     <div class="identityCard">
         <img class="HomePicture" src="{{ base_path ~ '/' ~ user.image_path }}" alt="Avatar">
         <div class="userIdentity">
@@ -10,12 +11,18 @@
             <p class="picon"><img class="icon" src="/img/role.png" alt="role"> {{user.role}}</p>
             <p class="picon"><img  class="icon" src="/img/list.jpg" alt="id">{{user.id}}</p>
         </div>
+    </div>
+
+    <!-- Message alerte-->
+<div>
+    {% if status() %}
+        <p class="alert">
+           {{ status() }}
+        </p>
+    {% endif %}
 </div>
-{% if status() %}
-<p class="alert">
-    {{ status() }}
-</p>
-{% endif %}
+
+    <!-- Formulaires Actions-->
 <form action="{{ route('users.editName', {slug: user.id}) }}" method="POST"  novalidate>
     <div>
         <h3>Identité</h3>
@@ -38,7 +45,6 @@
         <button type="submit">Modifier le nom</button>
     </div>
 </form>
-
 <form action="{{ route('users.editEmail', {slug: user.id}) }}" method="POST" novalidate>
     <div>
         <h3>Adresse e-mail</h3>
@@ -60,7 +66,6 @@
         <button type="submit">Modifier l'adresse e-mail</button>
     </div>
 </form>
-
 <form action="{{ route('users.editPassword', {slug: user.id}) }}" method="POST" novalidate>
     <div>
         <h3>Mot de passe</h3>
@@ -95,5 +100,6 @@
         <button type="submit">Modifier le mot de passe</button>
     </div>
 </form>
+
 </body>
 </html>

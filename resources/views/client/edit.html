@@ -1,8 +1,9 @@
 {% include 'includes/header.html' %}
 <title>Edit Client | EkiCal</title>
 <body>
-<div>
-    <div class="identityCard">
+
+    <!-- Informations clients-->
+<div class="identityCard">
         <div class="userIdentity">
             <p class="piconMain"><b>{{ client.name }}</b></p>
             <p class="picon"><img class="icon" src="/img/iconmail.png" alt="mail">{{ client.email }}</p>
@@ -10,11 +11,17 @@
             <p class="picon"><img  class="icon" src="/img/list.jpg" alt="id">{{client.id}}</p>
         </div>
     </div>
+
+    <!-- Message alerte-->
+<div>
     {% if status() %}
-    <p class="alert">
-        {{ status() }}
-    </p>
+        <p class="alert">
+            {{ status() }}
+        </p>
     {% endif %}
+</div>
+
+    <!-- Formulaires Actions-->
     <form action="{{ route('clients.editName', {slug: client.id}) }}" method="POST"  novalidate>
         <div>
             <h3>Identité</h3>
@@ -100,6 +107,6 @@
             <button type="submit">Modifier le numéro d'entreprise</button>
         </div>
     </form>
-</div>
+
 </body>
 </html>

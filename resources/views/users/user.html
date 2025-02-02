@@ -1,21 +1,28 @@
 {% include 'includes/header.html' %}
 <title>Utilisateurs | EkiCal</title>
 <body>
+
+<h2>{{titre}}</h2>
+
+    <!-- Tableau -->
 <main class="table">
+    <!-- Header -->
     <section class="table_header">
-        <h2>{{titre}}</h2>
+
         {% if auth().checkIsAdmin() %}
         <div class="page">
             <a href="{{ route('register.form') }}">
                 <img src="/img/adduse.png" title="Ajoutez un user" height="38" width="38" alt="add"/>
             </a>
             <a href="{{ route('sheet') }}">
-                <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                <img src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
                      alt="export_xlsx"/>
             </a>
         </div>
         {% endif %}
     </section>
+
+    <!-- Body -->
     <section class="table_body">
         <table>
             <thead>

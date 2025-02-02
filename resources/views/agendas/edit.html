@@ -2,11 +2,11 @@
 <title>Edit Session | EkiCal</title>
 <body>
 
-
 <h3>Rendez-vous n° {{ agendas.id}}</h3>
 <div class="kpi">
         <!-- KPI Poneys-->
         <div class="kpi2">
+            <h3>Disponibilité des poneys</h3>
             {% for poney in poneys %}
             {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
                 {% if matching_count %}
@@ -19,7 +19,18 @@
                             </div>
                         </div>
                     </div>
+                {% else %}
+            <div class="kpi">
+                <img class="avatar" src="/{{ poney.image_path }}" alt="Image">
+                <div>
+                    <div class="progress-bar" style="--fill: {{ (matching_count.total / poney.tps_w) * 100 }}%"></div>
+                    <div class="{{ (matching_count.total / poney.tps_w) * 100 == 100 ? 'alert' : '' }}">
+                        {{ poney.name }} : 0h/{{ poney.tps_w }}h
+                    </div>
+                </div>
+            </div>
                 {% endif %}
+
             {% endfor %}
         </div>
 
@@ -143,12 +154,12 @@
                     <select name="poney_id" id="poney_id" required>
                         <option value="" disabled selected>Poney</option>
                         {% for poney in poneys %}
-                        {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
-                        <option value="{{ poney.id }}"
-                            {% if poney.id in poneysChoice or (matching_count and (matching_count.total/poney.tps_w) * 100 >= 100) %}
-                                disabled
-                            {% endif %}>
-                        {{ poney.name }}
+                            {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
+                                <option value="{{ poney.id }}"
+                                    {% if poney.id in poneysChoice or (matching_count and (matching_count.total/poney.tps_w) * 100 >= 100) %}
+                                        disabled
+                                    {% endif %}>
+                            {{ poney.name }}
                         </option>
                         {% endfor %}
                     </select>

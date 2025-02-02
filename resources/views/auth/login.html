@@ -12,11 +12,13 @@
     <div>
         <h2>Connexion</h2>
     </div>
+
     {% if errors() %}
     <div>
         <p class="alert">{{ errors()[0] }}</p>
     </div>
     {% endif %}
+
     <form action="{{ route ('login.request') }}" method="POST" novalidate>
         {{ csrf_field() | raw }}
 
@@ -32,6 +34,8 @@
         </div>
         <button type="submit">Connexion</button>
     </form>
+
+
 </div>
 </body>
 </html>

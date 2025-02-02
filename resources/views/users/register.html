@@ -2,8 +2,13 @@
 <title>New User | EkiCal</title>
 <body>
 <div>
-    <div>
-        <div><h2>New User</h2></div>
+
+        <div>
+            <h2>Nouvel Utilisateur</h2>
+        </div>
+
+        <!-- Message alerte-->
+        <div>
         {% if errors() %}
         <div>
             <ul>
@@ -13,19 +18,22 @@
             </ul>
         </div>
         {%endif%}
+        </div>
+
+        <!-- Formulaires Actions-->
         <form action="{{ route('register.request') }}" method="POST" novalidate>
             <div>
                 {{ csrf_field() | raw }}
-                <input name="name" size="50" type="text" value="{{ old('name') }}" placeholder="Nom complet">
-                <input name="email" size="50" type="email" value="{{ old('email') }}" placeholder="Adresse e-mail">
-                <input name="role" size="50" type="text" placeholder="Role">
-                <input name="password" size="50" type="password" placeholder="Mot de passe">
-                <input name="password_confirmation" size="50" type="password"
+                <input name="name"  type="text" value="{{ old('name') }}" placeholder="Nom complet">
+                <input name="email"  type="email" value="{{ old('email') }}" placeholder="Adresse e-mail">
+                <input name="role" type="text" placeholder="Role">
+                <input name="password"  type="password" placeholder="Mot de passe">
+                <input name="password_confirmation"  type="password"
                        placeholder="Confirmation du mot de passe">
             </div>
-            <button type="submit">Save</button>
+            <button type="submit">Enregistrer</button>
         </form>
-    </div>
+
 </div>
 </body>
 </html>
