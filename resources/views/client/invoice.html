@@ -1,0 +1,104 @@
+{% include 'includes/header.html' %}
+<title>Facture Clients | EkiCal</title>
+<body>
+
+<h2>Facture du client "{{name}}"</h2>
+
+<!-- Tableau -->
+<main class="table">
+
+<!-- Header-->
+<div class="table_header">
+    {% if auth().checkIsAdmin() %}
+    <div class="page">
+        <a href="{{ route('clientsheet') }}">
+            <img  src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                 alt="export_xlsx"/>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Tableau -->
+<section class="table_body">
+    <table>
+        <thead>
+        <tr>
+            <th>Jour</th>
+            <th>Heure</th>
+            <th>Nbre</th>
+            <th>Chevaux</th>
+            <th>Facturation</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for agendas in agenda %}
+        <tr>
+            <td>{{ agendas.jour }}</td>
+            <td>{{ agendas.start}}</td>
+            <td>{{ agendas.nbr }}</td>
+            <td>{% set count = 0 %}
+                {% for poney in poneys %}
+                {% if poney.agenda_id == agendas.id %}
+                {% set count = count + 1 %}
+                {% endif %}
+                {% endfor %}
+                {{ count }}</td>
+            <td>{{ agendas.facturation_type}}</td>
+            <td>{% set prix = 0 %}
+                {%if agendas.facturation_type == 'acte'%}
+                {% set prix = count * 50 %}
+                {%else%}
+                {% set prix = 100 %}
+                {%endif%}
+                {{ prix }} €</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>Total : </th>
+        </tr>
+        <tbody>
+
+    </table>
+</section>
+
+</main>
+
+<!-- Modale -->
+<div>
+    {% for client in client %}
+        <div id="confirm-{{ client.id }}" class="modal">
+            <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client  <br><b>{{ client.name }} ?</b></p>
+            <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
+                {{ csrf_field()|raw }}
+                {{ method('DELETE')|raw }}
+                <button type="submit" class="btn btn-danger">Confirmer</button>
+                <a href="#" class="btn btn-secondary">Annuler</a>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
+<div>
+    {% for client in client %}
+    <div id="generate-{{ client.id }}" class="modal">
+        <p class="modalText" >Êtes-vous sûr de vouloir générer la facture de  <br><b>{{ client.name }} ?</b></p>
+        <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
+            {{ csrf_field()|raw }}
+            {{ method('DELETE')|raw }}
+            <button type="submit" class="btn btn-danger">Confirmer</button>
+            <a href="#" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+
+</body>
+</html>

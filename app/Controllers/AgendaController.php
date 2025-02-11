@@ -30,7 +30,6 @@ class AgendaController extends AbstractController
         View::render('agendas.index', compact('titre', 'agenda','day','client','poneys'));
 
     }
-
     public function register(): void
     {
         $agendas = Agenda::all();
@@ -50,7 +49,11 @@ class AgendaController extends AbstractController
             Session::addFlash(Session::OLD, $_POST);
             $this->redirect('agendas.form');
         }
-
+        if ($_POST['facturation_type'] == 'acte') {
+            $prix = $_POST['nbr'] * 50;
+        }else{
+            $prix = 100;
+        }
         $agenda = Agenda::create([
             'jour'                   => $_POST['jour'],
             'start'                  => $_POST['start'],
@@ -58,6 +61,8 @@ class AgendaController extends AbstractController
             'type'                   => $_POST['type'],
             'nbr'                    => $_POST['nbr'],
             'facturation_type'       => $_POST['facturation_type'],
+            'prix'                   => $prix,
+
         ]);
 
 
@@ -234,7 +239,7 @@ class AgendaController extends AbstractController
     {
         $agenda_id = $_POST['agenda_id'];
         $poney_id  = $_POST['poney_id'];
-        $poney     = PoneyChoice::where('agenda_id', $agenda_id)->where('poney_id', $poney_id);
+        $poney = PoneyChoice::where('agenda_id', $agenda_id)->where('poney_id', $poney_id);
         $poney->delete();
         $this->redirect('agendas.edit', ['slug' => $agenda_id]);
     }

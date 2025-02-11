@@ -90,9 +90,8 @@
     {% for client in client %}
     <div id="generate-{{ client.id }}" class="modal">
         <p class="modalText" >Êtes-vous sûr de vouloir générer la facture de  <br><b>{{ client.name }} ?</b></p>
-        <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
+        <form method="GET" action="{{ route('clients.invoice', {slug: client.id}) }}">
             {{ csrf_field()|raw }}
-            {{ method('DELETE')|raw }}
             <button type="submit" class="btn btn-danger">Confirmer</button>
             <a href="#" class="btn btn-secondary">Annuler</a>
         </form>

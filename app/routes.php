@@ -69,6 +69,7 @@ return [
     'clients.editPhone' => Route::patch('/client/editPhone/{slug}', [ClientController::class, 'editPhone']),
     'clients.editTVA' => Route::patch('client/editTVA/{slug}', [ClientController::class, 'editTVA']),
     'clients.search' => Route::get('clients/search/{keyword}',[ClientController::class, 'clientSearch']),
+    'clients.invoice' => Route::get('client/invoice/{slug}',[ClientController::class, 'invoiceGenerate']),
 
     // Agenda
 

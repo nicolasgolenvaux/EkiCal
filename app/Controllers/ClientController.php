@@ -4,7 +4,9 @@
  */
 
 namespace App\Controllers;
+use App\Models\Agenda;
 use App\Models\Client;
+use App\Models\PoneyChoice;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
 use EkiCal\foundation\Session;
@@ -209,5 +211,13 @@ class ClientController extends AbstractController
             echo "Erreur lors de l'exportation : " . $e->getMessage();
         }
 
+    }
+    public function invoiceGenerate($slug): void
+    {
+        $agenda=Agenda::where('client_id', $slug)->get();
+        $name=Agenda::where('client_id', $slug)->first()->client_id;
+        $name=Client::where('id', $name)->first()->name;
+        $poneys = PoneyChoice::all();
+        View::render('client.invoice',compact('agenda','name','poneys'),);
     }
 }

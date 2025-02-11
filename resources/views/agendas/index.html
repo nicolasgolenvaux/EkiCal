@@ -59,14 +59,7 @@
                             {% endfor %}
                         {{ count }}</td>
                     <td>{{ agendas.facturation_type }}</td>
-                    <td>{% set prix = 0 %}
-                        {%if agendas.facturation_type == 'acte'%}
-                            {% set prix = count * 50 %}
-                        {%else%}
-                            {% set prix = 100 %}
-                        {%endif%}
-                        {{ prix }} €
-                    </td>
+                    <td>{{ agendas.prix }} €</td>
                     <td>
 
                         <a href="{{ route('agendas.edit', {slug: agendas.id}) }}">

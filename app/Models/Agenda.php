@@ -17,7 +17,8 @@ class Agenda extends Model
         'client_id',
         'type',
         'nbr',
-        'facturation_type'
+        'facturation_type',
+        'prix'
     ];
     public function poneyChoosen(): HasMany
     {
