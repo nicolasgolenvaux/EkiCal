@@ -5,6 +5,7 @@ use App\Controllers\AuthController;
 use App\Controllers\ClientController;
 use App\Controllers\HomeController;
 use App\Controllers\BaseController;
+use App\Controllers\InvoiceController;
 use App\Controllers\PoneyChoiceController;
 use EkiCal\foundation\Router\Route;
 use App\Controllers\UserController;
@@ -79,13 +80,18 @@ return [
     'agendas.editStart' => Route::patch('/agenda/editStart/{slug}', [AgendaController::class, 'editStart']),
     'agendas.editNbr' => Route::patch('/agenda/editNbr/{slug}', [AgendaController::class, 'editNbr']),
     'agendas.editType' => Route::patch('/agenda/editType/{slug}', [AgendaController::class, 'editType']),
+    'agendas.editFact' => Route::patch('/agenda/editFact/{slug}', [AgendaController::class, 'editFact']),
     'poneyAgenda.delete' => Route::delete('/deletePoneyAgenda', [AgendaController::class, 'deletePoneyAgenda']),
 
     // PoneyChoice
 
     'registerPoneyChoice' => Route::post('/registerPoneyChoice', [PoneyChoiceController::class, 'registerPoneyChoice']),
 
-    // export Excell
+    // Invoices
+    'invoices' => Route::get('/invoices', [InvoiceController::class, 'index']),
+
+
+// export Excell
 
     'sheet' => Route::get('/export', [UserController::class, 'export']),
     'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),

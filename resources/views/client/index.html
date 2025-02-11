@@ -1,11 +1,12 @@
 {% include 'includes/header.html' %}
-<title>Clientss | EkiCal</title>
+<title>Clients | EkiCal</title>
 <body>
 
 <h2>{{titre}}</h2>
-
+<!-- Tableau -->
+<main class="table">
 <!-- Formulaire de recherche-->
-<div>
+<div class="fo">
     <form name="fo" method="get" action="">
         <input type="text" name="keywords" placeholder="Rechercher un client">
         <button type="submit" name="valider" value="Rechercher">Rechercher</button>
@@ -14,12 +15,11 @@
 </div>
 
 <!-- Header-->
-<section class="table_header">
-
+<div class="table_header">
     {% if auth().checkIsAdmin() %}
     <div class="page">
         <a href="{{ route('clients.form') }}">
-            <img src="/img/adduse.png" title="Ajoutez un poney" height="38" width="38" alt="add"/>
+            <img src="/img/adduse.png" title="Ajouter un client" height="38" width="38" alt="add"/>
         </a>
         <a href="{{ route('clientsheet') }}">
             <img  src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
@@ -27,7 +27,7 @@
         </a>
     </div>
     {% endif %}
-</section>
+</div>
 
 <!-- Tableau -->
 <section class="table_body">
@@ -57,6 +57,10 @@
                     <input class="icon" type="image" src="/img/drop.webp" title="Effacer un client" height="25" width="25"
                            alt="remove"/>
                 </a>
+                <a href="#generate-{{ client.id }}">
+                    <input class="icon" type="image" src="/img/invoices.png" title="Générer une facture" height="25" width="25"
+                           alt="remove"/>
+                </a>
             </td>
             {% endif %}
         </tr>
@@ -65,12 +69,13 @@
     </table>
 </section>
 
+</main>
 
 <!-- Modale -->
 <div>
     {% for client in client %}
         <div id="confirm-{{ client.id }}" class="modal">
-            <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client ? <br><b>{{ client.name }} ?</b></p>
+            <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client  <br><b>{{ client.name }} ?</b></p>
             <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
                 {{ csrf_field()|raw }}
                 {{ method('DELETE')|raw }}
@@ -78,6 +83,20 @@
                 <a href="#" class="btn btn-secondary">Annuler</a>
             </form>
         </div>
+    {% endfor %}
+</div>
+
+<div>
+    {% for client in client %}
+    <div id="generate-{{ client.id }}" class="modal">
+        <p class="modalText" >Êtes-vous sûr de vouloir générer la facture de  <br><b>{{ client.name }} ?</b></p>
+        <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
+            {{ csrf_field()|raw }}
+            {{ method('DELETE')|raw }}
+            <button type="submit" class="btn btn-danger">Confirmer</button>
+            <a href="#" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
     {% endfor %}
 </div>
 

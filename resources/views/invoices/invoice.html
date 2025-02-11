@@ -1,0 +1,64 @@
+{% include 'includes/header.html' %}
+<title>Facturation | EkiCal</title>
+<body>
+
+<h2>{{titre}}</h2>
+
+<main class="table">
+<!-- Header-->
+<div class="table_header">
+    {% if auth().checkIsAdmin() %}
+    <div class="page">
+        <a href="{{ route('clients.form') }}">
+            <img src="/img/adduse.png" title="Ajoutez un poney" height="38" width="38" alt="add"/>
+        </a>
+        <a href="{{ route('clientsheet') }}">
+            <img  src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                  alt="export_xlsx"/>
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<!-- Tableau -->
+<section class="table_body">
+    <table>
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>N° Entreprise</th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for invoices in invoices %}
+        <tr>
+            <td>{{ invoices.name }}</td>
+            <td>{{ invoices.email }}</td>
+            <td>{{ invoices.tva }}</td>
+            <td>{{ invoices.phone }}</td>
+            {% if auth().checkIsAdmin() %}
+            <td>
+                <a href="{{ route('clients.edit', {slug:client.id}) }}">
+                    <input class="icon" type="image" src="/img/edit.png" title="Modifier une facture" height="22" width="22"
+                           alt="edit"/></a>
+                <a href="{{ route('clients.edit', {slug:client.id}) }}">
+                    <input class="icon" type="image" src="/img/loupe.png" title="Voir une facture" height="22" width="22"
+                           alt="edit"/></a>
+                <a href="#confirm-{{ client.id }}">
+                    <input class="icon" type="image" src="/img/drop.webp" title="Effacer une facture" height="25" width="25"
+                           alt="remove"/>
+                </a>
+            </td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+</main>
+</body>
+</html>

@@ -61,7 +61,6 @@ form,.kpi2 {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
 .kpi2{
     display: block;
     justify-content: center;
@@ -130,6 +129,18 @@ input:focus {
 div > div {
     margin-bottom: 15px;
 }
-.col{
+.col {
+   width: 700px;
+}
+.k{
+    width: 500px;
     display: flex;
+    flex-wrap: wrap;
+}
+.formD{
+    width: 250px;
+}
+.fo{
+    width: 400px;
+    margin-left: 20px;
 }

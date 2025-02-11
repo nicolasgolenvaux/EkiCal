@@ -45,11 +45,9 @@
             </div>
         </div>
 
-
         <!-- Poneys sélectionnés-->
-        <div class="col">
+        <div class="k">
             {% for poneyNames in poneyName %}
-            <p class="picon">
                 <form method="POST" action="{{ route('poneyAgenda.delete') }}">
                         {{ method('DELETE')|raw }}
                         {{ csrf_field()|raw }}
@@ -72,7 +70,29 @@
         </div>
 
         <!-- Formulaires d'édition-->
-        <div class="col">
+        <div class="k">
+            <form action="{{ route('registerPoneyChoice') }}" method="POST" novalidate>
+                {{ csrf_field()|raw }}
+                <input type="hidden" name="agenda_id" value="{{ agendas.id }}">
+                <div>
+                    <select name="poney_id" id="poney_id" required>
+                        <option value="" disabled selected>Poney</option>
+                        {% for poney in poneys %}
+                        {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
+                        <option value="{{ poney.id }}"
+                                {% if poney.id in poneysChoice or (matching_count and (matching_count.total/poney.tps_w) * 100 >= 100) %}
+                        disabled
+                        {% endif %}>
+                        {{ poney.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div>
+                    <button type="submit">Choisir</button>
+                </div>
+            </form>
             <form action="{{ route('agendas.editStart', {slug: agendas.id}) }}" method="POST" novalidate>
                 <div>
                     <div>
@@ -147,33 +167,30 @@
                     <button type="submit">Modifier</button>
                 </div>
             </form>
-            <form action="{{ route('registerPoneyChoice') }}" method="POST" novalidate>
-                {{ csrf_field()|raw }}
-                <input type="hidden" name="agenda_id" value="{{ agendas.id }}">
+            <form action="{{ route('agendas.editFact', {slug: agendas.id}) }}" method="POST" novalidate>
                 <div>
-                    <select name="poney_id" id="poney_id" required>
-                        <option value="" disabled selected>Poney</option>
-                        {% for poney in poneys %}
-                            {% set matching_count = counts|filter(count => count.poney_id == poney.id)|first %}
-                                <option value="{{ poney.id }}"
-                                    {% if poney.id in poneysChoice or (matching_count and (matching_count.total/poney.tps_w) * 100 >= 100) %}
-                                        disabled
-                                    {% endif %}>
-                            {{ poney.name }}
-                        </option>
-                        {% endfor %}
-                    </select>
-
+                    <div>
+                        {{ csrf_field()|raw }}
+                        {{ method('PATCH')|raw }}
+                        <div>
+                            <div>
+                                <input name="id" value="{{ poney.id }}" type="hidden">
+                                <select name="facturation_type" id="facturation_type" required>
+                                    <option value="" disabled selected>Facturation</option>
+                                    <option value="forfait">Forfait</option>
+                                    <option value="acte">A l'acte</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    <button type="submit">Choisir</button>
+                    <button type="submit">Modifier</button>
                 </div>
             </form>
-
         </div>
 
     </div>
-
 </div>
 
 </body>

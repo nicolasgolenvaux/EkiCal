@@ -30,8 +30,10 @@
                 <th>fin</th>
                 <th>Client</th>
                 <th>Type</th>
-                <th>Participants</th>
+                <th>Nbr</th>
                 <th>Poneys</th>
+                <th>Fact.</th>
+                <th>Prix</th>
                 <th></th>
             </tr>
             </thead>
@@ -56,17 +58,23 @@
                                 {% endif %}
                             {% endfor %}
                         {{ count }}</td>
+                    <td>{{ agendas.facturation_type }}</td>
+                    <td>{% set prix = 0 %}
+                        {%if agendas.facturation_type == 'acte'%}
+                            {% set prix = count * 50 %}
+                        {%else%}
+                            {% set prix = 100 %}
+                        {%endif%}
+                        {{ prix }} €
+                    </td>
                     <td>
+
                         <a href="{{ route('agendas.edit', {slug: agendas.id}) }}">
                             <input class="iconBis" type="image" src="/img/edit.png" title="Modifier ou attribuer un poney"
                                    height="22" width="22" alt="edit"/></a>
                         <a href="#confirm-{{ agendas.id }}">
                             <input class="icon" type="image" src="/img/drop.webp" title="Effacer"
                                    height="25" width="25" alt="remove"/>
-                        </a>
-                        <a href="#invoice-{{ agendas.id }}">
-                            <input class="icon" type="image" src="/img/bill.png" title="Facturer"
-                                   height="25" width="25" alt="invoice"/>
                         </a>
                     </td>
 

@@ -5,15 +5,17 @@
         <h2>{{titre}}</h2>
     </div>
 
+    <!-- Tableau -->
+<main class="table">
     <!-- Header -->
 <section class="table_header">
     {% if auth().checkIsAdmin() %}
     <div class="page">
         <a href="{{ route('poney.form') }}">
-            <img src="/img/adduse.png" title="Ajoutez un poney" height="38" width="38" alt="add"/>
+            <img   src="/uploads/horse.JPG" title="Ajoutez un poney" height="45" width="45" alt="add"/>
         </a>
         <a href="{{ route('poneysheet') }}">
-            <img class="icon" src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"  alt="export_xlsx"/>
+            <img  src="/img/exportexcel.png" title="exporter en xlsx"  height="34" width="34" alt="export_xlsx"/>
         </a>
     </div>
     {% endif %}
@@ -54,7 +56,7 @@
         </tbody>
     </table>
 </section>
-
+</main>
 <!-- Modale -->
  <div>
     {% for poney in poney %}

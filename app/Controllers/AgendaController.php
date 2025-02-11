@@ -37,11 +37,12 @@ class AgendaController extends AbstractController
 
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
-            'jour'       => ['required'],
-            'start'      => ['required',['checkAvailable',['jour','start']]],
-            'client_id'  => ['required'],
-            'type'       => ['required'],
-            'nbr'        => ['required'],
+            'jour'                    => ['required'],
+            'start'                   => ['required',['checkAvailable',['jour','start']]],
+            'client_id'               => ['required'],
+            'type'                    => ['required'],
+            'nbr'                     => ['required'],
+            'facturation_type'        => ['required']
         ]);
 
         if (!$validator->validate()) {
@@ -51,11 +52,12 @@ class AgendaController extends AbstractController
         }
 
         $agenda = Agenda::create([
-            'jour'      => $_POST['jour'],
-            'start'     => $_POST['start'],
-            'client_id' => $_POST['client_id'],
-            'type'      => $_POST['type'],
-            'nbr'       => $_POST['nbr'],
+            'jour'                   => $_POST['jour'],
+            'start'                  => $_POST['start'],
+            'client_id'              => $_POST['client_id'],
+            'type'                   => $_POST['type'],
+            'nbr'                    => $_POST['nbr'],
+            'facturation_type'       => $_POST['facturation_type'],
         ]);
 
 
@@ -163,6 +165,27 @@ class AgendaController extends AbstractController
         $agenda->save();
 
         Session::addFlash(Session::STATUS, 'Le type du participant a été mis à jour !');
+        $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+    }
+
+    public function editFact($slug): void
+    {
+        $agenda    = Agenda::where('id', $slug)->firstOrFail();
+
+        $validator = Validator::get($_POST);
+        $validator->mapFieldsRules([
+            'facturation_type' => ['required']
+        ]);
+
+        if (!$validator->validate()) {
+            Session::addFlash(Session::ERRORS, $validator->errors());
+            Session::addFlash(Session::OLD, $_POST);
+            $this->redirect('agendas.edit', ['slug' => $agenda->id]);
+        }
+
+        $agenda->facturation_type= $_POST['facturation_type'];
+        $agenda->save();
+        Session::addFlash(Session::STATUS, 'Le type de facturation a été mis à jour !');
         $this->redirect('agendas.edit', ['slug' => $agenda->id]);
     }
     public function delete($slug): void
