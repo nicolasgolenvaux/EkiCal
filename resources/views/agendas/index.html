@@ -2,7 +2,19 @@
 <title>Agenda | EkiCal</title>
 <body>
 
-<h2>{{titre}} du {{ "now"|date("d-m-Y") }}</h2>
+<!-- Calendrier -->
+
+<h1>{{titre}} du</h1>
+<div class="identityCard">
+    <a href="?day={{ previous_day }}" class="btn">
+        <img src="/img/previous.png" height="25" width="25" title="jour précédent"/>
+    </a>
+    <h3><strong>{{ day }}</strong></h3>
+   <a href="?day={{ next_day }}" class="btn">
+      <img src="/img/next.png" height="25" width="25" title="jour suivant"/>
+   </a>
+</div>
+
 
 <!-- Tableau -->
 <main class="table">
@@ -38,36 +50,38 @@
             </tr>
             </thead>
             <tbody>
-            {% for agendas in agenda %}
-                {% if agendas.jour == day %}
-                <tr>
-                    <td>{{ agendas.start }}</td>
-                    <td>{{ agendas.start|date_modify('+1 hour')|date('H:i') }}</td>
-                    <td>{% for client in client %}
-                                {%if client.id == agendas.client_id %}
-                                    {{ client.name}}
-                                {% endif%}
-                        {% endfor%}
-                    </td>
-                    <td>{{ agendas.type }}</td>
-                    <td>{{ agendas.nbr }}</td>
-                    <td>{% set count = 0 %}
-                            {% for poney in poneys %}
-                                {% if poney.agenda_id == agendas.id %}
-                                    {% set count = count + 1 %}
-                                {% endif %}
-                            {% endfor %}
-                        {{ count }}</td>
-                    <td>{{ agendas.facturation_type }}</td>
-                    <td>{{ agendas.prix }} €</td>
+            {% for agendas in agendas %}
+            {% if agendas.jour == day %}
+            <tr>
+                <td>{{ agendas.start }}</td>
+                <td>{{ agendas.start|date_modify('+1 hour')|date('H:i') }}</td>
+                <td>
+                    {% for client in clients %}
+                    {% if client.id == agendas.client_id %}
+                    {{ client.name }}
+                    {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ agendas.type }}</td>
+                <td>{{ agendas.nbr }}</td>
+                <td>
+                    {% set count = 0 %}
+                    {% for poney in poneys %}
+                    {% if poney.agenda_id == agendas.id %}
+                    {% set count = count + 1 %}
+                    {% endif %}
+                    {% endfor %}
+                    {{ count }}
+                </td>
+                <td>{{ agendas.facturation_type }}</td>
+                <td>{{ agendas.prix }} €</td>
                     <td>
 
                         <a href="{{ route('agendas.edit', {slug: agendas.id}) }}">
                             <input class="iconBis" type="image" src="/img/edit.png" title="Modifier ou attribuer un poney"
                                    height="22" width="22" alt="edit"/></a>
                         <a href="#confirm-{{ agendas.id }}">
-                            <input class="icon" type="image" src="/img/drop.webp" title="Effacer"
-                                   height="25" width="25" alt="remove"/>
+                            <input class="icon" type="image" src="/img/drop.webp" title="Effacer" height="25" width="25" alt="remove"/>
                         </a>
                     </td>
 
@@ -94,20 +108,6 @@
         </div>
     {% endfor %}
 
-    <!-- Modale 2-->
-    {% for agendas in agenda %}
-        <div id="invoice-{{ agendas.id }}" class="modal">
-            <p class="modalText" >Êtes-vous sûr de vouloir facturer le rendez-vous ?<br>
-                <b>Cette action est irréversible.</b>
-            </p>
-            <form method="POST" action="">
-                {{ csrf_field()|raw }}
-                {{ method('DELETE')|raw }}
-                <button type="submit" class="btn btn-danger">Confirmer</button>
-                <a href="#" class="btn btn-secondary">Annuler</a>
-            </form>
-        </div>
-    {% endfor %}
 </div>
 
 </body>

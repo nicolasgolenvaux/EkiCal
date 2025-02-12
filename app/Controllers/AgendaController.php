@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Hours;
 use App\Models\Poney;
 use App\Models\PoneyChoice;
+use DateTime;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
 use EkiCal\foundation\Session;
@@ -24,11 +25,28 @@ class AgendaController extends AbstractController
     {
         $titre  = 'Agenda';
         $agenda = Agenda::all();
-        $day    = date('Y-m-d');
+        $day = isset($_GET['day']) ? $_GET['day'] : date('Y-m-d');
+        try {
+            $date = new DateTime($day);
+        } catch (Exception $e) {
+            $date = new DateTime(); // En cas d'erreur, on prend la date du jour
+        }
+        $previous_day = clone $date;
+        $previous_day->modify('-1 day');
+        $next_day = clone $date;
+        $next_day->modify('+1 day');
         $client  = Client::select('id', 'name')->get();
         $poneys = PoneyChoice::all();
-        View::render('agendas.index', compact('titre', 'agenda','day','client','poneys'));
-
+//dd($agenda,$day);
+        View::render('agendas.index',  [
+            'day'           => $date->format('Y-m-d'),
+            'previous_day'  => $previous_day->format('Y-m-d'),
+            'next_day'      => $next_day->format('Y-m-d'),
+            'titre'         => $titre,
+            'poneys'        => $poneys,
+            'clients'       => $client,
+            'agendas'       => $agenda,
+            ]);
     }
     public function register(): void
     {
@@ -146,6 +164,11 @@ class AgendaController extends AbstractController
         }
 
         $agenda->nbr= $_POST['nbr'];
+        if( $agenda->facturation_type == 'acte' ) {
+        $agenda->prix= $_POST['nbr']*50;
+        }else{
+            $agenda->prix= 100;
+        }
         $agenda->save();
 
         Session::addFlash(Session::STATUS, 'Le nombre de participant a été mis à jour !');
@@ -179,7 +202,8 @@ class AgendaController extends AbstractController
 
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
-            'facturation_type' => ['required']
+            'facturation_type' => ['required'],
+            'nbr'  => ['required']
         ]);
 
         if (!$validator->validate()) {
@@ -189,6 +213,11 @@ class AgendaController extends AbstractController
         }
 
         $agenda->facturation_type= $_POST['facturation_type'];
+        if( $agenda->facturation_type == 'acte' ) {
+            $agenda->prix= $_POST['nbr']*50;
+        }else{
+            $agenda->prix= 100;
+        }
         $agenda->save();
         Session::addFlash(Session::STATUS, 'Le type de facturation a été mis à jour !');
         $this->redirect('agendas.edit', ['slug' => $agenda->id]);

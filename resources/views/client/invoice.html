@@ -2,7 +2,7 @@
 <title>Facture Clients | EkiCal</title>
 <body>
 
-<h2>Facture du client "{{name}}"</h2>
+<h2>Facture du client "{{client.name}}"</h2>
 
 <!-- Tableau -->
 <main class="table">
@@ -46,23 +46,24 @@
                 {% endfor %}
                 {{ count }}</td>
             <td>{{ agendas.facturation_type}}</td>
-            <td>{% set prix = 0 %}
-                {%if agendas.facturation_type == 'acte'%}
-                {% set prix = count * 50 %}
-                {%else%}
-                {% set prix = 100 %}
-                {%endif%}
-                {{ prix }} €</td>
+            <td>{{ agendas.prix }} €</td>
         </tr>
         {% endfor %}
         </tbody>
-        <tr>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>Total : </th>
+        <tr><th></th><th></th><th></th><th></th><th></th>
+            <th>
+                <h5>htva : {{ htva | number_format(2, '.', ' ') }} euros </h5>
+            </th>
+        </tr>
+        <tr><th></th><th></th><th></th><th></th><th></th>
+            <th>
+                <h5> tva : {{ tva | number_format(2, '.', ' ') }}  euros</h5>
+            </th>
+        </tr>
+        <tr><th></th><th></th><th></th><th></th><th></th>
+            <th>
+                <h4>    Total : {{ total  | number_format(2, '.', ' ') }} euros</h4>
+            </th>
         </tr>
         <tbody>
 

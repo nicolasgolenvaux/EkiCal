@@ -144,3 +144,13 @@ div > div {
     width: 400px;
     margin-left: 20px;
 }
+.cal{
+    display: flex;
+    vertical-align: top;
+
+
+}
+.cal2{
+    display: flex;
+    vertical-align: center;
+}

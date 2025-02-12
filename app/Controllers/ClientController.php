@@ -6,6 +6,7 @@
 namespace App\Controllers;
 use App\Models\Agenda;
 use App\Models\Client;
+use App\Models\Invoice;
 use App\Models\PoneyChoice;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
@@ -215,9 +216,19 @@ class ClientController extends AbstractController
     public function invoiceGenerate($slug): void
     {
         $agenda=Agenda::where('client_id', $slug)->get();
-        $name=Agenda::where('client_id', $slug)->first()->client_id;
-        $name=Client::where('id', $name)->first()->name;
+        //$name=Agenda::where('client_id', $slug)->first()->client_id;
+        $client=Client::where('id', $slug)->first();
         $poneys = PoneyChoice::all();
-        View::render('client.invoice',compact('agenda','name','poneys'),);
+        $total = $agenda->sum('prix');
+        $htva = $total / 1.21;
+        $tva = $total * 0.21;
+
+//        $invoice = Invoice::create([
+//            'name' => $name,
+//            'email' => $['email'],
+//            'phone' => $_POST['phone']
+
+
+        View::render('client.invoice',compact('agenda','client','poneys','total','htva','tva'));
     }
 }
