@@ -7,7 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Invoice extends Model
 {
     protected $fillable = [
-
+        'id',
+        'name' ,
+        'email',
+        'jour',
+        'heure',
+        'nbr',
+        'facturation_type',
+        'qt',
+        'prix',
+        'total' ,
+        'htva',
+        'tva'
     ];
 
 }

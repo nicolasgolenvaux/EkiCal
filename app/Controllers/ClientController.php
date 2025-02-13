@@ -216,18 +216,28 @@ class ClientController extends AbstractController
     public function invoiceGenerate($slug): void
     {
         $agenda=Agenda::where('client_id', $slug)->get();
-        //$name=Agenda::where('client_id', $slug)->first()->client_id;
         $client=Client::where('id', $slug)->first();
         $poneys = PoneyChoice::all();
         $total = $agenda->sum('prix');
-        $htva = $total / 1.21;
+        $htva = $total * 0.79;
         $tva = $total * 0.21;
 
-//        $invoice = Invoice::create([
-//            'name' => $name,
-//            'email' => $['email'],
-//            'phone' => $_POST['phone']
-
+        for ($i = 0; $i < count($agenda); $i++) {
+        $invoice = Invoice::create([
+            'id' => $agenda[$i]->id."/".date('Ymd'),
+            'name' => $client->name,
+            'email' => $client->email,
+            'jour' => $agenda[$i]->jour,
+            'heure' => $agenda[$i]->start,
+            'nbr' => $agenda[$i]->nbr,
+            'facturation_type' => $agenda[$i]->facturatin_type,
+            'prix' => $agenda[$i]->prix,
+            'qt' => $agenda->count(),
+            'total' => $total,
+            'htva' => $htva,
+            'tva' => $tva,
+        ]);
+        }
 
         View::render('client.invoice',compact('agenda','client','poneys','total','htva','tva'));
     }
