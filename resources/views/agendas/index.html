@@ -96,7 +96,7 @@
 <!-- Modales -->
 <div>
     <!-- Modale 1 -->
-    {% for agendas in agenda %}
+    {% for agendas in agendas %}
         <div id="confirm-{{ agendas.id }}" class="modal">
             <p class="modalText"><b>Êtes-vous sûr de vouloir supprimer le rendez-vous ?</b></p>
             <form method="POST" action="{{ route('agendas.delete', {slug: agendas.id}) }}">

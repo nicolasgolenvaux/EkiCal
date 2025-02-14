@@ -29,7 +29,6 @@
             <th>Date de facturation</th>
             <th></th>
             <th></th>
-
         </tr>
         </thead>
         <tbody>
@@ -41,14 +40,10 @@
             <td>{{ invoices.updated_at }}</td>
             <td></td>
             {% if auth().checkIsAdmin() %}
-            <td>
-<!--                <a href="">-->
-<!--                    <input class="icon" type="image" src="/img/edit.png" title="Modifier une facture" height="22" width="22"-->
-<!--                           alt="edit"/></a>-->
-<!--                <a href="">-->
+            <td>   <a href="{{ route('invoices.show', {slug: invoices.id}) }}">
                     <input class="icon" type="image" src="/img/loupe.png" title="Voir une facture" height="22" width="22"
                            alt="edit"/></a>
-                <a href="#confirm-{{ invoice.id }}">
+                <a href="#confirm-{{ invoices.id }}">
                     <input class="icon" type="image" src="/img/drop.webp" title="Effacer une facture" height="25" width="25"
                            alt="remove"/>
                 </a>
@@ -62,10 +57,10 @@
 
   <!--Modale-->
     <div>
-        {% for invoice in invoices %}
-        <div id="confirm-{{ invoice.id }}" class="modal">
-            <p class="modalText" >Êtes-vous sûr de vouloir supprimer la facture de  <br><b>{{ client.name }} ?</b></p>
-            <form method="POST" action="">
+        {% for invoices in invoices %}
+        <div id="confirm-{{ invoices.id }}" class="modal">
+            <p class="modalText" >Êtes-vous sûr de vouloir supprimer la facture de  <br><b>{{ invoices.name }} ?</b></p>
+            <form method="POST" action="{{ route('invoices.delete', {slug: invoices.id}) }}">
                 {{ csrf_field()|raw }}
                 {{ method('DELETE')|raw }}
                 <button type="submit" class="btn btn-danger">Confirmer</button>

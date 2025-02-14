@@ -1,0 +1,55 @@
+{% include 'includes/header.html' %}
+<title>Facturation | EkiCal</title>
+<body>
+
+<h2>Facture N° {{invoice.id}}</h2>
+
+<main class="table">
+
+<!-- Header-->
+<div class="table_header">
+    <div class="page">
+        <a href="{{ route('clientsheet') }}">
+            <img  src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
+                  alt="export_xlsx"/>
+        </a>
+    </div>
+</div>
+
+<!-- Tableau -->
+<section class="table_body">
+    <table>
+        <thead>
+        <tr>
+            <th>Jour</th>
+            <th>Heure</th>
+            <th>Nbr</th>
+            <th>facturation</th>
+            <th>Prix</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for invoices in invoice %}
+        <tr>
+            <td>{{ invoices.jour}}</td>
+            <td>{{ invoices.heure}}</td>
+            <td>{{ invoices.nbr }} cavaliers</td>
+            <td>{{ invoices.facturation_type}}</td>
+            <td>{{ invoices.prix }} €</td>
+            <td></td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="invoice">
+        <h4 >Htva : {{ htva }} €</h4>
+        <h4>Tva : {{ tva }} €</h4>
+        <h4>Total : {{ total }} €</h4>
+    </div>
+</section>
+
+
+</main>
+</body>
+</html>

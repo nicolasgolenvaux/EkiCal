@@ -89,6 +89,8 @@ return [
 
     // Invoices
     'invoices' => Route::get('/invoices', [InvoiceController::class, 'index']),
+    'invoices.delete' => Route::delete('/deleteInvoice/{slug}', [InvoiceController::class, 'delete']),
+    'invoices.show' => Route::get('/showInvoice/{slug}', [InvoiceController::class, 'show']),
 
 
 // export Excell

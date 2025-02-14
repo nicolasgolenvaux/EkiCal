@@ -16,6 +16,7 @@ use App\Models\PoneyChoice;
 use App\Models\User;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\View;
+use EkiCal\foundation\Authentication as Auth;
 
 
 class InvoiceController extends AbstractController
@@ -26,5 +27,22 @@ class InvoiceController extends AbstractController
         $invoices = Invoice::select('id','name','total','updated_at')->orderBy('id')->groupBy('id')->get();
         View::render('invoices.index', compact('titre', 'invoices'));
     }
+    public function delete($slug): void
+    {
+        if (!Auth::checkIsAdmin()) {
+            $this->redirect('login.form');
+        }
+        $invoices = Invoice::where('id', $slug)->firstOrFail();
+        $invoices->delete();
+        $this->redirect('invoices');
+    }
+    public function show($slug): void
+    {
+        $invoice= Invoice::all()->where('id', $slug);
+        $total = $invoice->first()->total;
+        $tva = $invoice->first()->tva;
+        $htva = $invoice->first()->htva;
+        View::render('invoices.show', compact( 'invoice', 'total','tva','htva'));
 
+    }
 }

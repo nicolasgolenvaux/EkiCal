@@ -154,3 +154,11 @@ div > div {
     display: flex;
     vertical-align: center;
 }
+.invoice {
+    display: flex;
+    flex-direction: column; /* Empile verticalement */
+    align-items: flex-end; /* Aligne à droite */
+    border: 1px solid black; /* Pour visualiser */
+    padding: 10px;
+}
+

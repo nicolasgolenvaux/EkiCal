@@ -67,7 +67,7 @@
 <div>
     {% for client in client %}
         <div id="confirm-{{ client.id }}" class="modal">
-            <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client  <br><b>{{ client.name }} ?</b></p>
+            <p class="modalText" >Êtes-vous sûr de vouloir supprimer le client <br><b>{{ client.name }} ?</b></p>
             <form method="POST" action="{{ route('clients.delete', {slug: client.id}) }}">
                 {{ csrf_field()|raw }}
                 {{ method('DELETE')|raw }}
