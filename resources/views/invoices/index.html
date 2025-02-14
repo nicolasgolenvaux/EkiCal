@@ -2,7 +2,7 @@
 <title>Facturation | EkiCal</title>
 <body>
 
-<h2></h2>
+<h2>{{ titre}}</h2>
 
 <main class="table">
 
@@ -23,27 +23,29 @@
     <table>
         <thead>
         <tr>
-            <th>N°</th>
+            <th>N° Facture</th>
             <th>Nom</th>
             <th>Total</th>
-            <th>Date</th>
+            <th>Date de facturation</th>
             <th></th>
+            <th></th>
+
         </tr>
         </thead>
         <tbody>
-        <!--{% for invoice in invoices %}
+        {% for invoices in invoices %}
         <tr>
             <td>{{ invoices.id }}</td>
-            <td>{{ invoices.nom }}</td>
-            <td></td>
-            <td>{{ invoices.date }}</td>
+            <td>{{ invoices.name}}</td>
+            <td>{{ invoices.total}} €</td>
+            <td>{{ invoices.updated_at }}</td>
             <td></td>
             {% if auth().checkIsAdmin() %}
             <td>
-                <a href="">
-                    <input class="icon" type="image" src="/img/edit.png" title="Modifier une facture" height="22" width="22"
-                           alt="edit"/></a>
-                <a href="">
+<!--                <a href="">-->
+<!--                    <input class="icon" type="image" src="/img/edit.png" title="Modifier une facture" height="22" width="22"-->
+<!--                           alt="edit"/></a>-->
+<!--                <a href="">-->
                     <input class="icon" type="image" src="/img/loupe.png" title="Voir une facture" height="22" width="22"
                            alt="edit"/></a>
                 <a href="#confirm-{{ invoice.id }}">
@@ -58,7 +60,7 @@
     </table>
 </section>
 
-  Modale
+  <!--Modale-->
     <div>
         {% for invoice in invoices %}
         <div id="confirm-{{ invoice.id }}" class="modal">
@@ -72,6 +74,6 @@
         </div>
         {% endfor %}
     </div>
-</main>-->
+</main>
 </body>
 </html>

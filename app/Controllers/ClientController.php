@@ -32,20 +32,6 @@ class ClientController extends AbstractController
     {
         View::render('client.register');
     }
-    public function clientSearch($keywords): void
-
-    {
-        $name = Client::select('name')->get();
-        $keywords=$_GET['keywords'];
-        $valider=$_GET['valider'];
-        if(isset($valider) && !empty(trim($keywords))){
-            $res = $name->where('name', 'like', '%' . $keywords . '%')->get();
-            echo $res;
-        }
-        else{
-            echo 'aucun client trouvé.';
-        }
-    }
 
     public function register(): void
     {
@@ -224,19 +210,21 @@ class ClientController extends AbstractController
 
         for ($i = 0; $i < count($agenda); $i++) {
         $invoice = Invoice::create([
-            'id' => $agenda[$i]->id."/".date('Ymd'),
-            'name' => $client->name,
-            'email' => $client->email,
-            'jour' => $agenda[$i]->jour,
-            'heure' => $agenda[$i]->start,
-            'nbr' => $agenda[$i]->nbr,
-            'facturation_type' => $agenda[$i]->facturatin_type,
-            'prix' => $agenda[$i]->prix,
-            'qt' => $agenda->count(),
-            'total' => $total,
-            'htva' => $htva,
-            'tva' => $tva,
+            'id'                => $agenda[0]->id.date('Ymd'),
+            'name'              => $client->name,
+            'email'             => $client->email,
+            'jour'              => $agenda[$i]->jour,
+            'heure'             => $agenda[$i]->start,
+            'nbr'               => $agenda[$i]->nbr,
+            'facturation_type'  => $agenda[$i]->facturation_type,
+            'prix'              => $agenda[$i]->prix,
+            'qt'                => $agenda->count(),
+            'total'             => $total,
+            'htva'              => $htva,
+            'tva'               => $tva,
         ]);
+
+            Agenda::where('client_id', $slug)->delete();
         }
 
         View::render('client.invoice',compact('agenda','client','poneys','total','htva','tva'));

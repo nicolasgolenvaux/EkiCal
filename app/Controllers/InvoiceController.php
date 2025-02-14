@@ -11,6 +11,7 @@ namespace App\Controllers;
 
 use App\Models\Agenda;
 use App\Models\Client;
+use App\Models\Invoice;
 use App\Models\PoneyChoice;
 use App\Models\User;
 use EkiCal\foundation\AbstractController;
@@ -22,11 +23,8 @@ class InvoiceController extends AbstractController
     public function index(): void
     {
         $titre  = 'Facturation';
-        $agenda = Agenda::all();
-        $day    = date('Y-m-d');
-        $client  = Client::select('id', 'name')->get();
-        $poneys = PoneyChoice::all();
-        View::render('invoices.index', compact('titre', 'agenda','day','client','poneys'));
+        $invoices = Invoice::select('id','name','total','updated_at')->orderBy('id')->groupBy('id')->get();
+        View::render('invoices.index', compact('titre', 'invoices'));
     }
 
 }

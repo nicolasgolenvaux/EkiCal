@@ -18,7 +18,9 @@ class Invoice extends Model
         'prix',
         'total' ,
         'htva',
-        'tva'
+        'tva',
+        'updated_at',
+        'created_at'
     ];
 
 }

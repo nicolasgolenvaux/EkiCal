@@ -5,14 +5,6 @@
 <h2>{{titre}}</h2>
 <!-- Tableau -->
 <main class="table">
-<!-- Formulaire de recherche-->
-<div class="fo">
-    <form name="fo" method="get" action="">
-        <input type="text" name="keywords" placeholder="Rechercher un client">
-        <button type="submit" name="valider" value="Rechercher">Rechercher</button>
-        <p> {{ res }}
-    </form>
-</div>
 
 <!-- Header-->
 <div class="table_header">
@@ -90,6 +82,7 @@
     {% for client in client %}
     <div id="generate-{{ client.id }}" class="modal">
         <p class="modalText" >Êtes-vous sûr de vouloir générer la facture de  <br><b>{{ client.name }} ?</b></p>
+        <p class="modalText" >Cette action effacera toutes les prestations de {{ client.name }} et les classera dans la table Facturation</b></p>
         <form method="GET" action="{{ route('clients.invoice', {slug: client.id}) }}">
             {{ csrf_field()|raw }}
             <button type="submit" class="btn btn-danger">Confirmer</button>
