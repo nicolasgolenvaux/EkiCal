@@ -1,5 +1,5 @@
 <?php
-
+// Ce tableau permet de donner un texte conforme à la langue voulue.
 return [
     'email'                 => 'L\'adresse e-mail',
     'name'                  => 'Le nom complet',

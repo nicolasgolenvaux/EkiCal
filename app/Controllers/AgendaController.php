@@ -19,13 +19,18 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\hasMany;
+
 class AgendaController extends AbstractController
 {
+    /** Cette méthode affiche la liste des rendez-vous du jour actuel. Elle ramène les champs de la table
+     * poneyChoice, agendas et le nom et l'id des clients.
+     * @return void
+     */
     public function index(): void
     {
         $titre  = 'Agenda';
         $agenda = Agenda::all();
-        $day = isset($_GET['day']) ? $_GET['day'] : date('Y-m-d');
+        $day = $_GET['day'] ?? date('Y-m-d');
         try {
             $date = new DateTime($day);
         } catch (Exception $e) {
@@ -37,7 +42,7 @@ class AgendaController extends AbstractController
         $next_day->modify('+1 day');
         $client  = Client::select('id', 'name')->get();
         $poneys = PoneyChoice::all();
-//dd($agenda,$day);
+
         View::render('agendas.index',  [
             'day'           => $date->format('Y-m-d'),
             'previous_day'  => $previous_day->format('Y-m-d'),
@@ -48,6 +53,10 @@ class AgendaController extends AbstractController
             'agendas'       => $agenda,
             ]);
     }
+
+    /**Cette méthode crée un rendez-vous dans la table agendas. Le prix est calculé en fonction du type de facturation.
+     * @return void
+     */
     public function register(): void
     {
         $agendas = Agenda::all();
@@ -83,9 +92,13 @@ class AgendaController extends AbstractController
 
         ]);
 
-
         $this->redirect('agenda',compact('agendas'));
     }
+
+    /** Cette méthode affiche la page formulaire d'enregistrement d'un rendez-vous. Elle affiche les rendez-vous
+     * de la journée.
+     * @return void
+     */
     public function agendaForm(): void
     {
         $agenda  = Agenda::select('jour','start','id','client_id','type','nbr')->orderBy('start','ASC')->get();
@@ -96,16 +109,17 @@ class AgendaController extends AbstractController
 
     }
 
-    public function edit($slug)
+    /**Cette méthode permet d'afficher la page formulaire d'édition d'un rendez-vous. Elle donne les informations du
+     * client liées au rendez-vous et les heures de travail de chaque poney.
+     *
+     * @param $slug
+     * @return void
+     */
+    public function edit($slug): void
     {
-        //$agenda       = Agenda::find($slug);
         $agenda = Agenda::with(['poneyChoosen', 'client'])->find($slug);
-        //$poneys       = Poney::select('name', 'id','tps_w','image_path')->get();
         $poneys = Poney::select('name', 'id', 'tps_w', 'image_path')->get();
-        //$poneysChoice = $agenda->poneyChoosen;
         $poneysChoice = $agenda->poneyChoosen->pluck('poney_id');
-        //$poneysChoice = $poneysChoice->pluck('poney_id');
-        //$poneyName    = Poney::find($poneysChoice);
         $poneyName = Poney::whereIn('id', $poneysChoice)->get();
         $client       = $agenda->client->name;
         $counts = PoneyChoice::selectRaw('COUNT(poneyChoice.poney_id) as total, poney_id')
@@ -126,10 +140,13 @@ class AgendaController extends AbstractController
     }
 
 
+    /**Cette méthode permet de modifier l'heure de début d'un rendez-vous.
+     * @param $slug
+     * @return void
+     */
     public function editStart($slug): void
     {
         $agenda     = Agenda::where('id', $slug)->firstOrFail();
-
         $validator  = Validator::get($_POST);
         $validator->mapFieldsRules([
             'start' => ['required']
@@ -148,10 +165,14 @@ class AgendaController extends AbstractController
         $this->redirect('agendas.edit', ['slug' => $agenda->id]);
     }
 
+    /**Cette méthode permet de modifier le nombre de participants au rendez-vous. Elle calcule
+     * le prix en fonction de celui-ci.
+     * @param $slug
+     * @return void
+     */
     public function editNbr($slug): void
     {
         $agenda    = Agenda::where('id', $slug)->firstOrFail();
-
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
             'nbr'  => ['required']
@@ -174,10 +195,14 @@ class AgendaController extends AbstractController
         Session::addFlash(Session::STATUS, 'Le nombre de participant a été mis à jour !');
         $this->redirect('agendas.edit', ['slug' => $agenda->id]);
     }
+
+    /**Cette méthode permet de modifier le type de participant lié au rendez-vous.
+     * @param $slug
+     * @return void
+     */
     public function editType($slug): void
     {
         $agenda    = Agenda::where('id', $slug)->firstOrFail();
-
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
             'type' => ['required']
@@ -196,10 +221,13 @@ class AgendaController extends AbstractController
         $this->redirect('agendas.edit', ['slug' => $agenda->id]);
     }
 
+    /**Cette méthode permet de modifier le type de facturation du rendez-vous.
+     * @param $slug
+     * @return void
+     */
     public function editFact($slug): void
     {
         $agenda    = Agenda::where('id', $slug)->firstOrFail();
-
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
             'facturation_type' => ['required'],
@@ -219,9 +247,15 @@ class AgendaController extends AbstractController
             $agenda->prix= 100;
         }
         $agenda->save();
+
         Session::addFlash(Session::STATUS, 'Le type de facturation a été mis à jour !');
         $this->redirect('agendas.edit', ['slug' => $agenda->id]);
     }
+
+    /**Cette méthode permet d'effacer un rendez-vous.
+     * @param $slug
+     * @return void
+     */
     public function delete($slug): void
     {
         if (!Auth::checkIsAdmin()) {
@@ -232,17 +266,27 @@ class AgendaController extends AbstractController
         $user->delete();
         $this->redirect('agenda');
     }
-    public function export(): void
+
+    /**Cette méthode permet d'exporter la liste des rendez-vous actifs.
+     * @return void
+     */
+    public function exportAgenda(): void
     {
-        $user = Agenda::select('id', 'jour', 'start','client_id','type','nbr')->orderBy('id', 'desc')->get();
+        $agenda = Agenda::select('id', 'jour', 'start','client_id','type','nbr')->orderBy('id', 'desc')->get();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="user_table_export.xlsx"');
+        header('Content-Disposition: attachment;filename="agenda_table_export.xlsx"');
         header('Cache-Control: max-age=0');
         $spreadsheet = new Spreadsheet();
         $sheet       = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A' . 1,'n° id');
+        $sheet->setCellValue('B' . 1,'Jour');
+        $sheet->setCellValue('C' . 1,'Début');
+        $sheet->setCellValue('D' . 1,'n° Client');
+        $sheet->setCellValue('E' . 1,'Type');
+        $sheet->setCellValue('F' . 1,'Participant');
 
-        $i = 2;
-        foreach ($user as $item) {
+        $i = 3;
+        foreach ($agenda as $item) {
             $sheet->setCellValue('A' . $i, $item->id);
             $sheet->setCellValue('B' . $i, $item->jour);
             $sheet->setCellValue('C' . $i, $item->start);
@@ -251,6 +295,13 @@ class AgendaController extends AbstractController
             $sheet->setCellValue('F' . $i, $item->nbr);
             $i++;
         }
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
 
         $writer = new Xlsx($spreadsheet);
 
@@ -264,6 +315,10 @@ class AgendaController extends AbstractController
         }
 
     }
+
+    /**Cette méthode permet d'effacer un poney lié au rendez-vous.
+     * @return void
+     */
     public function deletePoneyAgenda():void
     {
         $agenda_id = $_POST['agenda_id'];

@@ -1,16 +1,60 @@
 {% include 'includes/header.html' %}
-<title>Facturation | EkiCal</title>
+<title>Invoices | EkiCal</title>
 <body>
 
 <h2>{{ titre}}</h2>
+<div>
+
+ <!--Date Selector-->
+<div class="col">
+    <div class="k">
+        <form class="formD" action="{{ route('invoices')}}" method="POST" >
+            <div>
+                {{ csrf_field()|raw }}
+                <h3>Historique</h3>
+                <div>
+                    <div>
+                        <div>
+                            <select name="year" id="year" required>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select name="month" id="month" required>
+                                <option value="01">Janvier</option>
+                                <option value="02">Février</option>
+                                <option value="03">Mars</option>
+                                <option value="04">Avril</option>
+                                <option value="05">Mai</option>
+                                <option value="06">Juin</option>
+                                <option value="07">Juillet</option>
+                                <option value="08">Août</option>
+                                <option value="09">Septembre</option>
+                                <option value="10">Octobre</option>
+                                <option value="11">Novembre</option>
+                                <option value="12">Décembre</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <button type="submit">voir</button>
+            </div>
+        </form>
+    </div>
+</div>
 
 <main class="table">
 
 <!-- Header-->
+
 <div class="table_header">
     {% if auth().checkIsAdmin() %}
     <div class="page">
-        <a href="{{ route('clientsheet') }}">
+        <a href="{{ route('invoicesheet') }}">
             <img  src="/img/exportexcel.png" title="exporter en xlsx" height="35" width="35"
                   alt="export_xlsx"/>
         </a>
@@ -18,8 +62,9 @@
     {% endif %}
 </div>
 
-<!-- Tableau -->
+<!-- Tableau mois en cours-->
 <section class="table_body">
+    <h3>Facturation du mois en cours</h3>
     <table>
         <thead>
         <tr>
@@ -37,7 +82,7 @@
             <td>{{ invoices.id }}</td>
             <td>{{ invoices.name}}</td>
             <td>{{ invoices.total}} €</td>
-            <td>{{ invoices.updated_at }}</td>
+            <td>{{ invoices.created_at }}</td>
             <td></td>
             {% if auth().checkIsAdmin() %}
             <td>   <a href="{{ route('invoices.show', {slug: invoices.id}) }}">
@@ -70,5 +115,6 @@
         {% endfor %}
     </div>
 </main>
+</div>
 </body>
 </html>

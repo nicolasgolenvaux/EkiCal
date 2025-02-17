@@ -1,10 +1,9 @@
 <?php declare(strict_types = 1);
 
 namespace App\Controllers;
-use App\Models\Agenda;
+
 use App\Models\Poney;
 use App\Models\PoneyChoice;
-use DateTime;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Exceptions\HttpException;
 use EkiCal\foundation\Session;
@@ -20,9 +19,6 @@ class PoneyController extends AbstractController
 {
     /**Cette fonction affiche la page index et les informations des poneys.
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function index(): void
     {
@@ -39,9 +35,6 @@ class PoneyController extends AbstractController
 
     /**Cette fonction affiche la page d'enregistrement d'un poney
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function poneyForm(): void
     {
@@ -55,10 +48,10 @@ class PoneyController extends AbstractController
     {
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
-            'name' => ['required', ['lengthMin', 2]],
-            'tps_w' => ['integer', ['min', 0], ['max', 7]],
-            'weight' => ['integer', ['min', 50], ['max', 500]],
-            'birth' => ['date', ['dateAfter', '2000-01-01']],
+            'name'      => ['required', ['lengthMin', 2]],
+            'tps_w'     => ['integer', ['min', 0], ['max', 7]],
+            'weight'    => ['integer', ['min', 50], ['max', 500]],
+            'birth'     => ['date', ['dateAfter', '2000-01-01']],
         ]);
 
         if (!$validator->validate()) {
@@ -68,11 +61,11 @@ class PoneyController extends AbstractController
         }
 
         $poney = Poney::create([
-            'name' => $_POST['name'],
-            'tps_w' => $_POST['tps_w'],
-            'weight' => $_POST['weight'],
-            'birth' => $_POST['birth'],
-            'medicalVisit' => $_POST['medicalVisit']
+            'name'          => $_POST['name'],
+            'tps_w'         => $_POST['tps_w'],
+            'weight'        => $_POST['weight'],
+            'birth'         => $_POST['birth'],
+            'medicalVisit'  => $_POST['medicalVisit']
         ]);
 
         $this->redirect('poney');
@@ -97,9 +90,6 @@ class PoneyController extends AbstractController
     /**Cette fonction recherche et affiche les informations du poney.
      * @param $slug : Détermine l'id du poney.
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function edit($slug)
     {
@@ -109,7 +99,9 @@ class PoneyController extends AbstractController
             HttpException::render();
         }
 
-        View::render('poneys.edit', ['poney' => $poney]);
+        View::render('poneys.edit', [
+            'poney' => $poney
+        ]);
     }
 
     /**Cette fonction télécharge la photo du poney.
@@ -157,7 +149,7 @@ class PoneyController extends AbstractController
 
     }
 
-    /**
+    /**Cette fonction permet de modifier le poids d'un cheval.
      * @param $slug
      * @return void
      */
@@ -184,7 +176,7 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
-    /**
+    /**Cette fonction permet de modifier le temps de travail journalier d'un cheval.
      * @param $slug
      * @return void
      */
@@ -211,7 +203,7 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
-    /**
+    /**Cette fonction permet de modifier la date de la visite médicale d'un cheval.
      * @param $slug
      * @return void
      */
@@ -238,7 +230,7 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
-    /**
+    /**Cette fonction permet de modifier la date de naissance d'un cheval.
      * @param $slug
      * @return void
      */
@@ -265,7 +257,7 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
-    /**
+    /**Cette fonction permet de modifier le pédigréed'un cheval.
      * @param $slug
      * @return void
      */
@@ -292,7 +284,7 @@ class PoneyController extends AbstractController
         $this->redirect('poneys.edit', ['slug' => $poney->id]);
     }
 
-    /**
+    /**Cette fonction permet de modifier le nom d'un cheval.
      * @param $slug
      * @return void
      */
@@ -326,13 +318,19 @@ class PoneyController extends AbstractController
     {
         $poney = Poney::select('id', 'name', 'tps_w', 'weight', 'birth', 'medicalVisit')->orderBy('id', 'desc')->get();
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="user_table_export.xlsx"');
+        header('Content-Disposition: attachment;filename="poneys_table_export.xlsx"');
         header('Cache-Control: max-age=0');
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet->setCellValue('A' . 1,'n° id');
+        $sheet->setCellValue('B' . 1,'Nom');
+        $sheet->setCellValue('C' . 1,'Temps de travail');
+        $sheet->setCellValue('D' . 1,'Poids');
+        $sheet->setCellValue('E' . 1,'Date de naissance');
+        $sheet->setCellValue('F' . 1,'visite médicale');
 
-        $i = 2;
+        $i = 3;
         foreach ($poney as $item) {
             $sheet->setCellValue('A' . $i, $item->id);
             $sheet->setCellValue('B' . $i, $item->name);
@@ -342,6 +340,13 @@ class PoneyController extends AbstractController
             $sheet->setCellValue('F' . $i, $item->medicalVisit);
             $i++;
         }
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
+        $sheet->getColumnDimension('E')->setAutoSize(true);
+        $sheet->getColumnDimension('F')->setAutoSize(true);
 
         $writer = new Xlsx($spreadsheet);
 

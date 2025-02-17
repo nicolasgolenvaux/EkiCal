@@ -1,5 +1,8 @@
 <?php declare(strict_types=1);
 
+/**
+ * Ce fichier ramène un tableau de routes utilisées par les Controllers
+ */
 use App\Controllers\AgendaController;
 use App\Controllers\AuthController;
 use App\Controllers\ClientController;
@@ -28,7 +31,6 @@ return [
     'home.updateName' => Route::patch('/compte', [HomeController::class, 'updateName']),
     'home.updateEmail' => Route::patch('/compte/email', [HomeController::class, 'updateEmail']),
     'home.updatePassword' => Route::patch('/compte/password', [HomeController::class, 'updatePassword']),
-    //'home.updatePicture' => Route::patch('/compte/picture', [HomeController::class, 'updatePicture']),
     'home.upload' => Route::post('/compte/upload', [HomeController::class, 'upload']),
 
     // Users
@@ -91,14 +93,15 @@ return [
     'invoices' => Route::get('/invoices', [InvoiceController::class, 'index']),
     'invoices.delete' => Route::delete('/deleteInvoice/{slug}', [InvoiceController::class, 'delete']),
     'invoices.show' => Route::get('/showInvoice/{slug}', [InvoiceController::class, 'show']),
+    'invoices.detailInvoice' => Route::post('/detailsInvoice',[InvoiceController::class, 'detailInvoice']),
 
 
-// export Excell
-
+    // export Excell
+    'invoicesheet' => Route::get('/exportInvoices', [InvoiceController::class, 'exportInvoices']),
     'sheet' => Route::get('/export', [UserController::class, 'export']),
-    'poneysheet' => Route::get('/export', [PoneyController::class, 'export']),
-    'clientsheet' => Route::get('/export', [ClientController::class, 'export']),
-    'rdvsheet' => Route::get('/export', [AgendaController::class, 'export']),
+    'poneysheet' => Route::get('/exportPoney', [PoneyController::class, 'export']),
+    'clientsheet' => Route::get('/exportClient', [ClientController::class, 'export']),
+    'rdvsheet' => Route::get('/exportAgenda', [AgendaController::class, 'exportAgenda']),
 
 ];
 

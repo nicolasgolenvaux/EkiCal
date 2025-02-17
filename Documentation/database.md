@@ -4,7 +4,7 @@
   - Precompiled Binaries for Windows ``sqlite-dll-win-x86-xxxxxxxx.zip`` + ``sqlite-tools-win-x64-xxxxxxxx.zip``
   - Création du dossier sqlite à la racine
   - Décompression des fichiers temporaires dans le dossier sqlite
-- Variable d'environnement  
+  - Variable d'environnement  
   - Ajout de la variable C:\sqlite 
   - ``systeme`` -> ``variables d'environnement`` -> ``Path`` -> ``C:\sqlite``
 

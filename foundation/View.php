@@ -5,13 +5,11 @@ namespace EkiCal\foundation;
 //On crée des fonctions propres aux vues que l'on va pouvoir utiliser
 // dans nos fonctions templates Twig.
 
-use App\Models\Agenda;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
-use Twig\TwigFilter;
 use Twig\TwigFunction;
 /**
  * Cette classe va nous permettre de récupérer des vues par des fonctions via Twig.

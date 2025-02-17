@@ -21,9 +21,6 @@ class AuthController extends AbstractController
     /**Cette fonction redirige l'utilisateur vers la page de connexion. S'il est déjà
      * connecté, il est redirigé vers la page de son compte.
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
      */
     public function loginForm(): void
     {
@@ -72,6 +69,5 @@ class AuthController extends AbstractController
         }
         $this->redirect('login.form');
     }
-
 
 }

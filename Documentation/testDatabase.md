@@ -44,11 +44,16 @@ insert into PONEY (nom, tps_w, updated_at,created_at,id_1) values
 ('Saphir',0,current_time,current_time,1)
 ;
 
-insert into USERS (nom, prenom,email, updated_at,created_at,id_1) values
-('Golenvaux','Nicolas','nicolasgoenvaux@gmail.com',current_time, current_time,3),
-('Ferauche','Marie','marie.fe@yahoo.com',current_time, current_time,2),
-('Godefroid','Bill','godbill@gmail.com',current_time, current_time,2),
-('Berlusconi','Josiane','jojo@gmail.com',current_time, current_time,1);
+insert into USERS  values
+                    
+(1,Nicolas Golenvaux,nicolasgolenvaux@gmail.com,admin,1989,2025-01-01 12:59:10,uploads/67753c1ed13ff.PNG,$2y$10$KHVrlfVTRODfE4q4KufLL.vIyUhb3w0hStb7M.tgQqlZuOegSmfYK),
+(2,Marie  Ferauche,marie.fe48@gmail.com,user,1984,2025-01-01 13:15:30,uploads/67753ff21ffee.jpg,$2y$10$A9Sign22bVxFdEGXU2kGFOiyI8GoT.JYHWQl41vjRBrvt/1a63.xS),
+(3,Gérard Ernalsteen,gg@gmail.com,user,1983,2025-01-01 13:14:56,uploads/67753c4022787.jpg,$2y$10$pMRC2sn519zxxnPBXPmCAOgxyZUpB8/m4mmLXZbOPjXT4MfXHOb32),
+(4,Laurence VVK,Louis@gmail.com,user,1983,2025-01-01 13:13:55,uploads/67753bd9d5258.jpg,$2y$10$BWQfw6/g8utbzUFyov5kP.2LVH2TWZgbFw9w/9DeP/DRptTTQ.9JC),
+(5,Denayer Jean,jd@d.com,user,1983,2025-01-01 12:57:19,uploads/67753baeedc3e.jpg,$2y$10$kd.kvyUezyk1tjVIjPh/LO/TIc5pcwKJpeF88WdpeT2w0upyADbjy),
+(6,Fabienne Lambini,paradis@eden.com,admin,1983,2025-01-01 13:13:41,uploads/67753b8f45bb7.jpg,$2y$10$9Ou2NMRkDqxmC6CtkN7pgeAsCRHEhY.70tamizqsJbHyWCIJr35gG),
+(7,Carole Guyot,cagu@gmail.com,a,2025-01-01 13:55:39,2025-01-01 12:56:23,uploads/67753b77c6d6b.jpg,$2y$10$OGrXLEjWe28jLRXLS4piwuO/1BxlzcUK5fKTIQtsul/ZBkKVfTaHq)
+
 
 insert into rdv (description, Nbr_pers,date_rdv,heure_debut,heure_fin, updated_at,created_at,id_1,id_2) values
 ('stage essai', 2,'01-11-2024','13:00:00','14:00:00',current_time, current_time,2,1),

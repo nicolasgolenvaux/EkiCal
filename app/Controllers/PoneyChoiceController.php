@@ -1,16 +1,19 @@
 <?php declare(strict_types=1);
 
 namespace App\Controllers;
-use App\Models\Agenda;
+
 use App\Models\PoneyChoice;
 use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\Session;
 use EkiCal\foundation\Validator;
-use EkiCal\foundation\View;
+
 
 
 class PoneyChoiceController extends AbstractController
 {
+    /**Cette méthode permet d'enregistrer dans la table pivot poneyChoice.
+     * @return void
+     */
     public function registerPoneyChoice():void
     {
         $validator = Validator::get($_POST);

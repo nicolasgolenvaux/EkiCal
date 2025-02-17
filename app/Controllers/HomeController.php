@@ -24,9 +24,7 @@ class HomeController extends AbstractController
      * d'authentification de l'utilisateur.
      * Elle affiche la page 'home'.
      * @return void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+
      */
     public function index(): void
     {
@@ -40,7 +38,6 @@ class HomeController extends AbstractController
     }
 
     /**Cette fonction met à jour le nom de l'utilisateur.
-     *
      * @return void
      */
     public function updateName(): void
@@ -107,8 +104,8 @@ class HomeController extends AbstractController
 
         $validator = Validator::get($_POST);
         $validator->mapFieldsRules([
-            'password_old' => ['required', 'password'],
-            'password' => ['required', ['lengthMin', 8], ['equals', 'password_confirmation']],
+            'password_old'  => ['required', 'password'],
+            'password'      => ['required', ['lengthMin', 8], ['equals', 'password_confirmation']],
         ]);
 
         if (!$validator->validate()) {
@@ -125,11 +122,13 @@ class HomeController extends AbstractController
         $this->redirect('home');
     }
 
+    /**Cette fonction permet d'envoyer un mail, mais ne fonctionne pas pour des raisons smtp...
+     * @return void
+     */
     public function sendEmail() :void
     {
         $debug = true;
         try {
-
             $mail = new PHPMailer($debug);
             if ($debug) {
                 $mail->SMTPDebug = SMTP::DEBUG_SERVER;
@@ -156,34 +155,10 @@ class HomeController extends AbstractController
         }catch (Exception $e) {
             echo "Message could not be sent. Mailer Error: ".$e->getMessage();
         }
-        //$email= User::select('email')->where('id',$id)->first();
-        //$name = User::select('name')->where('id',$id)->first();
-
-//        $mail = new PHPMailer();
-//
-//        $mail->isSMTP();
-//        $mail->SMTPAuth = true;
-//        $mail->Host = "smtp.gmail.com";
-//        $mail->Port = 587;
-//        $mail->Username = "nicolasgolenvaux@gmail.com";
-//        $mail->Password = "xXwGyzCOIlMQwh8hWLvx";
-//        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
-//
-//        $mail->setFrom('nicolasgolenvaux@gmail.com', 'Admin EkiCal');
-//        $mail->addAddress('nicolasgolenvaux@gmail.com');
-//        $mail->CharSet = 'UTF-8';
-//        $mail->Encoding = 'base64';
-//        $mail->isHTML(true);
-//        $mail->Subject = 'Changement de votre mot de passe';
-//        $mail->Body = 'Votre mot de passe EkiCal a été modifié avec succès. Veuillez vous connecter avec votre nouveau mot de passe.'. $password ;
-//        $mail->AltBody = 'Le texte comme simple élément textuel';
-//        //$mail->addAttachment("/home/user/Desktop/image.png", "image.png");
-//        $mail->send();
-
     }
 
 
-    /**Cette fonction met à jour l'avatar' de l'utilisateur.
+    /**Cette fonction met à jour l'avatar de l'utilisateur.
      * @return void
      */
     public function updatePicture(): void

@@ -68,6 +68,10 @@ class App
         return $token;
     }
 
+    /**Cette fonction initialise la base donnée avec les paramètres du tableau config/database et crée une capsule
+     *
+     * @return void
+     */
     protected function initDatabase(): void
     {
         date_default_timezone_set(Config::get('app.timezone'));

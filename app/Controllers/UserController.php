@@ -1,13 +1,11 @@
 <?php declare(strict_types=1);
 /**
- * Ce Controller affiche la table des utilisateurs.
+ * Ce Controller manipule la table des utilisateurs.
  */
 
 namespace App\Controllers;
 
-
 use Exception;
-use PhpOffice\PhpSpreadsheet\Reader\Xls;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\User;
@@ -21,6 +19,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserController extends AbstractController
 {
+    /**Cette fonction affiche la page avec la liste des users.
+     * @return void
+     */
     public function index(): void
     {
         $titre = 'Users';
@@ -28,6 +29,11 @@ class UserController extends AbstractController
         View::render('users.user', compact('titre', 'user'));
 
     }
+
+    /**Cette fonction permet d'effacer un user de la table users.
+     * @param $slug
+     * @return void
+     */
     public function delete($slug): void
     {
         if (!Auth::checkIsAdmin()) {
@@ -38,12 +44,18 @@ class UserController extends AbstractController
         $this->redirect('user');
     }
 
+    /**Cette méthode permet d'afficher le formulaire d'enregistrement d'un nouvel user.
+     * @return void
+     */
     public function registerForm(): void
 
     {
         View::render('users.register');
     }
 
+    /**Cette méthode permet d'enregistrer un nouvel user dans la table users.
+     * @return void
+     */
     public function register(): void
     {
 
@@ -71,6 +83,10 @@ class UserController extends AbstractController
         $this->redirect('user');
     }
 
+    /**Cette méthode permet d'afficher le formulaire d'édition de l'user.
+     * @param $slug
+     * @return void
+     */
     public function edit($slug)
     {
         if (!Auth::checkIsAdmin()) {
@@ -88,6 +104,10 @@ class UserController extends AbstractController
         ]);
     }
 
+    /**Cette méthode permet de mettre à jour le nom de l'user
+     * @param $slug
+     * @return void
+     */
     public function editName($slug): void
     {
         if (!Auth::check()) {
@@ -113,6 +133,10 @@ class UserController extends AbstractController
         $this->redirect('users.edit', ['slug' => $user->id]);
     }
 
+    /**Cette méthode permet de mettre à jour le mail de l'user
+     * @param $slug
+     * @return void
+     */
     public function editEmail($slug): void
     {
         if (!Auth::check()) {
@@ -138,6 +162,10 @@ class UserController extends AbstractController
         $this->redirect('users.edit', ['slug' => $user->id]);
     }
 
+    /**Cette méthode permet de mettre à jour le mot de passe de l'user.
+     * @param $slug
+     * @return void
+     */
     public function editPassword($slug): void
     {
         if (!Auth::check()) {
@@ -162,6 +190,9 @@ class UserController extends AbstractController
         $this->redirect('users.edit', ['slug' => $user->id]);
     }
 
+    /**Cette méthode permet d'exporter en xlsx la table users.
+     * @return void
+     */
     public function export(): void
     {
         $user = User::select('id', 'name', 'email', 'role')->orderBy('id', 'desc')->get();
@@ -171,8 +202,12 @@ class UserController extends AbstractController
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
+        $sheet->setCellValue('A' . 1,'n° id');
+        $sheet->setCellValue('B' . 1,'Nom');
+        $sheet->setCellValue('C' . 1,'E-mail');
+        $sheet->setCellValue('D' . 1,'Role');
 
-        $i = 2;
+        $i = 3;
         foreach ($user as $item) {
             $sheet->setCellValue('A' . $i, $item->id);
             $sheet->setCellValue('B' . $i, $item->name);
@@ -180,6 +215,11 @@ class UserController extends AbstractController
             $sheet->setCellValue('D' . $i, $item->role);
             $i++;
         }
+
+        $sheet->getColumnDimension('A')->setAutoSize(true);
+        $sheet->getColumnDimension('B')->setAutoSize(true);
+        $sheet->getColumnDimension('C')->setAutoSize(true);
+        $sheet->getColumnDimension('D')->setAutoSize(true);
 
         $writer = new Xlsx($spreadsheet);
 

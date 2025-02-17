@@ -18,6 +18,9 @@ class Router
     protected string $controller;
     protected string $method;
 
+    /**Cette méthode construit une url valide pour le routage.
+     * @param array $routes
+     */
     public function __construct(array $routes)
     {
         $this->initCSRF();

@@ -1,5 +1,7 @@
 <?php declare(strict_types = 1);
-
+/**
+ * Cette page affiche le message d'erreur.
+ */
 namespace EkiCal\foundation\Exceptions;
 
 use EkiCal\foundation\View;
