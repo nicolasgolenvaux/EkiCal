@@ -8,7 +8,7 @@
  <!--Date Selector-->
 <div class="col">
     <div class="k">
-        <form class="formD" action="{{ route('invoices')}}" method="POST" >
+        <form class="formD" action="{{ route('invoicesDate')}}" method="post" >
             <div>
                 {{ csrf_field()|raw }}
                 <h3>Historique</h3>
@@ -64,7 +64,7 @@
 
 <!-- Tableau mois en cours-->
 <section class="table_body">
-    <h3>Facturation du mois en cours</h3>
+    <h3>Facturation</h3>
     <table>
         <thead>
         <tr>

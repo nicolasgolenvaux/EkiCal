@@ -10,6 +10,7 @@ use EkiCal\foundation\AbstractController;
 use EkiCal\foundation\View;
 use EkiCal\foundation\Authentication as Auth;
 use Exception;
+use Illuminate\Support\Collection;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
@@ -22,15 +23,25 @@ class InvoiceController extends AbstractController
     public function index(): void
     {
         $titre = 'Facturation';
-        $date = Carbon::now();
+        $month = isset($_POST['month']) ? (int) $_POST['month'] : null;
+        $year = isset($_POST['year']) ? (int) $_POST['year'] : null;
+
+        if (!$month || !$year) {
+            $date = Carbon::now();
+            $month = $date->month;
+            $year = $date->year;
+        }
+
         $invoices = Invoice::select('id', 'name', 'total', 'created_at')
-            ->whereMonth('created_at', $date->month)
-            ->whereYear('created_at', $date->year)
-            ->orderBy('id')->groupBy('id')
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->orderBy('id')
+            ->groupBy('id')
             ->get();
-        $record = Invoice::whereMonth('created_at', $_POST['month']->month)->whereYear('created_at', $_POST['year']->year)->get();
-        View::render('invoices.index', compact('titre', 'invoices', 'record'));
+
+        View::render('invoices.index', compact('titre', 'invoices'));
     }
+
 
     /**Cette méthode efface une facture de la table invoices.
      * @param $slug
@@ -60,6 +71,7 @@ class InvoiceController extends AbstractController
         View::render('invoices.show', compact('invoice', 'total', 'tva', 'htva'));
 
     }
+
 
     /**
      * @return void

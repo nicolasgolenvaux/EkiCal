@@ -91,9 +91,11 @@ return [
 
     // Invoices
     'invoices' => Route::get('/invoices', [InvoiceController::class, 'index']),
+    'invoicesDate' => Route::post('/invoices', [InvoiceController::class, 'index']),
     'invoices.delete' => Route::delete('/deleteInvoice/{slug}', [InvoiceController::class, 'delete']),
     'invoices.show' => Route::get('/showInvoice/{slug}', [InvoiceController::class, 'show']),
     'invoices.detailInvoice' => Route::post('/detailsInvoice',[InvoiceController::class, 'detailInvoice']),
+    //'invoices.history' => Route::post('/historyInvoice',[InvoiceController::class, 'historyInvoice']),
 
 
     // export Excell
