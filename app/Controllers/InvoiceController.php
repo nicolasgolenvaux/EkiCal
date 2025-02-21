@@ -73,7 +73,7 @@ class InvoiceController extends AbstractController
     }
 
 
-    /**
+    /**Cette méthode retourne le détail d'une facture.
      * @return void
      */
     public function detailInvoice(): void
